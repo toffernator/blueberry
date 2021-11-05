@@ -1,6 +1,7 @@
 @startuml
 left to right direction
 actor "User" as user
+actor "Guest" as guest
 rectangle Blueberry {
   usecase "Create User" as create
   usecase "Login" as login
@@ -11,7 +12,6 @@ rectangle Blueberry {
 }
 usecase "Authentication" as auth
 
-user --> create
 user --> login
 user --> logout
 login -up.> auth : include
@@ -19,4 +19,6 @@ login -up.> auth : include
 user --> search
 search <|-- filter
 search <|-- unfilter
+
+guest --> create
 @enduml
