@@ -7,8 +7,8 @@ rectangle Blueberry {
   usecase "Login" as login
   usecase "Logout" as logout
   usecase "Search" as search
-  usecase "FilteredSearch" as filter
-  usecase "UnfilteredSearch" as unfilter
+  usecase "SearchWithWords" as filter
+  usecase "SearchWithFilters" as unfilter
 }
 usecase "Authentication" as auth
 
@@ -19,6 +19,8 @@ login -up.> auth : include
 user --> search
 search <|-- filter
 search <|-- unfilter
+
+filter <.> unfilter : extends 
 
 guest --> create
 @enduml
