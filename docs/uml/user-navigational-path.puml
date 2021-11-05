@@ -1,0 +1,26 @@
+@startuml navigational path
+start
+
+repeat
+repeat
+split
+    :Sort by;
+split again
+    :Tags;
+split again
+    :Year;
+split again
+    :Text Input;
+end split
+repeat while (Initiated search) is (no)
+->yes;
+
+repeat
+:Show results; 
+repeat while (View more) is (yes)
+->no;
+repeat while (Resource selected) is (no)
+->yes;
+
+end
+@enduml
