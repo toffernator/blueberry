@@ -1,0 +1,22 @@
+@startuml
+left to right direction
+actor "User" as user
+rectangle Blueberry {
+  usecase "Create User" as create
+  usecase "Login" as login
+  usecase "Logout" as logout
+  usecase "Search" as search
+  usecase "FilteredSearch" as filter
+  usecase "UnfilteredSearch" as unfilter
+}
+usecase "Authentication" as auth
+
+user --> create
+user --> login
+user --> logout
+login -up.> auth : include
+
+user --> search
+search <|-- filter
+search <|-- unfilter
+@enduml
