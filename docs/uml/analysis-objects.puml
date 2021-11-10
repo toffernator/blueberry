@@ -1,0 +1,25 @@
+@startuml
+
+class Material <<Entity>>
+class Repository <<Entity>>
+class UserInformation <<Entity>>
+class Subject <<Entity>>
+class Search <<Control>>
+class SearchWithFilter <<Control>>
+class Filter <<Control>>
+
+Repository "1" --* "*" Material
+Repository "1" --* "*" Subject
+
+Subject "1" --* "*" Material
+
+SearchWithFilter --|> Search
+SearchWithFilter ..> Filter
+
+Search ..> Repository
+Search ..> UserInformation
+
+Filter ..> Subject
+Filter ..> Material
+
+@enduml
