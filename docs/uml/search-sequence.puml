@@ -1,0 +1,33 @@
+@startuml
+
+actor User as user
+control Search as search
+entity UserInformation as userInformation
+entity  Repository as repository
+actor Database as database
+
+user -> search : activate search function
+activate user
+
+activate search
+search -> repository : request materials
+activate repository
+
+repository -> database : select materials
+activate database
+database -> repository : return materials
+deactivate database
+
+repository -> search : return materials
+deactivate repository
+
+search -> userInformation : read user information
+activate userInformation
+userInformation -> search : return user user information
+deactivate userInformation
+
+search -> user : prioritize after relevancy
+deactivate search
+deactivate user
+
+@enduml
