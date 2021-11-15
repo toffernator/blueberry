@@ -1,0 +1,27 @@
+@startuml
+
+Note right of UserController: Methods are not final, just representative
+
+class PlaceholderClient
+
+class UserController {
+    + CreateUser(User user)
+    + LoginUser(User user)
+}
+class UserAuthProxy {
+    - RealUserController real
+    + CreateUser(User user)
+    + Login(User user)
+}
+class RealUserController {
+    + CreateUser(User user)
+    + Login(User user)
+}
+
+PlaceholderClient -right-> UserController
+UserAuthProxy -up-|> UserController
+RealUserController -up-|> UserController
+
+RealUserController -left-o UserAuthProxy
+
+@enduml

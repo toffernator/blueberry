@@ -1,0 +1,32 @@
+@startuml
+
+() IStorage
+
+package Search as SearchPackage {
+    component Search
+}
+
+package Core {
+    component IRepository
+    component ISearch
+}
+
+package Infrastructure {
+    component Repository
+    component Database
+}
+
+Search --|> ISearch
+IRepository --> ISearch
+Repository --|> IRepository
+Repository --o Database
+
+Infrastructure -- IStorage
+Search --( IStorage
+
+Note left of SearchPackage
+    Contains the search
+    decorator pattern
+end note
+
+@enduml

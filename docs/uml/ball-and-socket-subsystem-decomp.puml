@@ -1,0 +1,41 @@
+@startuml
+
+component Client
+
+() API
+() Core as ICore
+
+() StorageProvider
+() AuthenticationProvider
+
+() Search as ISearch
+() User as IUser
+
+package Server {
+    [Core]
+    [API Controller] as APIController
+    component "Infrastructure" {
+        [Storage]
+        [Authentication] as InfAuth
+    }
+    component "Services" {
+        [Search]
+        [User]
+    }
+}
+
+database Database
+cloud AzureAD
+
+API -- APIController
+Search -- ISearch
+User -- IUser
+InfAuth -- AuthenticationProvider
+Storage -- StorageProvider
+Core -- ICore
+
+Client --( API
+Database -up-( StorageProvider
+AzureAD -up-( AuthenticationProvider
+
+@enduml

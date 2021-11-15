@@ -1,0 +1,35 @@
+@startuml
+
+class IMaterialRepository
+class Search {
+    - decorators
+    + Execute()
+}
+class SearchDecorator {
+    + Execute()
+}
+class ConcreteSearch {
+    + Execute()
+}
+class SearchWithTag {
+    Tag tag
+    + Execute()
+    - filterFor(Tag tag)
+}
+class SearchWithWords {
+    - string searchString
+    - string[] keywords
+    + Execute()
+    - filterFor(string[] keywords)
+}
+
+IMaterialRepository -right-> Search
+Search -down-o SearchDecorator
+ConcreteSearch -up-|> Search
+SearchDecorator -up-|> Search
+
+
+SearchWithTag -up-|> SearchDecorator
+SearchWithWords -up-|> SearchDecorator
+
+@enduml

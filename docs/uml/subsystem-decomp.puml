@@ -1,0 +1,29 @@
+@startuml
+
+component Client
+
+package Server {
+    [Core]
+    [API]
+    component "Infrastructure" {
+        [Storage]
+        [Authentication] as InfAuth
+    }
+    component "Services" {
+        [Search]
+        [User]
+    }
+}
+
+Client .down.> API
+
+API ..> Services
+
+User ..> InfAuth
+User ..> Storage
+Search ..> Storage
+
+Infrastructure ..> Core
+Services ..> Core
+
+@enduml
