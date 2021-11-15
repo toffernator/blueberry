@@ -1,31 +1,31 @@
 @startuml
 
-package "Client" <<subsystem>>
+package "Client"
 cloud Authentication
 database Database
 
-package "Server" <<subsystem>> {
+package "Server" {
     [Core]
     [API]
     component "Infrastructure" {
         [Database] as InfDb
         [Authentication] as InfAuth
     }
+    component "Services" {
+        [Search]
+        [User]
+    }
 }
 
 Client .down.> API
-Authentication .left.> InfAuth
-Database .left.> InfDb
 
-API ..> Infrastructure
-API ..> Core
+API ..> Services
+Services ..> Infrastructure
+
+Authentication .left.> InfAuth
+Database .up.> InfDb
 
 Infrastructure ..> Core
-
-Note left of API
-    Recall that the API component
-    exposes functionality to search
-    material and for user management
-end note
+Services ..> Core
 
 @enduml
