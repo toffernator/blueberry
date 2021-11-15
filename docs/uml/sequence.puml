@@ -1,0 +1,23 @@
+@startuml
+participant Client
+
+Client ->> API: request(searchResults)
+activate API
+API -->> Client: acknowledge
+
+API ->> Service: searchWithWords() 
+activate Service
+
+Service -> Infrastructure: get(results)
+activate Infrastructure
+Infrastructure -->> Service
+deactivate Infrastructure
+
+Service -->> API 
+deactivate Service
+
+API -> Client: reply(searchResults)
+Client -->> API: acknowledge
+deactivate API
+
+@enduml

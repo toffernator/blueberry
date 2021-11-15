@@ -1,0 +1,57 @@
+@startuml
+left to right direction
+allowmixing
+
+cloud BlueBerryServer <<hostname>>
+
+class UserController {
+  ..
+  <<POST>> Create (newUser : NewUserDTO) : UserDTO
+  <<GET>> Read (id : integer) : UserDTO
+  <<PUT>> Update (id : integer, user : UpdateUserDTO) : UserDTO
+  <<DELETE>> Delete (id : integer)
+}
+
+class MaterialController {
+  ..
+  <<GET>> ReadAll () : IEnumerable<MaterialDTO>
+  <<GET>> Read (query : IEnumerable<KeyValuePair<string, string>>) : IEnumerable<MaterialDTO>
+}
+
+class TagController {
+  ..
+  <<GET>> ReadAll () : IEnumerable<TagDTO>
+  <<GET>> Read (query : IEnumerable<KeyValuePair<string, string>>) : IEnumerable<TagDTO>
+}
+label "/material" as material
+label "/material?{query}" as materialquery
+
+label "/tag" as tag
+label "/tag?{query}" as tagquery
+
+label "/user/{id}" as userid
+label "/user" as user
+
+BlueBerryServer -. material
+material -.> MaterialController::ReadAll 
+
+BlueBerryServer -. materialquery
+materialquery -.> MaterialController::Read
+
+BlueBerryServer -. tag 
+tag -.> TagController::ReadAll 
+
+BlueBerryServer -. tagquery
+tagquery -.> TagController::Read
+
+
+BlueBerryServer -. userid
+userid -.> UserController::Read   
+userid -.> UserController::Update
+userid -.> UserController::Delete
+
+BlueBerryServer -. user
+user -.> UserController::Create
+
+
+@enduml
