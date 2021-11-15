@@ -1,14 +1,12 @@
 @startuml
 
-package "Client"
-cloud Authentication
-database Database
+component Client
 
-package "Server" {
+package Server {
     [Core]
     [API]
     component "Infrastructure" {
-        [Database] as InfDb
+        [Storage]
         [Authentication] as InfAuth
     }
     component "Services" {
@@ -20,10 +18,10 @@ package "Server" {
 Client .down.> API
 
 API ..> Services
-Services ..> Infrastructure
 
-Authentication .left.> InfAuth
-Database .up.> InfDb
+User ..> InfAuth
+User ..> Storage
+Search ..> Storage
 
 Infrastructure ..> Core
 Services ..> Core
