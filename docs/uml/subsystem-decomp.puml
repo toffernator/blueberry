@@ -1,30 +1,23 @@
 @startuml
 
-title Packages - Component Diagram
+package "Client" <<subsystem>>
+cloud Authentication
+database Database
 
-package "Client" {
-
-}
-
-package "Server" {
+package "Server" <<subsystem>> {
     [Core]
     [API]
-    package "Infrastructure" {
-        [Database] as IDb
-        [Authentication] as IAuth
+    component "Infrastructure" {
+        [Database] as InfDb
+        [Authentication] as InfAuth
     }
 }
 
-package "Authentication" {
-}
-
-database "Database" as Db {
-}
-
-Client --> API
-Infrastructure ..> Core
 API ..> Core
-Db --> IDb
-Authentication --> IAuth
+Infrastructure ..> Core
+
+Client ..> API
+Authentication ..> InfAuth
+Database ..> InfDb
 
 @enduml
