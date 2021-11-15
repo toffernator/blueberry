@@ -5,8 +5,6 @@ cloud Authentication
 database Database
 
 package "Server" <<subsystem>> {
-    component "User"
-    component "Search"
     [Core]
     [API]
     component "Infrastructure" {
@@ -16,17 +14,18 @@ package "Server" <<subsystem>> {
 }
 
 Client .down.> API
-Authentication .up.> InfAuth
-Database .up.> InfDb
+Authentication .left.> InfAuth
+Database .left.> InfDb
 
-API .down.> Search
-API .down.> User
-Search ..> Core
-Search .down.> InfDb
-User ..> Core
-User .down.> InfAuth
+API ..> Infrastructure
+API ..> Core
+
 Infrastructure ..> Core
 
-
+Note left of API
+    Recall that the API component
+    exposes functionality to search
+    material and for user management
+end note
 
 @enduml
