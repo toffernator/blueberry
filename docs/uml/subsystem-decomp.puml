@@ -1,0 +1,30 @@
+@startuml
+
+title Packages - Component Diagram
+
+package "Client" {
+
+}
+
+package "Server" {
+    [Core]
+    [API]
+    package "Infrastructure" {
+        [Database] as IDb
+        [Authentication] as IAuth
+    }
+}
+
+package "Authentication" {
+}
+
+database "Database" as Db {
+}
+
+Client --> API
+Infrastructure ..> Core
+API ..> Core
+Db --> IDb
+Authentication --> IAuth
+
+@enduml
