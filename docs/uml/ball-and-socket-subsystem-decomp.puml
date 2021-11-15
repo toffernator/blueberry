@@ -1,0 +1,32 @@
+@startuml
+
+package "Client" <<subsystem>>
+cloud Authentication
+database Database
+
+package "Server" <<subsystem>> {
+    [Core]
+    [API]
+    component "Infrastructure" {
+        [Database] as InfDb
+        [Authentication] as InfAuth
+    }
+}
+
+() Database as IDb
+() Authentication as IAuth
+() API as IAPI
+
+InfDb -- IDb
+InfAuth -- IAuth
+
+Infrastructure ..> Core
+API ..> Core
+
+API -- IAPI
+Client --( IAPI
+
+Database --( IDb
+Authentication --( IAuth
+
+@enduml
