@@ -1,32 +1,41 @@
 @startuml
 
-package "Client" <<subsystem>>
-cloud Authentication
-database Database
+component Client
 
-package "Server" <<subsystem>> {
+() API
+() Core as ICore
+
+() StorageProvider
+() AuthenticationProvider
+
+() Search as ISearch
+() User as IUser
+
+package Server {
     [Core]
-    [API]
+    [API Controller] as APIController
     component "Infrastructure" {
-        [Database] as InfDb
+        [Storage]
         [Authentication] as InfAuth
+    }
+    component "Services" {
+        [Search]
+        [User]
     }
 }
 
-() Database as IDb
-() Authentication as IAuth
-() API as IAPI
+database Database
+cloud AzureAD
 
-InfDb -- IDb
-InfAuth -- IAuth
+API -- APIController
+Search -- ISearch
+User -- IUser
+InfAuth -- AuthenticationProvider
+Storage -- StorageProvider
+Core -- ICore
 
-Infrastructure ..> Core
-API ..> Core
-
-API -- IAPI
-Client --( IAPI
-
-Database --( IDb
-Authentication --( IAuth
+Client --( API
+Database -up-( StorageProvider
+AzureAD -up-( AuthenticationProvider
 
 @enduml
