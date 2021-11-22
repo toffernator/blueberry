@@ -5,18 +5,18 @@ public class Material
     public int Id { get; set; }
     
     [StringLength(50)]
-    public string title { get; set; }
+    public string Title { get; set; }
 
     [StringLength(250)]
-    public string shortDescription { get; set; }
+    public string ShortDescription { get; set; }
 
-    public ICollection<Tag> tags { get; set; }
+    public ICollection<Tag> Tags { get; set; }
 
     [StringLength(250)]
     [Url]
-    public string imageUrl { get; set; }
+    public string ImageUrl { get; set; }
 
-    public MediaType type { get; set; }
+    public MediaType Type { get; set; }
 
-    public DateTime date { get; set; }
+    public DateTime Date { get; set; }
 }
