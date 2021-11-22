@@ -6,52 +6,35 @@ cloud BlueBerryServer <<hostname>>
 
 class UserController {
   ..
-  <<POST>> Create (newUser : NewUserDTO) : UserDTO
-  <<GET>> Read (id : integer) : UserDTO
-  <<PUT>> Update (id : integer, user : UpdateUserDTO) : UserDTO
-  <<DELETE>> Delete (id : integer)
+  <<GET>> Get (id : integer) : UserDTO
+  <<PUT>> UpdateTags (id : integer, tags : IEnumerable<TagDTO>) : UserDTO
 }
 
 class MaterialController {
   ..
-  <<GET>> ReadAll () : IEnumerable<MaterialDTO>
-  <<GET>> Read (query : IEnumerable<KeyValuePair<string, string>>) : IEnumerable<MaterialDTO>
+  <<GET>> Get (Tag : string, Keywords : string, StartYear : int, EndYear : int) : IEnumerable<MaterialDTO>
 }
 
 class TagController {
   ..
-  <<GET>> ReadAll () : IEnumerable<TagDTO>
-  <<GET>> Read (query : IEnumerable<KeyValuePair<string, string>>) : IEnumerable<TagDTO>
+  <<GET>> Get () : IEnumerable<TagDTO>
 }
-label "/material" as material
-label "/material?{query}" as materialquery
+label "/material?{query}" as material
 
 label "/tag" as tag
-label "/tag?{query}" as tagquery
 
 label "/user/{id}" as userid
 label "/user" as user
 
 BlueBerryServer -. material
-material -.> MaterialController::ReadAll 
+material -.> MaterialController::Get 
 
-BlueBerryServer -. materialquery
-materialquery -.> MaterialController::Read
-
-BlueBerryServer -. tag 
-tag -.> TagController::ReadAll 
-
-BlueBerryServer -. tagquery
-tagquery -.> TagController::Read
+BlueBerryServer -. tag
+tag -.> TagController::Get
 
 
 BlueBerryServer -. userid
-userid -.> UserController::Read   
-userid -.> UserController::Update
-userid -.> UserController::Delete
-
-BlueBerryServer -. user
-user -.> UserController::Create
-
+userid -.> UserController::Get   
+userid -.> UserController::UpdateTags
 
 @enduml
