@@ -1,9 +1,63 @@
 ﻿@page "/"
+@inject IJSRuntime JsRuntime
+
 
 <PageTitle>Index</PageTitle>
+<div  class="row" style="margin:250px">
+    <div style="display: flex;" >
+        <input type="text" placeholder="Search" style="width: 100%;" />
+         <button class="search" type="button" @onclick="Alert">
+            <span class=""> O- </span>
+        </button>
+        <!-- <input type="button" style="background-color: white;" /> -->
+    </div>
+    <!-- <div >
+         <input type="button" value="Sort by" style="background-color: white; color: blue" />
+         <input type="button" value="tags" style="background-color: white;" />
+         <input type="button" value="year" style="background-color: white;" />
+    </div> -->
+    <div>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
+    <div >
+        <div class="@NavMenuCssClass"  @onclick="ToggleNavMenu">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <NavLink class="nav-link text-dark" @onclick="ToggleNavMenu" >
+                        Sort By
+                    </NavLink>                
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link text-dark" @onclick="ToggleNavMenu">
+                       Tags
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link text-dark" @onclick="ToggleNavMenu">
+                         Year
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    </div>
 
-<h1>Hello, world!</h1>
+</div>
 
-Welcome to your new app.
+@code {
+    string message = "";
+    bool collapseNavMenu = true;
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    string baseMenuClass = "navbar-collapse d-sm-inline-flex flex-sm-row-reverse";
+
+    string NavMenuCssClass => baseMenuClass + (collapseNavMenu ? " collapse" : "");
+
+    void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+     private async Task Alert()
+    {
+         await JsRuntime.InvokeVoidAsync("alert", "You have searched!"); // Alert
+    }
+}
