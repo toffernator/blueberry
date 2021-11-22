@@ -16,7 +16,7 @@ public class Material
     [Url]
     public string ImageUrl { get; set; }
 
-    public MediaType Type { get; set; }
+    public string Type { get; set; }
 
     public DateTime Date { get; set; }
 }

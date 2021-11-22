@@ -47,7 +47,7 @@ public class UserRepository : IUserRepository
                     .ToListAsync())
                     .AsReadOnly();
 
-    public async Task<Status> Update(int id, UserUpdateDto User)
+    public async Task<Status> Update(UserUpdateDto User)
     {
         var entity = await _context.Users.Include(u => u.Interests).FirstOrDefaultAsync(u => u.Id == User.Id);
 
@@ -57,7 +57,7 @@ public class UserRepository : IUserRepository
         }
 
         entity.Name = User.Name;
-        entity.Interests = await User.GetInterests(User.Interests).ToListAsync();
+        entity.Interests = await GetInterests(User.Interests).ToListAsync();
 
         await _context.SaveChanges();
 
@@ -81,11 +81,11 @@ public class UserRepository : IUserRepository
 
     private async IAsyncEnumerable<Tag> GetInterests(IEnumerable<string> interests)
     {
-        var existing = await _context.Interests.Where(t => interests.Contains(t.Name)).ToDictionaryAsync(t = t.Name);
+        var existing = await _context.Interests.Where(i => interests.Contains(i.Name)).ToDictionaryAsync(i => i.Name);
 
         foreach (var tag in interests)
         {
-            yield return existing.TryGetValue(tag, out var t) ? t : new Tag(tag);
+            yield return existing.TryGetValue(tag, out var i) ? i : new Tag(tag);
         }
 
     }
