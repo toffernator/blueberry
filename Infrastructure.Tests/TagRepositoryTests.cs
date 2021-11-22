@@ -6,7 +6,6 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using static blueberry.Core.Status;
 
-
 namespace Infrastructure.Tests;
 
 public class TagRepositoryTests : IDisposable
@@ -15,5 +14,10 @@ public class TagRepositoryTests : IDisposable
     {
         var connection = new SqliteConnection("Filename=:memory");
         
+    }
+
+    public void Dispose()
+    {
+        throw new NotImplementedException();
     }
 }
