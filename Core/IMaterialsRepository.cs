@@ -2,5 +2,5 @@ namespace blueberry.Core;
 
 public interface IMaterialRepository
 {
-    public Task<IReadOnlyCollection<MaterialDetailsDto>> Search(IQueryable<MaterialDetailsDto> criteria);
+    public Task<IReadOnlyCollection<MaterialDto>> Search(IQueryable<MaterialDto> criteria);
 }
