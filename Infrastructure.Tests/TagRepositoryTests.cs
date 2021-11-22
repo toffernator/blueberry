@@ -9,11 +9,11 @@ using static blueberry.Core.Status;
 
 namespace Infrastructure.Tests;
 
-public class UnitTest1
+public class TagRepositoryTests : IDisposable
 {
-    [Fact]
-    public void Test1()
+    public TagRepositoryTests()
     {
-
+        var connection = new SqliteConnection("Filename=:memory");
+        
     }
 }
