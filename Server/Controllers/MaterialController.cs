@@ -12,10 +12,12 @@ namespace blueberry.Server.Controllers;
 public class MaterialController : ControllerBase
 {
     private readonly ILogger<MaterialController> _logger;
+    private readonly IMaterialRepository _repository;
 
-    public MaterialController(ILogger<MaterialController> logger)
+    public MaterialController(ILogger<MaterialController> logger, IMaterialRepository repository)
     {
         _logger = logger;
+        _repository = repository;
     }
 
     [HttpGet]
