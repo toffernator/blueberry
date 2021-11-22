@@ -19,7 +19,7 @@ public class MaterialRepositoryTests : IDisposable
 
     public MaterialRepositoryTests()
     {
-        var connection = new SqliteConnection("filename=:memory:");
+        var connection = new SqliteConnection("Filename=:memory:");
         connection.Open();
         
         var builder = new DbContextOptionsBuilder<BlueberryContext>();
