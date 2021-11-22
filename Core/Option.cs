@@ -1,3 +1,4 @@
+// Taken from https://github.com/ondfisk/BDSA2021/blob/main/MyApp.Core/Option.cs
 namespace blueberry.Core;
 
 public struct Option<T> where T : class
