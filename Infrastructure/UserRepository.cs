@@ -4,31 +4,31 @@ public class UserRepository : IUserRepository
 {
     private readonly IBlueberryContext _context;
 
-    public UserRepoistory(IBlueberryContext context)
+    public UserRepository(IBlueberryContext context)
     {
         _context = context;
     }
 
-    public async Task<UserDto> CreateAsync(UserCreateDto User)
+    public async Task<UserDto> Create(UserCreateDto User)
     {
         var entity = new User
         {
             Name = User.Name,
-            Interests = User.Interests
+            Interests = await GetInterests(User.Interests).ToListAsync()
         };
 
         _context.Users.Add(entity);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChanges();
 
         return new UserDto(
                         entity.Id,
                         entity.Name,
-                        entity.Interests
+                        entity.Interests.Select(u => u.Name).ToHashSet()
                     );
     }
 
-    public async Task<Option<UserDto>> ReadAsync(int userId)
+    public async Task<Option<UserDto>> Read(int userId)
     {
         var users = from u in _context.Users
                     where u.Id == userId
@@ -37,6 +37,56 @@ public class UserRepository : IUserRepository
                         u.Name,
                         u.Interests.Select(u => u.Name).ToHashSet()
                     );
-    
+
+        return await users.FirstOrDefaultAsync();
+    }
+
+    public async Task<IReadOnlyCollection<UserDto>> Read() => 
+        (await _context.Users
+                    .Select(u => new UserDto(u.Id, u.Name, u.Interests.Select(u => u.Name).ToHashSet()))
+                    .ToListAsync())
+                    .AsReadOnly();
+
+    public async Task<Status> Update(int id, UserUpdateDto User)
+    {
+        var entity = await _context.Users.Include(u => u.Interests).FirstOrDefaultAsync(u => u.Id == User.Id);
+
+        if(entity == null)
+        {
+            return NotFound;
+        }
+
+        entity.Name = User.Name;
+        entity.Interests = await User.GetInterests(User.Interests).ToListAsync();
+
+        await _context.SaveChanges();
+
+        return Updated;
+    }
+
+    public async Task<Status> Delete(int userId)
+    {
+        var entity = await _context.Users.FindAsync(userId);
+
+        if(entity == null)
+        {
+            return NotFound;
+        }
+
+        _context.Users.Remove(entity);
+        await _context.SaveChanges();
+
+        return Deleted;
+    }
+
+    private async IAsyncEnumerable<Tag> GetInterests(IEnumerable<string> interests)
+    {
+        var existing = await _context.Interests.Where(t => interests.Contains(t.Name)).ToDictionaryAsync(t = t.Name);
+
+        foreach (var tag in interests)
+        {
+            yield return existing.TryGetValue(tag, out var t) ? t : new Tag(tag);
+        }
+
     }
 }
