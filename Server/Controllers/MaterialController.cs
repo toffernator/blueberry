@@ -19,12 +19,12 @@ public class MaterialController : ControllerBase
         _logger = logger;
         _repository = repository;
     }
-
+    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(IEnumerable<MaterialDTO>), 200)]
     [HttpGet]
-    public IEnumerable<MaterialDTO> Get([FromQuery(Name = "tag")] string? tag, [FromQuery(Name = "keywords")] string? keywords,
-                     [FromQuery(Name = "startyear")] int? startYear, [FromQuery(Name = "endyear")] int? endYear)
+    public async Task<ActionResult<IEnumerable<MaterialDTO>>> Get([FromQuery(Name = "tag")] string? tag, [FromQuery(Name = "keywords")] string? keywords,
+                                                                  [FromQuery(Name = "startyear")] int? startYear, [FromQuery(Name = "endyear")] int? endYear)
     {
-        Console.WriteLine(String.Format("Tags = {0}\n Keywords = {1}\n Years = {2} - {3}", tag, keywords, startYear, endYear));
         throw new NotImplementedException();
     }
 }

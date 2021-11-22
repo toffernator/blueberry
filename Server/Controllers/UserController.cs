@@ -20,14 +20,18 @@ public class UserController : ControllerBase
         _repository = repository;
     }
 
+    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(UserDTO), 200)]
     [HttpGet("{id}")]
-    public UserDTO Get(int id)
+    public async Task<ActionResult<UserDTO>> Get(int id)
     {
         throw new NotImplementedException();
     }
 
     [HttpPut("{id}")]
-    public UserDTO UpdateTags(int id, [FromBody] IEnumerable<TagDTO> tags)
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> UpdateTags(int id, [FromBody] IEnumerable<TagDTO> tags)
     {
         throw new NotImplementedException();
     }

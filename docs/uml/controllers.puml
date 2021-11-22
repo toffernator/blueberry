@@ -7,7 +7,7 @@ cloud BlueBerryServer <<hostname>>
 class UserController {
   ..
   <<GET>> Get (id : integer) : UserDTO
-  <<PUT>> UpdateTags (id : integer, tags : IEnumerable<TagDTO>) : UserDTO
+  <<PUT>> UpdateTags (id : integer, tags : IEnumerable<TagDTO>) : IActionResult 
 }
 
 class MaterialController {
