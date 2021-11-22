@@ -81,7 +81,7 @@ public class UserRepository : IUserRepository
 
     private async IAsyncEnumerable<Tag> GetInterests(IEnumerable<string> interests)
     {
-        var existing = await _context.Interests.Where(i => interests.Contains(i.Name)).ToDictionaryAsync(i => i.Name);
+        var existing = await _context.Tags.Where(i => interests.Contains(i.Name)).ToDictionaryAsync(i => i.Name);
 
         foreach (var tag in interests)
         {
