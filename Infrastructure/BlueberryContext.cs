@@ -11,9 +11,4 @@ public class BlueberryContext : DbContext, IBlueberryContext
     {
         // Intentionally empty
     }
-
-    public Task<int> SaveChanges(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
 }

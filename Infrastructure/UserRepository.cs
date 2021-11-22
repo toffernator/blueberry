@@ -19,7 +19,7 @@ public class UserRepository : IUserRepository
 
         _context.Users.Add(entity);
 
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return new UserDto(
                         entity.Id,
@@ -59,7 +59,7 @@ public class UserRepository : IUserRepository
         entity.Name = User.Name;
         entity.Interests = await GetInterests(User.Interests).ToListAsync();
 
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return Updated;
     }
@@ -74,7 +74,7 @@ public class UserRepository : IUserRepository
         }
 
         _context.Users.Remove(entity);
-        await _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return Deleted;
     }

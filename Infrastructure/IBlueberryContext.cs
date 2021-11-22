@@ -6,5 +6,5 @@ public interface IBlueberryContext : IDisposable
     DbSet<Material> Materials { get; }
 
     DbSet<Tag> Interests { get; }
-    Task<int> SaveChanges(CancellationToken cancellationToken = default);
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
