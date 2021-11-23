@@ -101,18 +101,18 @@ public class TagRepositoryTests : IDisposable
 
     private bool disposed;
 
-        protected virtual void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposed)
         {
-            if (!disposed)
+            if (disposing)
             {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-
-                disposed = true;
+                _context.Dispose();
             }
+
+            disposed = true;
         }
+    }
 
     public void Dispose() {
         Dispose(disposing: true);
