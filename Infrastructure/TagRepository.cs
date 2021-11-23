@@ -9,7 +9,7 @@ public class TagRepository : ITagRepository
         _context = context;
     }
 
-    public Task<TagDto> Create(TagCreateDto tag)
+    public Task<(Status, TagDto)> Create(TagCreateDto tag)
     {
         throw new NotImplementedException();
     }
@@ -20,6 +20,16 @@ public class TagRepository : ITagRepository
     }
 
     public Task<Option<TagDto>> Read(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IReadOnlyCollection<TagDto>> Read()
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<(Status, TagDto)> ITagRepository.Create(TagCreateDto tag)
     {
         throw new NotImplementedException();
     }
