@@ -9,8 +9,9 @@ public class MaterialRepository : IMaterialRepository
         _context = context;
     }
 
-    public Task<IReadOnlyCollection<MaterialDto>> Search(IQueryable<MaterialDto> criteria)
+    public async Task<IReadOnlyCollection<MaterialDto>> Search(IQueryable<MaterialDto> criteria)
     {
-        throw new NotImplementedException();
+        IReadOnlyCollection<MaterialDto> result = await criteria.ToListAsync();
+        return result;
     }
 }

@@ -36,7 +36,16 @@ public class MaterialRepositoryTests : IDisposable
     [Fact]
     public async Task Search_given_docker_tag_returns_lectures_8_and_14()
     {
-        Assert.False(true);
+        var criteria =  _context.Materials.AsQueryable()
+            .Where(m => m.Tags.Contains(new Tag("Docker")))
+            .Select(m => new MaterialDto(m.Id, m.Title, NamesOf(m.Tags)));
+
+        var result = await _repository.Search(criteria);
+
+        Assert.Collection(result,
+            r => Assert.Equal(new MaterialDto(1, "Lecture 8", new List<string>() { "Docker" }), r),
+            r => Assert.Equal(new MaterialDto(2, "Lecture 14", new List<string>() { "Docker" }), r)
+        );
     }
 
     protected virtual void Dispose(bool disposing)
@@ -66,5 +75,15 @@ public class MaterialRepositoryTests : IDisposable
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
+    }
+
+    private IEnumerable<string> NamesOf(ICollection<Tag> tags) 
+    {
+        ISet<string> tagNames = new HashSet<string>(); 
+        foreach(Tag t in tags)
+        {
+            tagNames.Add(t.Name);
+        }
+        return tagNames;
     }
 }
