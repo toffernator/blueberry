@@ -5,7 +5,7 @@ public class BlueberryContext : DbContext, IBlueberryContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Material> Materials => Set<Material>();
 
-    public DbSet<Tag> Interests => Set<Tag>();
+    public DbSet<Tag> Tags => Set<Tag>();
 
     public BlueberryContext(DbContextOptions<BlueberryContext> options) : base(options) 
     {
