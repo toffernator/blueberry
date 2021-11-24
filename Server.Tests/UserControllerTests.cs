@@ -8,7 +8,7 @@ public class UserControllerTests
         // Arrange
         var logger = new Mock<ILogger<UserController>>();
         var repository = new Mock<IUserRepository>();
-        var user = new UserDto(1, "Rasmus", new HashSet<TagDto>());
+        var user = new UserDto(1, "Rasmus", new HashSet<string>());
         repository.Setup(m => m.Read(1)).ReturnsAsync(user);
         var controller = new UserController(logger.Object, repository.Object);
 
@@ -25,7 +25,7 @@ public class UserControllerTests
         // Arrange
         var logger = new Mock<ILogger<UserController>>();
         var repository = new Mock<IUserRepository>();
-        var tags = new HashSet<TagDto>();
+        var tags = new HashSet<string>();
         var userUpdate = new UserUpdateDto(1, tags);
         repository.Setup(m => m.Update(userUpdate)).ReturnsAsync(Updated);
         var controller = new UserController(logger.Object, repository.Object);

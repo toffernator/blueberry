@@ -31,7 +31,7 @@ public class UserController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> UpdateTags(int id, [FromBody] IEnumerable<TagDto> tags)
+    public async Task<IActionResult> UpdateTags(int id, [FromBody] IEnumerable<string> tags)
     {
         throw new NotImplementedException();
     }
