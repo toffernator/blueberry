@@ -8,7 +8,7 @@ public class MaterialControllerTests
         // Arrange
         var logger = new Mock<ILogger<MaterialController>>();
         var repository = new Mock<IMaterialRepository>();
-        var expected = Array.Empty<MaterialDTO>(); 
+        var expected = Array.Empty<MaterialDto>(); 
         repository.Setup(m => m.Read()).ReturnsAsync(expected);
         var controller = new MaterialController(logger.Object, repository.Object);
 
