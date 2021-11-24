@@ -8,7 +8,7 @@ public class TagRepositoryTests : IDisposable
 
     public TagRepositoryTests()
     {
-        var connection = new SqliteConnection("Filename=:memory");
+        var connection = new SqliteConnection("Filename=:memory:");
         connection.Open();
         var builder = new DbContextOptionsBuilder<BlueberryContext>();
         builder.UseSqlite(connection);
@@ -16,9 +16,9 @@ public class TagRepositoryTests : IDisposable
 
         context.Database.EnsureCreated();
 
-        //Will be necessary later (i suppose)
-        context.Tags.AddRange(new Tag("Docker") { Id = 1 }, new Tag("Framework") { Id = 2 });
-        context.Users.Add(new User { Id = 1, Name = "Teapot" , Interests = new HashSet<Tag>() });
+        context.Users.Add(new User{ Id = 1, Name = "Jakob"});
+        context.Tags.AddRange(new Tag("Docker"){ Id = 1 , Users = new HashSet<User>(){context.Users.Find(1)} }, new Tag("Framework"){ Id = 2 });
+        
         context.SaveChanges();
 
         _context = context;
@@ -31,6 +31,7 @@ public class TagRepositoryTests : IDisposable
         var tag = new TagCreateDto("Requirements Analysis Document");
 
         var created = await _repository.Create(tag);
+        Console.WriteLine(tag.Name);
         (Status, TagDto) expected = (Created, new TagDto(3, "Requirements Analysis Document"));
 
         Assert.Equal(expected, created);
@@ -85,15 +86,23 @@ public class TagRepositoryTests : IDisposable
         var entity = await _context.Tags.FindAsync(2);
 
         Assert.Equal(Deleted, response);
-        Assert.NotNull(entity);
+        Assert.Null(entity);
     }
 
     [Fact]
-    public async Task Delete_given_non_existing_id_return_Conflict_and_entity()
+    public async Task Delete_given_non_existing_id_return_NotFound()
     {
-        var response = await _repository.Delete(2);
+        var response = await _repository.Delete(3);
 
-        var entity = await _context.Tags.FindAsync(2);
+        Assert.Equal(NotFound, response);
+    }
+
+    [Fact]
+    public async Task Delete_given_existing_Tag_with_Users_does_not_delete_and_return_Conflict()
+    {
+        var response = await _repository.Delete(1);
+
+        var entity = await _context.Tags.FindAsync(1);
 
         Assert.Equal(Conflict, response);
         Assert.NotNull(entity);
