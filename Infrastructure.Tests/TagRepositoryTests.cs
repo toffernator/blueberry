@@ -26,7 +26,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Create_given_not_existing_Tag_return_Created_with_Tag()
+    public async Task CreateGivenNotExistingTagReturnCreatedWithTag()
     {
         var tag = new TagCreateDto("Requirements Analysis Document");
 
@@ -38,7 +38,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Create_given_existing_Tag_return_Conflict()
+    public async Task CreateGivenExistingTagReturnConflict()
     {
         var tag = new TagCreateDto("Framework");
 
@@ -50,7 +50,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Read_given_existing_id_return_Tag()
+    public async Task ReadGivenExistingIdReturnTag()
     {
         var option = await _repository.Read(1);
 
@@ -60,7 +60,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Read_given_non_existing_id_returns_option_None()
+    public async Task ReadGivenNonExistingIdReturnsOptionNone()
     {
         var option = await _repository.Read(3);
 
@@ -68,7 +68,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Read_given_no_id_return_all_Tags()
+    public async Task ReadGivenNoIdReturnAllTags()
     {
         var tags = await _repository.Read();
 
@@ -79,7 +79,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Delete_given_existing_id_return_Deleted()
+    public async Task DeleteGivenExistingIdReturnDeleted()
     {
         var response = await _repository.Delete(2);
 
@@ -90,7 +90,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Delete_given_non_existing_id_return_NotFound()
+    public async Task DeleteGivenNonExistingIdReturnNotFound()
     {
         var response = await _repository.Delete(3);
 
@@ -98,7 +98,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Delete_given_existing_Tag_with_Users_does_not_delete_and_return_Conflict()
+    public async Task DeleteGivenExistingTagWithUsersDoesNotDeleteAndReturnConflict()
     {
         var response = await _repository.Delete(1);
 
