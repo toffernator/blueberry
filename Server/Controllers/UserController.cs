@@ -21,9 +21,9 @@ public class UserController : ControllerBase
     }
 
     [ProducesResponseType(404)]
-    [ProducesResponseType(typeof(UserDTO), 200)]
+    [ProducesResponseType(typeof(UserDto), 200)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserDTO>> Get(int id)
+    public async Task<ActionResult<UserDto>> Get(int id)
     {
         throw new NotImplementedException();
     }
@@ -31,7 +31,7 @@ public class UserController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> UpdateTags(int id, [FromBody] IEnumerable<TagDTO> tags)
+    public async Task<IActionResult> UpdateTags(int id, [FromBody] IEnumerable<string> tags)
     {
         throw new NotImplementedException();
     }

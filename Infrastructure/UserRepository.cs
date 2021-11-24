@@ -56,7 +56,6 @@ public class UserRepository : IUserRepository
             return NotFound;
         }
 
-        entity.Name = User.Name;
         entity.Interests = await GetInterests(User.Interests).ToListAsync();
 
         await _context.SaveChangesAsync();
