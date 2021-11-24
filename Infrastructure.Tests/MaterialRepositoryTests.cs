@@ -19,7 +19,7 @@ public class MaterialRepositoryTests : IDisposable
 
     public MaterialRepositoryTests()
     {
-        var connection = new SqliteConnection("Filename=:memory:");
+        var connection = new SqliteConnection("filename=:memory:");
         connection.Open();
         
         var builder = new DbContextOptionsBuilder<BlueberryContext>();
@@ -38,7 +38,7 @@ public class MaterialRepositoryTests : IDisposable
     {
         var criteria =  _context.Materials.AsQueryable()
             .Where(m => m.Tags.Contains(new Tag("Docker")))
-            .Select(m => new MaterialDto(m.Id, m.Title, NamesOf(m.Tags)));
+            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
 
         var result = await _repository.Search(criteria);
 
@@ -75,15 +75,5 @@ public class MaterialRepositoryTests : IDisposable
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
-    }
-
-    private IEnumerable<string> NamesOf(ICollection<Tag> tags) 
-    {
-        ISet<string> tagNames = new HashSet<string>(); 
-        foreach(Tag t in tags)
-        {
-            tagNames.Add(t.Name);
-        }
-        return tagNames;
     }
 }
