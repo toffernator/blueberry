@@ -56,7 +56,6 @@ public class UserRepository : IUserRepository
             return NotFound;
         }
 
-        entity.Name = User.Name;
         entity.Tags = await GetTags(User.Tags).ToListAsync();
 
         await _context.SaveChangesAsync();
