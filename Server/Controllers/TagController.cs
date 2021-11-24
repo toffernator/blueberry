@@ -23,7 +23,7 @@ public class TagController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<TagDTO>> Get()
+    public async Task<IEnumerable<TagDto>> Get()
     {
         throw new NotImplementedException();
     }

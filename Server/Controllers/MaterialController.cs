@@ -20,9 +20,9 @@ public class MaterialController : ControllerBase
         _repository = repository;
     }
     [ProducesResponseType(404)]
-    [ProducesResponseType(typeof(IEnumerable<MaterialDTO>), 200)]
+    [ProducesResponseType(typeof(IEnumerable<MaterialDto>), 200)]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MaterialDTO>>> Get([FromQuery(Name = "tag")] string? tag, [FromQuery(Name = "keywords")] string? keywords,
+    public async Task<ActionResult<IEnumerable<MaterialDto>>> Get([FromQuery(Name = "tag")] string? tag, [FromQuery(Name = "keywords")] string? keywords,
                                                                   [FromQuery(Name = "startyear")] int? startYear, [FromQuery(Name = "endyear")] int? endYear)
     {
         throw new NotImplementedException();
