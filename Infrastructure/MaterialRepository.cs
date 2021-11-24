@@ -9,14 +9,13 @@ public class MaterialRepository : IMaterialRepository
         _context = context;
     }
 
-    public void Dispose()
+    public Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IReadOnlyCollection<MaterialDto>> Search(IQueryable<MaterialDto> criteria)
+    public void Dispose()
     {
-        IReadOnlyCollection<MaterialDto> result = await criteria.ToListAsync();
-        return result;
+        throw new NotImplementedException();
     }
 }
