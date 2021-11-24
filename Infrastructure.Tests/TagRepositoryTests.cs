@@ -38,7 +38,7 @@ public class TagRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Create_given_existing_Tag_return_return_Conflict()
+    public async Task Create_given_existing_Tag_return_Conflict()
     {
         var tag = new TagCreateDto("Framework");
 
