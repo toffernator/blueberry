@@ -56,7 +56,6 @@ public class UserRepository : IUserRepository
             return NotFound;
         }
 
-        entity.Name = User.Name;
         entity.Interests = await GetInterests(User.Interests).ToListAsync();
 
         await _context.SaveChangesAsync();
@@ -81,7 +80,7 @@ public class UserRepository : IUserRepository
 
     private async IAsyncEnumerable<Tag> GetInterests(IEnumerable<string> interests)
     {
-        var existing = await _context.Interests.Where(i => interests.Contains(i.Name)).ToDictionaryAsync(i => i.Name);
+        var existing = await _context.Tags.Where(i => interests.Contains(i.Name)).ToDictionaryAsync(i => i.Name);
 
         foreach (var tag in interests)
         {
