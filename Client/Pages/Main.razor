@@ -1,0 +1,79 @@
+@page "/main/{action}"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+<RemoteAuthenticatorView Action="@Action" />
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity?.Name!
+        <button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button>
+    </Authorized>
+    <NotAuthorized>
+        <a href="authentication/login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+<PageTitle>Index</PageTitle>
+<div class="searchModule" >
+    <div class="searchComponent"  >
+        <input class="searchbar" type="text" placeholder="Search" />
+         <button class="searchbutton" type="button">
+            <span class=""> O- </span>
+        </button>
+        <!-- <input type="button" style="background-color: white;" /> -->
+    </div>
+    <!-- <div >
+         <input type="button" value="Sort by" style="background-color: white; color: blue" />
+         <input type="button" value="tags" style="background-color: white;" />
+         <input type="button" value="year" style="background-color: white;" />
+    </div> -->
+    <div>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
+    <div >
+        <div class="@NavMenuCssClass"  @onclick="ToggleNavMenu">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <NavLink class="nav-link text-dark" @onclick="ToggleNavMenu" >
+                        Sort By
+                    </NavLink>                
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link text-dark" @onclick="ToggleNavMenu">
+                       Tags
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link text-dark" @onclick="ToggleNavMenu">
+                         Year
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    </div>
+
+</div>
+
+@code {
+    [Parameter] public string? Action { get; set; }
+    bool collapseNavMenu = true;
+
+    string baseMenuClass = "navbar-collapse d-sm-inline-flex flex-sm-row-reverse";
+
+    string NavMenuCssClass => baseMenuClass + (collapseNavMenu ? " collapse" : "");
+
+    void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private async Task BeginLogout(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+}

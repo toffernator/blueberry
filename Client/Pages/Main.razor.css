@@ -1,0 +1,31 @@
+.Authorize{
+    display: flex;
+    flex-direction: row;
+}
+
+.searchModule{
+   margin:250px;
+}
+
+.searchComponent {
+    display:flex;
+    flex-direction:row;
+    border:1px solid gray;
+    border-radius: 10px;
+    padding: 4px;
+  }
+  
+.searchbar {
+    width: 100%;
+    flex-grow:2;
+    border: none;
+  }
+  
+.searchbar:focus {
+    outline: none;
+  }
+  
+.searchbutton {
+    border:none;
+    background:white;
+  }
