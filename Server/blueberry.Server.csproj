@@ -10,11 +10,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkcore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkcore.sqlite" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Client\blueberry.Client.csproj" />
     <ProjectReference Include="..\Core\blueberry.Core.csproj" />
+    <ProjectReference Include="..\Infrastructure\blueberry.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
