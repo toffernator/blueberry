@@ -10,25 +10,25 @@ public class MaterialRepository : IMaterialRepository
     }
     public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
     {
-        if (options.searchString != "")
+        if (options.SearchString != "")
         {
-            return await QueryTitle(options.searchString).ToListAsync();
+            return await QueryTitle(options.SearchString).ToListAsync();
         }
-        else if (options.tags != null)
+        else if (options.Tags != null)
         {
-            return await QueryTags(options.tags).ToListAsync();
+            return await QueryTags(options.Tags).ToListAsync();
         }
-        else if (options.startDate != null && options.endDate != null)
+        else if (options.StartDate != null && options.EndDate != null)
         {
-            return await QueryBoundedDate((DateTime) options.startDate, (DateTime) options.endDate).ToListAsync();
+            return await QueryBoundedDate((DateTime) options.StartDate, (DateTime) options.EndDate).ToListAsync();
         }
-        else if (options.startDate != null)
+        else if (options.StartDate != null)
         {
-            return await QueryStartDate((DateTime) options.startDate).ToListAsync();
+            return await QueryStartDate((DateTime) options.StartDate).ToListAsync();
         }
-        else if (options.endDate != null)
+        else if (options.EndDate != null)
         {
-            return await QueryEndDate((DateTime) options.endDate).ToListAsync();
+            return await QueryEndDate((DateTime) options.EndDate).ToListAsync();
         }
 
         return new HashSet<MaterialDto>();
