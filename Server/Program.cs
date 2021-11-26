@@ -1,12 +1,3 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Identity.Web;
-
-using Microsoft.EntityFrameworkCore;
-
-using blueberry.Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,7 +9,8 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Blueberry")));
 builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
-builder.Services.AddScoped<IMaterialRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 var app = builder.Build();
 

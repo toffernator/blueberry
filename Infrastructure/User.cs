@@ -7,5 +7,5 @@ public class User
     [StringLength(50)]
     public string Name { get; set; }
 
-    public ICollection<Tag> Interests { get; set; }
+    public ICollection<Tag> Tags { get; set; }
 }
