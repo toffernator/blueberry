@@ -10,36 +10,31 @@ public class MaterialRepository : IMaterialRepository
     }
     public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
     {
-        if (options.SearchString != "")
-        {
-            return await QueryTitle(options.SearchString).ToListAsync();
-        }
-        else if (options.Tags != null)
+        IQueryable<Material> result = QueryTitle(options.SearchString);
+
+        if (options.Tags != null)
         {
             return await QueryTags(options.Tags).ToListAsync();
         }
-        else if (options.StartDate != null && options.EndDate != null)
+        
+        if (options.StartDate != null)
         {
-            return await QueryBoundedDate((DateTime) options.StartDate, (DateTime) options.EndDate).ToListAsync();
+            result = QueryStartDate(result, (DateTime) options.StartDate);
         }
-        else if (options.StartDate != null)
+        
+        if (options.EndDate != null)
         {
-            return await QueryStartDate((DateTime) options.StartDate).ToListAsync();
-        }
-        else if (options.EndDate != null)
-        {
-            return await QueryEndDate((DateTime) options.EndDate).ToListAsync();
+            result = QueryEndDate(result, (DateTime) options.EndDate);
         }
 
-        return new HashSet<MaterialDto>();
+        return await result
+            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))))
+            .ToListAsync();
     }
 
-    private IQueryable<MaterialDto> QueryTitle(string title)
-    {
-        return _context.Materials
-            .Where(m => m.Title.Contains(title))
-            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
-    }
+    private IQueryable<Material> QueryTitle(IQueryable<Material> source, string title) => source.Where(m => m.Title.Contains(title));
+    
+    private IQueryable<Material> QueryTitle(string title) => QueryTitle(_context.Materials, title);
 
     private IQueryable<MaterialDto> QueryTags(IEnumerable<string> tags)
     {
@@ -49,26 +44,13 @@ public class MaterialRepository : IMaterialRepository
             .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
     }
 
-    private IQueryable<MaterialDto> QueryStartDate(DateTime start)
-    {
-        return _context.Materials
-            .Where(m => m.Date >= start)
-            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
-    }
+    private IQueryable<Material> QueryStartDate(DateTime start) => QueryStartDate(_context.Materials, start);
 
-    private IQueryable<MaterialDto> QueryEndDate(DateTime end)
-    {
-        return _context.Materials
-            .Where(m => m.Date <= end)
-            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
-    }
+    private IQueryable<Material> QueryStartDate(IQueryable<Material> source, DateTime start) => source.Where(m => m.Date >= start);
 
-    private IQueryable<MaterialDto> QueryBoundedDate(DateTime start, DateTime end)
-    {
-        return _context.Materials
-            .Where(m => m.Date >= start && m.Date <= end)
-            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
-    }
+    private IQueryable<Material> QueryEndDate(DateTime end) => QueryEndDate(_context.Materials, end);
+
+    private IQueryable<Material> QueryEndDate(IQueryable<Material> source, DateTime end) => source.Where(m => m.Date <= end);
 
     public void Dispose()
     {
