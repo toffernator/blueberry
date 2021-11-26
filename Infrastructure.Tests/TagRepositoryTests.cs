@@ -118,9 +118,4 @@ public class TagRepositoryTests : IDisposable
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
-
-    public void Dispose()
-    {
-        throw new NotImplementedException();
-    }
 }
