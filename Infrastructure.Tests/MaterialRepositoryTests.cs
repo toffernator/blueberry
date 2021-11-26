@@ -55,6 +55,43 @@ public class MaterialRepositoryTests : IDisposable
         Assert.True(isEqual);
     }
 
+    [Fact]
+    public async Task SearchGivenDockerTagReturnsLecture8AndLecture14()
+    {
+        var options = new SearchOptions("", new HashSet<string>() {"Docker"}, null, null);
+        var result = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        {
+            new MaterialDto(8, "Lecture 8", new HashSet<string> {"Docker"}),
+            new MaterialDto(14, "Lecture 14", new HashSet<string> {"Docker"})
+        };
+
+        var isEqual = MaterialsEquals(expected, result);
+        Assert.True(isEqual);
+    }
+    
+    private bool MaterialsEquals(IEnumerable<MaterialDto> materials, IEnumerable<MaterialDto> others)
+    {
+        if (materials.Count() != others.Count())
+        {
+            return false;
+        }
+
+        var mList = materials.OrderBy(m => m.Id).ToList();
+        var oList = others.OrderBy(m => m.Id).ToList();
+        others.GetEnumerator().MoveNext();
+        for (int i = 0; i < mList.Count(); i++)
+        {
+            if (!MaterialEquals(mList[i], oList[i]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private bool MaterialEquals(MaterialDto material, MaterialDto other)
     {
         if (material.Id != other.Id && material.Title != other.Title)
