@@ -66,4 +66,21 @@ public class SearchTests
 
         // mockedRepo.Verify(mock => mock.Search(searchOptions), Times.Once);
     }
+
+    [Fact]
+    public async void ProxyShouldOnlyCallProxiedSearchOnceWhenCalledWithTheSameParams()
+    {
+        var mockedRepo = new Mock<IMaterialRepository>();
+        var searchOptions = new SearchOptions("Typescript", null, null, null);
+        var filteredMockData = _mockData.Where(md => md.Title.Contains("Typescript")).ToList();
+        mockedRepo.Setup(mr => mr.Search(searchOptions)).ReturnsAsync(filteredMockData);
+
+        var search = new SearchProxy(mockedRepo.Object);
+
+        await search.Search("Typescript");
+        var actual = await search.Search("Typescript");
+
+        Assert.Equal(filteredMockData, actual);
+        mockedRepo.Verify(mock => mock.Search(searchOptions), Times.Once);
+    }
 }
