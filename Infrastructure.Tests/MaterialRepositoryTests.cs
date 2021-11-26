@@ -34,9 +34,9 @@ public class MaterialRepositoryTests : IDisposable
         context.SaveChanges();
 
         context.Materials.AddRange(
-            new Material {Id = 10, Title = "Lecture 10", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Today},
-            new Material {Id = 16, Title = "Lecture 16", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Today},
-            new Material {Id = 20, Title = "Lecture 20", ShortDescription = "", Tags = new [] {context.Tags.Find(2)}, ImageUrl = "", Type = "Video", Date = DateTime.Today}
+            new Material {Id = 10, Title = "Lecture 10", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("10/01/2021")},
+            new Material {Id = 16, Title = "Lecture 16", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("10/29/2021")},
+            new Material {Id = 20, Title = "Lecture 20", ShortDescription = "", Tags = new [] {context.Tags.Find(2)}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("11/12/2021")}
         );
         context.SaveChanges();
 
@@ -120,7 +120,54 @@ public class MaterialRepositoryTests : IDisposable
         var isEqual = MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
+
+    [Fact]
+    public async Task SearchGivenStartDate29102021ReturnsLecture16AndLecture20()
+    {
+        var options = new SearchOptions("", null, DateTime.Parse("10/29/2021"), null);
+        var result = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        {
+            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker"}),
+            new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile"})
+        };
+
+        var isEqual = MaterialsEquals(expected, result);
+        Assert.True(isEqual);
+    }
     
+    [Fact]
+    public async Task SearchGivenEndDate29102021ReturnsLecture10AndLecture16()
+    {
+        var options = new SearchOptions("", null, null, DateTime.Parse("10/29/2021"));
+        var result = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        {
+            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker"}),
+            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker"}),
+        };
+
+        var isEqual = MaterialsEquals(expected, result);
+        Assert.True(isEqual);
+    }
+
+    [Fact]
+    public async Task SearchGivenStartDate29102021AndEndDate29102021ReturnsLecture16()
+    {
+        var options = new SearchOptions("", null, DateTime.Parse("10/29/2021"), DateTime.Parse("10/29/2021"));
+        var result = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        {
+            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker"}),
+        };
+
+        var isEqual = MaterialsEquals(expected, result);
+        Assert.True(isEqual);
+    }
+
     private bool MaterialsEquals(IEnumerable<MaterialDto> materials, IEnumerable<MaterialDto> others)
     {
         if (materials.Count() != others.Count())
