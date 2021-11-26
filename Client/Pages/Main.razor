@@ -54,12 +54,13 @@
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <input class="searchbarForTags" type="text" placeholder="Search for tags" />
+                    <input class="searchbarForTags" type="text" value=@inputValue placeholder="Search for tags"  @oninput=@onTagSearch />
                 </li>
                 <li>
-                    <span class="badge bg-primary rounded-pill tag">Blazor</span> <!-- auto generate tags-->
-                    <span class="badge bg-primary rounded-pill tag">React</span> <!-- auto generate tags-->
-                    <span class="badge bg-primary rounded-pill tag">Flutter</span> <!-- auto generate tags-->
+                     @foreach (var tag in filteredTags)
+                     {
+                         <span class=@($"badge {(tag.Item2 ? "bg-primary" : "bg-secondary")} rounded-pill tag") @onclick="() => onTagToggle(tag.Item1)">@tag.Item1</span>
+                     }
                 </li>
                 <li class="clearAll"><label type="label"> clear all</label></li>
             </ul>
@@ -92,8 +93,12 @@
 </div>
 
 @code {
+    IEnumerable<(string, bool)> tags = new (string,bool)[] {("React", true),("Bootstrap", false),("Blazor", false),("Flutter",false)};
+    IEnumerable<(string, bool)> filteredTags = new (string,bool)[] {("React", true),("Bootstrap", false),("Blazor", false),("Flutter",false)}; 
+
     [Parameter] public string? Action { get; set; }
     (int, int) period = (1970, 2021);
+    [Parameter] public string inputValue {get; set;}
 
     private async Task BeginLogout(MouseEventArgs args)
     {
@@ -107,7 +112,16 @@
         var upperBound = values.ElementAtOrDefault(1);
 
         period = (lowerBound, upperBound);
+    }
 
-        //Console.WriteLine($"lower: {lowerBound}, upper: {upperBound}");
+    void onTagSearch(ChangeEventArgs args) {
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)args.Value) || t.Item2);
+    }
+
+    void onTagToggle(string tagName) {
+        Console.WriteLine(tagName);
+        tags = tags.Select(t => t.Item1 == tagName ? (t.Item1, !t.Item2) : t);
+        if (inputValue==null) inputValue = "";
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputValue) || t.Item2);
     }
 }
