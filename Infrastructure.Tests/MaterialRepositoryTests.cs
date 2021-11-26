@@ -27,7 +27,16 @@ public class MaterialRepositoryTests : IDisposable
         var context = new BlueberryContext(builder.Options);
         context.Database.EnsureCreated();
 
-        context.Materials.Add(new Material {Id = 8, Title = "Lecture 8", ShortDescription = "", Tags = new [] { new Tag("Docker") }, ImageUrl = "", Type = "Video", Date = DateTime.Today});
+        context.Tags.AddRange(
+            new Tag {Id = 1, Name = "Docker"}
+        );
+        context.SaveChanges();
+
+        var docker = new HashSet<Tag>(new [] {context.Tags.Find(1)});
+        context.Materials.AddRange(
+            new Material {Id = 8, Title = "Lecture 8", ShortDescription = "", Tags = docker, ImageUrl = "", Type = "Video", Date = DateTime.Today},
+            new Material {Id = 14, Title = "Lecture 14", ShortDescription = "", Tags = docker, ImageUrl = "", Type = "Video", Date = DateTime.Today}
+        );
         context.SaveChanges();
 
         _context = context;

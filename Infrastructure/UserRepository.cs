@@ -84,7 +84,7 @@ public class UserRepository : IUserRepository
 
         foreach (var tag in tags)
         {
-            yield return existing.TryGetValue(tag, out var t) ? t : new Tag(tag);
+            yield return existing.TryGetValue(tag, out var t) ? t : new Tag{ Name = tag};
         }
 
     }
