@@ -1,8 +1,8 @@
-.Authorize{
-    display: flex;
-    flex-direction: row;
-}
 
+.a{
+    background-color: blue;
+
+}
 .searchModule{
    margin:250px;
 }
@@ -12,7 +12,10 @@
     flex-direction:row;
     border:1px solid gray;
     border-radius: 10px;
-    padding: 4px;
+    padding: 5px;
+  }
+  .searchComponent:focus-within{
+      border: 1px solid blue;
   }
   
 .searchbar {
@@ -29,3 +32,31 @@
     border:none;
     background:white;
   }
+
+  .filters{
+      display: flex;
+      flex-direction: row;
+  }
+
+  .filterButton{
+    background-color: white;
+    border: none;
+    color: gray;
+    margin: 20px;
+  }
+  .filterButton:focus{
+      color: blue;
+      box-shadow: none;
+  }
+
+  .clearAll{
+      color: blue;
+  }
+    .tag{
+        margin: 2px;
+    }
+.searchbarForTags{
+    border:1px solid gray;
+    margin: 5px;
+}
+  

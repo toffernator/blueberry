@@ -1,7 +1,9 @@
-@page "/main/{action}"
+@page "/blueberry/"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 <RemoteAuthenticatorView Action="@Action" />
 @using Microsoft.AspNetCore.Components.Authorization
+@using System.Collections
+
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
@@ -16,64 +18,78 @@
     </NotAuthorized>
 </AuthorizeView>
 
+
+
 <PageTitle>Index</PageTitle>
 <div class="searchModule" >
     <div class="searchComponent"  >
         <input class="searchbar" type="text" placeholder="Search" />
          <button class="searchbutton" type="button">
-            <span class=""> O- </span>
+             <span>
+                <i class="fa-solid fa-magnifying-glass"></i>
+             </span>
         </button>
-        <!-- <input type="button" style="background-color: white;" /> -->
     </div>
-    <!-- <div >
-         <input type="button" value="Sort by" style="background-color: white; color: blue" />
-         <input type="button" value="tags" style="background-color: white;" />
-         <input type="button" value="year" style="background-color: white;" />
-    </div> -->
-    <div>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
-    <div >
-        <div class="@NavMenuCssClass"  @onclick="ToggleNavMenu">
-            <ul class="navbar-nav flex-grow-1">
-                <li class="nav-item">
-                    <NavLink class="nav-link text-dark" @onclick="ToggleNavMenu" >
-                        Sort By
-                    </NavLink>                
+    <div class="filters">
+        <div class="btn-group">
+            <button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sort by
+            </button>
+            <ul class="dropdown-menu">
+                    <li><button class="dropdown-item" type="button">Most relevent</button></li>
+                    <li><button class="dropdown-item" type="button">Newest</button></li>
+                    <li><button class="dropdown-item" type="button">Oldest</button></li>
+            </ul>
+        </div>
+
+
+        <div class="btn-group">
+            <button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Tags
+                <span class="badge bg-primary rounded-pill">3</span> <!-- number of tags chosen -->
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <input class="searchbarForTags" type="text" placeholder="Search for tags" />
                 </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link text-dark" @onclick="ToggleNavMenu">
-                       Tags
-                    </NavLink>
+                <li>
+                     <span class="badge bg-primary rounded-pill tag">Blazor</span> <!-- auto generate tags-->
+                     <span class="badge bg-primary rounded-pill tag">React</span> <!-- auto generate tags-->
+                     <span class="badge bg-primary rounded-pill tag">Flutter</span> <!-- auto generate tags-->
                 </li>
-                <li class="nav-item">
-                    <NavLink class="nav-link text-dark" @onclick="ToggleNavMenu">
-                         Year
-                    </NavLink>
+                <li><label class="dropdown-item clearAll" type="label"> clear all</label></li>
+            </ul>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Year
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <p style="margin-top: 2rem">Year</p>
+                    <RadzenSlider Range="true" class="slider" @bind-Value=@values Min="1970" Max="2021" TValue="IEnumerable<int>" Change=@(args => OnChange(args, "Year")) />
                 </li>
             </ul>
         </div>
     </div>
-</nav>
-    </div>
-
 </div>
 
 @code {
     [Parameter] public string? Action { get; set; }
-    bool collapseNavMenu = true;
-
-    string baseMenuClass = "navbar-collapse d-sm-inline-flex flex-sm-row-reverse";
-
-    string NavMenuCssClass => baseMenuClass + (collapseNavMenu ? " collapse" : "");
-
-    void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
 
     private async Task BeginLogout(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
+    }
+    private int inputValue = 123;   
+    IEnumerable<string> tags = new string[] { "Blazor", "React", "Flutter" };
+        
+    //IEnumerable<int> values = new int[] { 1930, 2021 };
+    IEnumerable<int> values = new int[] { 1970, 2021 };
+    void OnChange(dynamic value, string name)
+    {
+        var str = value is IEnumerable ? string.Join(", ", value) : value;
     }
 }
