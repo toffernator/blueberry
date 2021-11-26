@@ -25,7 +25,7 @@ public class MaterialRepository : IMaterialRepository
     private IQueryable<MaterialDto> QueryTitle(string title)
     {
         return _context.Materials
-            .Where(m => m.Title == title)
+            .Where(m => m.Title.Contains(title))
             .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
     }
 

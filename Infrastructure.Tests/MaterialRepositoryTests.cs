@@ -57,6 +57,38 @@ public class MaterialRepositoryTests : IDisposable
     }
 
     [Fact]
+    public async Task SearchGivenLectureReturnsLecture8AndLecture14AndLecture19()
+    {
+        var options = new SearchOptions("Lecture", null, null, null);
+        var results = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        {
+            new MaterialDto(8, "Lecture 8", new HashSet<string> {"Docker"}),
+            new MaterialDto(14, "Lecture 14", new HashSet<string> {"Docker"}),
+            new MaterialDto(19, "Lecture 19", new HashSet<string> {"Mobile"})
+        };
+
+        var isEqual = MaterialsEquals(expected, results);
+        Assert.True(isEqual);
+    }
+
+    [Fact]
+    public async Task SearchGivenTitleIgnoresCase()
+    {
+        var options = new SearchOptions("lEcTuRe 8", null, null, null);
+        var result = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        {
+            new MaterialDto(8, "Lecture 8", new HashSet<string> {"Docker"})
+        };
+
+        var isEqual = MaterialsEquals(expected, result);
+
+    }
+
+    [Fact]
     public async Task SearchGivenDockerTagReturnsLecture8AndLecture14()
     {
         var options = new SearchOptions("", new HashSet<string>() {"Docker"}, null, null);
@@ -121,7 +153,6 @@ public class MaterialRepositoryTests : IDisposable
         // https://stackoverflow.com/questions/4576723/test-whether-two-ienumerablet-have-the-same-values-with-the-same-frequencies
         var tagsGroups = material.Tags.ToLookup(t => t);
         var otherTagsGroups = other.Tags.ToLookup(t => t);
-
         return tagsGroups.Count() == otherTagsGroups.Count()
             && tagsGroups.All(g => g.Count() == otherTagsGroups[g.Key].Count());
     }
