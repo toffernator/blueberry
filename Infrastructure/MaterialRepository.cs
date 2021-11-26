@@ -8,10 +8,16 @@ public class MaterialRepository : IMaterialRepository
     {
         _context = context;
     }
-
-    public Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
+    public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
     {
-        throw new NotImplementedException();
+        return await QueryTitle(options.searchString).ToListAsync();
+    }
+
+    private IQueryable<MaterialDto> QueryTitle(string title)
+    {
+        return _context.Materials
+            .Where(m => m.Title == title)
+            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
     }
 
     public void Dispose()

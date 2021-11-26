@@ -27,25 +27,39 @@ public class MaterialRepositoryTests : IDisposable
         var context = new BlueberryContext(builder.Options);
         context.Database.EnsureCreated();
 
-        // TODO: Populate with data
+        context.Materials.Add(new Material {Id = 8, Title = "Lecture 8", ShortDescription = "", Tags = new [] { new Tag("Docker") }, ImageUrl = "", Type = "Video", Date = DateTime.Today});
+        context.SaveChanges();
 
         _context = context;
         _repository = new MaterialRepository(_context);
     }
 
     [Fact]
-    public async Task Search_given_docker_tag_returns_lectures_8_and_14()
+    public async Task SearchGivenLecture8ReturnsLecture8()
     {
-        var criteria =  _context.Materials.AsQueryable()
-            .Where(m => m.Tags.Contains(new Tag("Docker")))
-            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
+        var options = new SearchOptions("Lecture 8", null, null, null);
+        var results = await _repository.Search(options);
+        // Assuming that exactly one material matches "Lecture 8"
+        var result = results.First();
 
-        var result = await _repository.Search(criteria);
+        var isEqual = MaterialEquals(new MaterialDto(8, "Lecture 8", new HashSet<string>() {"Docker"}), result); 
+        Assert.True(isEqual);
+    }
 
-        Assert.Collection(result,
-            r => Assert.Equal(new MaterialDto(1, "Lecture 8", new List<string>() { "Docker" }), r),
-            r => Assert.Equal(new MaterialDto(2, "Lecture 14", new List<string>() { "Docker" }), r)
-        );
+    private bool MaterialEquals(MaterialDto material, MaterialDto other)
+    {
+        if (material.Id != other.Id && material.Title != other.Title)
+        {
+            return false;
+        }
+
+        // Magic Sauce to check that two enumerables have identical contents.
+        // https://stackoverflow.com/questions/4576723/test-whether-two-ienumerablet-have-the-same-values-with-the-same-frequencies
+        var tagsGroups = material.Tags.ToLookup(t => t);
+        var otherTagsGroups = other.Tags.ToLookup(t => t);
+
+        return tagsGroups.Count() == otherTagsGroups.Count()
+            && tagsGroups.All(g => g.Count() == otherTagsGroups[g.Key].Count());
     }
 
     protected virtual void Dispose(bool disposing)
