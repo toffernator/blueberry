@@ -1,4 +1,4 @@
-@page "/blueberry/"
+@page "/blueberry"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 <RemoteAuthenticatorView Action="@Action" />
 @using Microsoft.AspNetCore.Components.Authorization
@@ -21,30 +21,34 @@
 
 
 <PageTitle>Index</PageTitle>
-<div class="searchModule" >
-    <div class="searchComponent"  >
+<div class="searchModule">
+    <div class="searchComponent">
         <input class="searchbar" type="text" placeholder="Search" />
-         <button class="searchbutton" type="button">
-             <span>
-                <i class="fa-solid fa-magnifying-glass"></i>
-             </span>
+        <button class="searchbutton" type="button">
+            <span>
+                <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+            </span>
         </button>
     </div>
     <div class="filters">
         <div class="btn-group">
-            <button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 Sort by
             </button>
             <ul class="dropdown-menu">
-                    <li><button class="dropdown-item" type="button">Most relevent</button></li>
-                    <li><button class="dropdown-item" type="button">Newest</button></li>
-                    <li><button class="dropdown-item" type="button">Oldest</button></li>
+                <li><button class="dropdown-item" type="button">Most relevent</button></li>
+                <li><button class="dropdown-item" type="button">Newest</button></li>
+                <li><button class="dropdown-item" type="button">Oldest</button></li>
             </ul>
         </div>
 
 
         <div class="btn-group">
-            <button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle filterButton" type="button"
+                id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                aria-expanded="false">
+                <!--<button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false" > -->
                 Tags
                 <span class="badge bg-primary rounded-pill">3</span> <!-- number of tags chosen -->
             </button>
@@ -53,22 +57,34 @@
                     <input class="searchbarForTags" type="text" placeholder="Search for tags" />
                 </li>
                 <li>
-                     <span class="badge bg-primary rounded-pill tag">Blazor</span> <!-- auto generate tags-->
-                     <span class="badge bg-primary rounded-pill tag">React</span> <!-- auto generate tags-->
-                     <span class="badge bg-primary rounded-pill tag">Flutter</span> <!-- auto generate tags-->
+                    <span class="badge bg-primary rounded-pill tag">Blazor</span> <!-- auto generate tags-->
+                    <span class="badge bg-primary rounded-pill tag">React</span> <!-- auto generate tags-->
+                    <span class="badge bg-primary rounded-pill tag">Flutter</span> <!-- auto generate tags-->
                 </li>
-                <li><label class="dropdown-item clearAll" type="label"> clear all</label></li>
+                <li class="clearAll"><label type="label"> clear all</label></li>
             </ul>
         </div>
 
         <div class="btn-group">
-            <button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle filterButton" type="button"
+                id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                aria-expanded="false">
+                <!--<button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false"> -->
                 Year
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <p style="margin-top: 2rem">Year</p>
-                    <RadzenSlider Range="true" class="slider" @bind-Value=@values Min="1970" Max="2021" TValue="IEnumerable<int>" Change=@(args => OnChange(args, "Year")) />
+                    <div class="yearLabels">
+                            <b>From :</b> @period.Item1
+                            <b>To :</b> @period.Item2
+                            
+                    </div>
+                </li>
+                <li>
+                    <div class="slider">
+                        <RadzenSlider Range="true" @bind-Value=@values Min="1970" Max="2021" TValue="IEnumerable<int>"
+                            Change=@OnChange />
+                    </div>
                 </li>
             </ul>
         </div>
@@ -77,19 +93,21 @@
 
 @code {
     [Parameter] public string? Action { get; set; }
+    (int, int) period = (1970, 2021);
 
     private async Task BeginLogout(MouseEventArgs args)
     {
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
     }
-    private int inputValue = 123;   
-    IEnumerable<string> tags = new string[] { "Blazor", "React", "Flutter" };
-        
-    //IEnumerable<int> values = new int[] { 1930, 2021 };
     IEnumerable<int> values = new int[] { 1970, 2021 };
-    void OnChange(dynamic value, string name)
+    void OnChange(IEnumerable<int> values)
     {
-        var str = value is IEnumerable ? string.Join(", ", value) : value;
+        var lowerBound = values.ElementAtOrDefault(0);
+        var upperBound = values.ElementAtOrDefault(1);
+
+        period = (lowerBound, upperBound);
+
+        //Console.WriteLine($"lower: {lowerBound}, upper: {upperBound}");
     }
 }
