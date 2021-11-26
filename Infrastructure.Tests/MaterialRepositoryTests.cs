@@ -28,14 +28,15 @@ public class MaterialRepositoryTests : IDisposable
         context.Database.EnsureCreated();
 
         context.Tags.AddRange(
-            new Tag {Id = 1, Name = "Docker"}
+            new Tag {Id = 1, Name = "Docker"},
+            new Tag {Id = 2, Name = "Mobile"}
         );
         context.SaveChanges();
 
-        var docker = new HashSet<Tag>(new [] {context.Tags.Find(1)});
         context.Materials.AddRange(
-            new Material {Id = 8, Title = "Lecture 8", ShortDescription = "", Tags = docker, ImageUrl = "", Type = "Video", Date = DateTime.Today},
-            new Material {Id = 14, Title = "Lecture 14", ShortDescription = "", Tags = docker, ImageUrl = "", Type = "Video", Date = DateTime.Today}
+            new Material {Id = 8, Title = "Lecture 8", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Today},
+            new Material {Id = 14, Title = "Lecture 14", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Today},
+            new Material {Id = 19, Title = "Lecture 19", ShortDescription = "", Tags = new [] {context.Tags.Find(2)}, ImageUrl = "", Type = "Video", Date = DateTime.Today}
         );
         context.SaveChanges();
 
@@ -65,6 +66,23 @@ public class MaterialRepositoryTests : IDisposable
         {
             new MaterialDto(8, "Lecture 8", new HashSet<string> {"Docker"}),
             new MaterialDto(14, "Lecture 14", new HashSet<string> {"Docker"})
+        };
+
+        var isEqual = MaterialsEquals(expected, result);
+        Assert.True(isEqual);
+    }
+
+    [Fact]
+    public async Task SearchGivenDockerAndMobileTagReturnsLecture8AndLecture14AndLecture19()
+    {
+        var options = new SearchOptions("", new HashSet<string>() {"Docker", "Mobile"}, null, null);
+        var result = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        {
+            new MaterialDto(8, "Lecture 8", new HashSet<string> {"Docker"}),
+            new MaterialDto(14, "Lecture 14", new HashSet<string> {"Docker"}),
+            new MaterialDto(19, "Lecture 19", new HashSet<string> {"Mobile"})
         };
 
         var isEqual = MaterialsEquals(expected, result);
