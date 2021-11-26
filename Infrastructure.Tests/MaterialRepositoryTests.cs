@@ -45,6 +45,23 @@ public class MaterialRepositoryTests : IDisposable
     }
 
     [Fact]
+    public async Task SearchGivenEmptyStringReturnsEverything()
+    {
+        var options = new SearchOptions{SearchString = ""};
+        var results = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        {
+            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker"}),
+            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker"}),
+            new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile"})
+        };
+
+        var isEqual = MaterialsEquals(expected, results);
+        Assert.True(isEqual);
+    }
+
+    [Fact]
     public async Task SearchGivenLecture10ReturnsLecture10()
     {
         var options = new SearchOptions{SearchString = "Lecture 10"};
