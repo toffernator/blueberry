@@ -53,9 +53,10 @@
                     <input class="searchbarForTags" type="text" placeholder="Search for tags" />
                 </li>
                 <li>
-                     <span class="badge bg-primary rounded-pill tag">Blazor</span> <!-- auto generate tags-->
-                     <span class="badge bg-primary rounded-pill tag">React</span> <!-- auto generate tags-->
-                     <span class="badge bg-primary rounded-pill tag">Flutter</span> <!-- auto generate tags-->
+                     @foreach (var tag in tags)
+                     {
+                         <span class="badge bg-primary rounded-pill tag">@tag</span>
+                     }
                 </li>
                 <li><label class="dropdown-item clearAll" type="label"> clear all</label></li>
             </ul>
@@ -76,6 +77,8 @@
 </div>
 
 @code {
+    IEnumerable<string> tags = new string[] {"React","Bootstrap","Blazor","Flutter"};
+
     [Parameter] public string? Action { get; set; }
 
     private async Task BeginLogout(MouseEventArgs args)
@@ -84,7 +87,6 @@
         Navigation.NavigateTo("authentication/logout");
     }
     private int inputValue = 123;   
-    IEnumerable<string> tags = new string[] { "Blazor", "React", "Flutter" };
         
     //IEnumerable<int> values = new int[] { 1930, 2021 };
     IEnumerable<int> values = new int[] { 1970, 2021 };
