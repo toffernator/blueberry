@@ -34,9 +34,9 @@ public class MaterialRepositoryTests : IDisposable
         context.SaveChanges();
 
         context.Materials.AddRange(
-            new Material {Id = 8, Title = "Lecture 8", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Today},
-            new Material {Id = 14, Title = "Lecture 14", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Today},
-            new Material {Id = 19, Title = "Lecture 19", ShortDescription = "", Tags = new [] {context.Tags.Find(2)}, ImageUrl = "", Type = "Video", Date = DateTime.Today}
+            new Material {Id = 10, Title = "Lecture 10", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Today},
+            new Material {Id = 16, Title = "Lecture 16", ShortDescription = "", Tags = new [] {context.Tags.Find(1)}, ImageUrl = "", Type = "Video", Date = DateTime.Today},
+            new Material {Id = 20, Title = "Lecture 20", ShortDescription = "", Tags = new [] {context.Tags.Find(2)}, ImageUrl = "", Type = "Video", Date = DateTime.Today}
         );
         context.SaveChanges();
 
@@ -45,28 +45,28 @@ public class MaterialRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task SearchGivenLecture8ReturnsLecture8()
+    public async Task SearchGivenLecture10ReturnsLecture10()
     {
-        var options = new SearchOptions("Lecture 8", null, null, null);
+        var options = new SearchOptions("Lecture 10", null, null, null);
         var results = await _repository.Search(options);
-        // Assuming that exactly one material matches "Lecture 8"
+        // Assuming that exactly one material matches "Lecture 10"
         var result = results.First();
 
-        var isEqual = MaterialEquals(new MaterialDto(8, "Lecture 8", new HashSet<string>() {"Docker"}), result); 
+        var isEqual = MaterialEquals(new MaterialDto(10, "Lecture 10", new HashSet<string>() {"Docker"}), result); 
         Assert.True(isEqual);
     }
 
     [Fact]
-    public async Task SearchGivenLectureReturnsLecture8AndLecture14AndLecture19()
+    public async Task SearchGivenLectureReturnsLecture10AndLecture16AndLecture20()
     {
         var options = new SearchOptions("Lecture", null, null, null);
         var results = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
-            new MaterialDto(8, "Lecture 8", new HashSet<string> {"Docker"}),
-            new MaterialDto(14, "Lecture 14", new HashSet<string> {"Docker"}),
-            new MaterialDto(19, "Lecture 19", new HashSet<string> {"Mobile"})
+            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker"}),
+            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker"}),
+            new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile"})
         };
 
         var isEqual = MaterialsEquals(expected, results);
@@ -76,12 +76,12 @@ public class MaterialRepositoryTests : IDisposable
     [Fact]
     public async Task SearchGivenTitleIgnoresCase()
     {
-        var options = new SearchOptions("lEcTuRe 8", null, null, null);
+        var options = new SearchOptions("lEcTuRe 10", null, null, null);
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
-            new MaterialDto(8, "Lecture 8", new HashSet<string> {"Docker"})
+            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker"})
         };
 
         var isEqual = MaterialsEquals(expected, result);
@@ -89,15 +89,15 @@ public class MaterialRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task SearchGivenDockerTagReturnsLecture8AndLecture14()
+    public async Task SearchGivenDockerTagReturnsLecture10AndLecture16()
     {
         var options = new SearchOptions("", new HashSet<string>() {"Docker"}, null, null);
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
-            new MaterialDto(8, "Lecture 8", new HashSet<string> {"Docker"}),
-            new MaterialDto(14, "Lecture 14", new HashSet<string> {"Docker"})
+            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker"}),
+            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker"})
         };
 
         var isEqual = MaterialsEquals(expected, result);
@@ -105,16 +105,16 @@ public class MaterialRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async Task SearchGivenDockerAndMobileTagReturnsLecture8AndLecture14AndLecture19()
+    public async Task SearchGivenDockerAndMobileTagReturnsLecture10AndLecture16AndLecture20()
     {
         var options = new SearchOptions("", new HashSet<string>() {"Docker", "Mobile"}, null, null);
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
-            new MaterialDto(8, "Lecture 8", new HashSet<string> {"Docker"}),
-            new MaterialDto(14, "Lecture 14", new HashSet<string> {"Docker"}),
-            new MaterialDto(19, "Lecture 19", new HashSet<string> {"Mobile"})
+            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker"}),
+            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker"}),
+            new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile"})
         };
 
         var isEqual = MaterialsEquals(expected, result);
