@@ -27,21 +27,19 @@ public class MaterialRepositoryTests : IDisposable
         var context = new BlueberryContext(builder.Options);
         context.Database.EnsureCreated();
 
-        context.Tags.AddRange(
-            new Tag {Id = 1, Name = "Docker"},
-            new Tag {Id = 2, Name = "Mobile"},
-            new Tag {Id = 3, Name = "Software Engineering"},
-            new Tag {Id = 4, Name = "C#"}
-        );
-        context.SaveChanges();
+
+        var Docker = new Tag{Name = "Docker"};
+        var Mobile = new Tag{Name = "Mobile"};
+        var SE = new Tag{Name = "Software Engineering"};
+        var CS = new Tag{Name = "C#"};
 
         context.Materials.AddRange(
-            new Material {Id = 1, Title = "OOSE", ShortDescription = "", Tags = new [] {context.Tags.Find(3)}, ImageUrl = "", Type = "Book", Date = DateTime.Parse("04/20/2013")},
-            new Material {Id = 2, Title = "C# 9.0 in a Nutshell", ShortDescription = "", Tags = new [] {context.Tags.Find(4)}, ImageUrl = "", Type = "Book", Date = DateTime.Parse("02/26/2021")},
-            new Material {Id = 9, Title = "Lecture 9", ShortDescription ="", Tags = new [] {context.Tags.Find(3)}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("09/29/2021")},
-            new Material {Id = 10, Title = "Lecture 10", ShortDescription = "", Tags = new [] {context.Tags.Find(1), context.Tags.Find(4)}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("10/01/2021")},
-            new Material {Id = 16, Title = "Lecture 16", ShortDescription = "", Tags = new [] {context.Tags.Find(1), context.Tags.Find(4)}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("10/29/2021")},
-            new Material {Id = 20, Title = "Lecture 20", ShortDescription = "", Tags = new [] {context.Tags.Find(2), context.Tags.Find(4)}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("11/12/2021")}
+            new Material {Id = 1, Title = "OOSE", ShortDescription = "", Tags = new [] {SE}, ImageUrl = "", Type = "Book", Date = DateTime.Parse("04/20/2013")},
+            new Material {Id = 2, Title = "C# 9.0 in a Nutshell", ShortDescription = "", Tags = new [] {CS}, ImageUrl = "", Type = "Book", Date = DateTime.Parse("02/26/2021")},
+            new Material {Id = 9, Title = "Lecture 9", ShortDescription ="", Tags = new [] {SE}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("09/29/2021")},
+            new Material {Id = 10, Title = "Lecture 10", ShortDescription = "", Tags = new [] {Docker, CS}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("10/01/2021")},
+            new Material {Id = 16, Title = "Lecture 16", ShortDescription = "", Tags = new [] {Docker, CS}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("10/29/2021")},
+            new Material {Id = 20, Title = "Lecture 20", ShortDescription = "", Tags = new [] {Mobile, CS}, ImageUrl = "", Type = "Video", Date = DateTime.Parse("11/12/2021")}
         );
         context.SaveChanges();
 
