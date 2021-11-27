@@ -1,17 +1,6 @@
-using Xunit;
-using System;
-using System.Threading.Tasks;
-using System.Linq;
-using blueberry.Core;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-
-using blueberry.Infrastructure;
-using static blueberry.Core.Status;
-
 namespace Infrastructure.Tests;
 
-public class MaterialRepositoryTests : IDisposable
+public class MaterialRepositoryTests
 {
     private readonly BlueberryContext _context;
     private readonly MaterialRepository _repository;
@@ -26,7 +15,6 @@ public class MaterialRepositoryTests : IDisposable
         builder.UseSqlite(connection);
         var context = new BlueberryContext(builder.Options);
         context.Database.EnsureCreated();
-
 
         var Docker = new Tag{Name = "Docker"};
         var Mobile = new Tag{Name = "Mobile"};
@@ -105,8 +93,7 @@ public class MaterialRepositoryTests : IDisposable
     {
         var options = new SearchOptions{SearchString = "lEcTuRe 10"};
         var result = await _repository.Search(options);
-
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
             new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
         };
@@ -741,7 +728,7 @@ public class MaterialRepositoryTests : IDisposable
             return false;
         }
 
-        // Magic Sauce to check that two enumerables have identical contents.
+        // Magic sauce to check that two enumerables have identical contents.
         // https://stackoverflow.com/questions/4576723/test-whether-two-ienumerablet-have-the-same-values-with-the-same-frequencies
         var tagsGroups = material.Tags.ToLookup(t => t);
         var otherTagsGroups = other.Tags.ToLookup(t => t);
@@ -755,21 +742,11 @@ public class MaterialRepositoryTests : IDisposable
         {
             if (disposing)
             {
-                // TODO: dispose managed state (managed objects)
+                _context.Dispose();
             }
-
-            // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-            // TODO: set large fields to null
             disposedValue = true;
         }
     }
-
-    // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-    // ~CharacterRepositoryTests()
-    // {
-    //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-    //     Dispose(disposing: false);
-    // }
 
     public void Dispose()
     {

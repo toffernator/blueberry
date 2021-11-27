@@ -10,6 +10,7 @@ public class MaterialRepository : IMaterialRepository
     }
     public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
     {
+        // Start with title since it is the only non-nullable option.
         IQueryable<Material> result = QueryTitle(options.SearchString);
 
         if (options.Tags != null)
@@ -59,9 +60,4 @@ public class MaterialRepository : IMaterialRepository
 
     private IQueryable<Material> QueryType(string type) => QueryType(_context.Materials, type);
     private IQueryable<Material> QueryType(IQueryable<Material> source, string type) => source.Where(m => m.Type == type);
-
-    public void Dispose()
-    {
-        throw new NotImplementedException();
-    }
 }
