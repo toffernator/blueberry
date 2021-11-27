@@ -27,6 +27,11 @@ public class MaterialRepository : IMaterialRepository
             result = QueryEndDate(result, (DateTime) options.EndDate);
         }
 
+        if (options.Type != null)
+        {
+            result = QueryType(result, options.Type);
+        }
+
         return await result
             .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))))
             .ToListAsync();
@@ -51,6 +56,9 @@ public class MaterialRepository : IMaterialRepository
     private IQueryable<Material> QueryEndDate(DateTime end) => QueryEndDate(_context.Materials, end);
 
     private IQueryable<Material> QueryEndDate(IQueryable<Material> source, DateTime end) => source.Where(m => m.Date <= end);
+
+    private IQueryable<Material> QueryType(string type) => QueryType(_context.Materials, type);
+    private IQueryable<Material> QueryType(IQueryable<Material> source, string type) => source.Where(m => m.Type == type);
 
     public void Dispose()
     {
