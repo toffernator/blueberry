@@ -185,6 +185,21 @@ public class MaterialRepositoryTests : IDisposable
         Assert.True(isEqual);
     }
 
+    [Fact]
+    public async Task SearchGiven10AndDockerTagReturnsLecture10()
+    {
+        var options = new SearchOptions{SearchString = "10", Tags = new HashSet<string>() {"Docker"}};
+        var result = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        {
+            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker"})
+        };
+
+        var isEqual = MaterialsEquals(expected, result);
+        Assert.True(isEqual);
+    }
+
 
     private bool MaterialsEquals(IEnumerable<MaterialDto> materials, IEnumerable<MaterialDto> others)
     {

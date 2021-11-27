@@ -14,7 +14,7 @@ public class MaterialRepository : IMaterialRepository
 
         if (options.Tags != null)
         {
-            return await QueryTags(options.Tags).ToListAsync();
+            result = QueryTags(result, options.Tags);
         }
         
         if (options.StartDate != null)
@@ -36,12 +36,12 @@ public class MaterialRepository : IMaterialRepository
     
     private IQueryable<Material> QueryTitle(string title) => QueryTitle(_context.Materials, title);
 
-    private IQueryable<MaterialDto> QueryTags(IEnumerable<string> tags)
+    private IQueryable<Material> QueryTags(IEnumerable<string> tags) => QueryTags(_context.Materials, tags);
+
+    private IQueryable<Material> QueryTags(IQueryable<Material> source, IEnumerable<string> tags)
     {
-        return _context.Tags
-            .Where(t => tags.Contains(t.Name))
-            .SelectMany(t => t.Materials)
-            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))));
+        var tagEntities = _context.Tags.Where(t  => tags.Contains(t.Name));
+        return source.Where(m => m.Tags.Intersect(tagEntities).Count() > 0);
     }
 
     private IQueryable<Material> QueryStartDate(DateTime start) => QueryStartDate(_context.Materials, start);
