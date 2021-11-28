@@ -8,20 +8,11 @@
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
-<AuthorizeView>
-    <Authorized>
-        Hello, @context.User.Identity?.Name!
-        <button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button>
-    </Authorized>
-    <NotAuthorized>
-        <a href="authentication/login">Log in</a>
-    </NotAuthorized>
-</AuthorizeView>
-
-
 
 <PageTitle>Main</PageTitle>
+
 <div class="searchModule">
+
     <div class="searchComponent">
         <input class="searchbar" type="text" placeholder="Search" />
         <button class="searchbutton" type="button" @onclick="search">

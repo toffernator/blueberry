@@ -36,4 +36,5 @@
 
 .material{
     border-radius: 10px;
+    max-width: none !important;
 }
