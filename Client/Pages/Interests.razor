@@ -1,0 +1,74 @@
+@page "/blueberry/interests"
+@inject NavigationManager Navigation
+
+
+<PageTitle>Interests</PageTitle>
+
+<div class="pageContent">
+    <div class="chosentags">
+        <div class="tagTitle">
+            <h3> Chosen tags</h3>
+        </div>
+        <div class="tags">
+            <span class="badge bg-primary rounded-pill">Blazor</span>
+            <span class="badge bg-primary rounded-pill">React</span>
+            <span class="badge bg-primary rounded-pill">Flutter</span>
+            <span class="badge bg-primary rounded-pill">Docker</span>
+            <span class="badge bg-primary rounded-pill">CSS</span>
+            <span class="badge bg-primary rounded-pill">Blazor</span>
+            <span class="badge bg-primary rounded-pill">React</span>
+            <span class="badge bg-primary rounded-pill">Flutter</span>
+            <span class="badge bg-primary rounded-pill">Docker</span>
+            <span class="badge bg-primary rounded-pill">CSS</span>
+        </div>
+    </div>
+    <div class="searchForTags">
+        <div class="searchComponent">
+            <input class="searchbar" type="text" placeholder="Search" />
+            <button class="searchbutton" type="button">
+                <span>
+                    <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+                </span>
+            </button>
+        </div>
+        <div class="tags">
+            <span class="badge bg-secondary rounded-pill">Blazor</span>
+            <span class="badge bg-secondary rounded-pill">React</span>
+            <span class="badge bg-secondary rounded-pill">Flutter</span>
+            <span class="badge bg-secondary rounded-pill">Docker</span>
+            <span class="badge bg-secondary rounded-pill">CSS</span>
+            <span class="badge bg-secondary rounded-pill">Blazor</span>
+            <span class="badge bg-secondary rounded-pill">React</span>
+            <span class="badge bg-secondary rounded-pill">Flutter</span>
+            <span class="badge bg-secondary rounded-pill">Docker</span>
+            <span class="badge bg-secondary rounded-pill">CSS</span>
+        </div>
+        <nav aria-label="Page navigation example tagNav">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</div>
+<div class="d-grid gap-2 col-6 mx-auto">
+    <button class="btn btn-primary" type="button" @onclick="done">Done</button>
+</div>
+
+
+@code {
+
+    void done()
+    {
+        Navigation.NavigateTo("blueberry");
+
+    }
+}

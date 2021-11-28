@@ -1,6 +1,7 @@
 .pageContent{
     display: flex;
     flex-direction: row;
+    padding: 30px;
 }
 
 .searchComponent {
@@ -30,7 +31,7 @@
 .materials{
     display: flex;
     flex-direction: column;
-    margin-left: 10%;
+    margin-left: 8%;
     width: 50%;
 }
 

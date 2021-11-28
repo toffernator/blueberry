@@ -1,18 +1,12 @@
 @page "/blueberry/materials"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 <RemoteAuthenticatorView Action="@Action" />
-@using Microsoft.AspNetCore.Components.Authorization
-@using System.Collections
-
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
 <PageTitle>Materials</PageTitle>
 
-<div class="searchComponent">
-    <!--insert everything from main.razor and move it to the top of the page -->
-</div>
 
 <div class="pageContent">
     <div class="tagComponent">
@@ -41,15 +35,21 @@
     </div>
 
     <div class="materials">
+        <div class="searchComponent">
+            <!--insert everything from main.razor and move it to the top of the page -->
+        </div>
         <div class="card mb-3 material" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="..." >
+                    <img src="...">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">Material title</h5>
-                        <p class="card-text">This is a short describtiob about the material. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
+                        <p class="card-text">This is a short describtiob about the material. Lorem ipsum dolor sit amet,
+                            consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                            magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                            ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
                         <p class="card-text"><small class="text-muted">published 2008</small></p>
                     </div>
                 </div>
@@ -58,21 +58,7 @@
         <div class="card mb-3 material" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="..." >
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">Material title</h5>
-                        <p class="card-text">This is a short describtiob about the material.</p>
-                        <p class="card-text"><small class="text-muted">published 2008</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card mb-3 material" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="..." >
+                    <img src="...">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -86,7 +72,7 @@
         <div class="card mb-3 material" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="..." >
+                    <img src="...">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -100,7 +86,7 @@
         <div class="card mb-3 material" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="..." >
+                    <img src="...">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -114,7 +100,21 @@
         <div class="card mb-3 material" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="..." >
+                    <img src="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Material title</h5>
+                        <p class="card-text">This is a short describtiob about the material.</p>
+                        <p class="card-text"><small class="text-muted">published 2008</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3 material" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="...">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -132,11 +132,5 @@
 </div>
 
 @code {
-
     [Parameter] public string? Action { get; set; }
-    private async Task BeginLogout(MouseEventArgs args)
-    {
-        await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo("authentication/logout");
-    }
 }

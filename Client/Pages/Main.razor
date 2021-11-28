@@ -1,9 +1,6 @@
 @page "/blueberry"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 <RemoteAuthenticatorView Action="@Action" />
-@using Microsoft.AspNetCore.Components.Authorization
-@using System.Collections
-
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
@@ -90,12 +87,6 @@
     [Parameter] public string? Action { get; set; }
     (int, int) period = (1970, 2021);
     [Parameter] public string inputValue {get; set;}
-
-    private async Task BeginLogout(MouseEventArgs args)
-    {
-        await SignOutManager.SetSignOutState();
-        Navigation.NavigateTo("authentication/logout");
-    }
     IEnumerable<int> values = new int[] { 1970, 2021 };
     void OnChange(IEnumerable<int> values)
     {
