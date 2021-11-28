@@ -20,11 +20,11 @@
 
 
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Main</PageTitle>
 <div class="searchModule">
     <div class="searchComponent">
         <input class="searchbar" type="text" placeholder="Search" />
-        <button class="searchbutton" type="button">
+        <button class="searchbutton" type="button" @onclick="search">
             <span>
                 <i class="fa-solid fa-magnifying-glass searchIcon"></i>
             </span>
@@ -50,7 +50,7 @@
                 aria-expanded="false">
                 <!--<button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false" > -->
                 Tags
-                <span class="badge bg-primary rounded-pill">3</span> <!-- number of tags chosen -->
+                <span class="badge bg-primary rounded-pill">@(tags.Where(t => t.Item2).Count())</span> <!-- number of tags chosen -->
             </button>
             <ul class="dropdown-menu">
                 <li>
@@ -62,7 +62,7 @@
                          <span class=@($"badge {(tag.Item2 ? "bg-primary" : "bg-secondary")} rounded-pill tag") @onclick="() => onTagToggle(tag.Item1)">@tag.Item1</span>
                      }
                 </li>
-                <li class="clearAll"><label type="label"> clear all</label></li>
+                <li class="clearAll"><label type="label" @onclick="clearAll" > clear all</label></li>
             </ul>
         </div>
 
@@ -119,9 +119,17 @@
     }
 
     void onTagToggle(string tagName) {
-        Console.WriteLine(tagName);
         tags = tags.Select(t => t.Item1 == tagName ? (t.Item1, !t.Item2) : t);
         if (inputValue==null) inputValue = "";
         filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputValue) || t.Item2);
+    }
+    void clearAll(){
+        tags = tags.Select(t => (t.Item1, false));
+        if (inputValue==null) inputValue = "";
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputValue) || t.Item2);
+    }
+
+    void search(){
+         Navigation.NavigateTo("blueberry/materials");
     }
 }
