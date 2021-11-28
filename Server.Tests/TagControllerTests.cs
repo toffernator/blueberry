@@ -13,15 +13,9 @@ public class TagControllerTests {
 
         // Act
         // FIXME: Throws NotImplementedException
-        // var actual = await controller.Get();
-        var exception = await Record.ExceptionAsync(() =>
-            controller.Get()
-        );
-
+        var actual = await controller.Get();
+        
         // Assert
-        // FIXME: Use this once NotImplemetedException is no longer thrown
-        // Assert.Equal(expected, actual);
-        Assert.NotNull(exception);
-        Assert.IsType<NotImplementedException>(exception);
+        Assert.Equal(expected, actual);
     }
 }
