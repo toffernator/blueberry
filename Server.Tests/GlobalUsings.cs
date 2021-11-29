@@ -5,3 +5,4 @@ global using Xunit;
 global using blueberry.Server.Controllers;
 global using blueberry.Core;
 global using static blueberry.Core.Status;
+global using blueberry.Infrastructure;
