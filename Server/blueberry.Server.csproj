@@ -10,11 +10,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Client\blueberry.Client.csproj" />
     <ProjectReference Include="..\Core\blueberry.Core.csproj" />
+    <ProjectReference Include="..\Infrastructure\blueberry.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
