@@ -9,9 +9,5 @@ public class Tag
     public string Name { get; set; }
 
     public ICollection<User> Users { get; set; }
-
-    public Tag(string name)
-    {
-        Name = name;
-    }
+    public ICollection<Material> Materials { get; set; }
 }
