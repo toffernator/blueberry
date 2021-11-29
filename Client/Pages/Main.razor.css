@@ -1,3 +1,17 @@
 .content{
     margin: 250px;
 }
+
+.tags {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
+.tag {
+    -webkit-flex: 1 auto;
+    flex: 1 auto;
+    text-align: center;
+    margin: 2px;
+}

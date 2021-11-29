@@ -1,9 +1,10 @@
-.pageContent{
+.pageContent {
     display: flex;
     flex-direction: row;
     margin: 80px;
 }
-.chosentags{
+
+.chosentags {
     width: 20%;
     border-radius: 15px;
     background-color: gainsboro;
@@ -11,7 +12,7 @@
     padding: 20px;
 }
 
-.searchForTags{
+.searchForTags {
     width: 62%;
     display: flex;
     flex-direction: column;
@@ -24,31 +25,47 @@
     border: 1px solid gray;
     border-radius: 10px;
     padding: 5px;
-    
-  }
-  .searchComponent:focus-within {
+
+}
+
+.searchComponent:focus-within {
     border: 1px solid blue;
-  }
-  
-  .searchbar {
+}
+
+.searchbar {
     width: 100%;
     flex-grow: 2;
     border: none;
-  }
-  
-  .searchbar:focus {
+}
+
+.searchbar:focus {
     outline: none;
-  }
-  
-  .searchbutton {
+}
+
+.searchbutton {
     border: none;
     background: white;
-  }
+}
 
-  .tags{
-      margin-top: 30px;
-  }
+.searchIcon:hover {
+    color: blue;
+}
 
-  .tagNav{
-      margin-top: 30px;
-  }
+.tags {
+    margin-top: 30px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
+.tag {
+    -webkit-flex: 1 auto;
+    flex: 1 auto;
+    text-align: center;
+    margin: 2px;
+}
+
+.tagNav {
+    margin-top: 30px;
+}
