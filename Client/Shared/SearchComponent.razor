@@ -37,7 +37,7 @@
             </button>
             <ul class="dropdown-menu tagdropdown">
                 <li>
-                    <input class="searchbarForTags" type="text" value=@inputValue placeholder="Search for tags"  @oninput=@onTagSearch />
+                    <input class="searchbarForTags" type="text" @bind-value=@inputValue placeholder="Search for tags"  @oninput=@onTagSearch />
                 </li>
                 <li class= "tags">
                      @foreach (var tag in filteredTags)
@@ -84,7 +84,7 @@
     IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevent", true),("Newest", false), ("Oldest", false)}; 
     [Parameter] public string? Action { get; set; }
     (int, int) period = (1970, 2021);
-    [Parameter] public string inputValue {get; set;}
+    string inputValue;
     IEnumerable<int> yearValues = new int[] { 1970, 2021 };
     public string? searchInput {get; set; }
     void OnChange(IEnumerable<int> yearValues)
@@ -133,6 +133,4 @@
         sortByValues = sortByValues.Select( sb => sb.Item1 == sortByValue ? (sb.Item1, true) : sb);
 
     }
-
-    
 }
