@@ -8,6 +8,7 @@ public class MaterialRepository : IMaterialRepository
     {
         _context = context;
     }
+
     public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
     {
         // Start with title since it is the only non-nullable option.
