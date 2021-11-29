@@ -1,4 +1,4 @@
-@page "/materials"
+@page "/material"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 <RemoteAuthenticatorView Action="@Action" />
 
@@ -68,7 +68,7 @@
     </div>
 </div>
 @code {
-[Parameter] public string? Action { get; set; }
+Parameter] public string? Action { get; set; }
 IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
     new MaterialDetailsDto ( 0, "Introduction to React", new string[] { "React", "Framework" }, "React is a framework widely used in the industry.", "/Assets/img/react.jpg", "Article", new DateTime(2020, 4, 11) ),
     new MaterialDetailsDto ( 1, "Introduction to Blazor", new string[] { "Blazor", "Framework" }, "Blazor is a new framework ready to take on react as the leading frontend framework.", "/Assets/img/react.jpg", "Article", new DateTime(2021, 2, 8) ),
@@ -76,5 +76,4 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
     new MaterialDetailsDto ( 3, "Using Blazor with Bootstrap",new string[] { "Bootstrap", "Framework", "Blazor" }, "Blazor and Bootstrap is a force to be reckoned with!", "/Assets/img/react.jpg", "Video", new DateTime(2021, 8, 29)),
     new MaterialDetailsDto ( 4, "Using React with Bootstrap",new string[] { "React", "Bootstrap", "Framework" }, "React and Bootstrap is a classic combination widely used in the industry", "/Assets/img/react.jpg", "Article", new DateTime(2019, 9, 4)),
     };
-
 }
