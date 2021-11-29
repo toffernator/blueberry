@@ -1,10 +1,12 @@
 @inject NavigationManager Navigation
 
 <div class="searchModule">
-
+<p>@_tagsURL</p>
+<p>@_startyearURL</p>
+<p>@_endyearURL</p>
+<p>@_searchKeyURL</p>
     <div class="searchComponent">
-        
-        <input class="searchbar" type="text" placeholder="Search" @bind=@searchInput @oninput="OnInputEvent" @onkeydown="enterSearch" />
+        <input class="searchbar" type="text" placeholder= "search" @bind=@searchInput @oninput="OnInputEvent"  @onkeydown="enterSearch"/>
         <button class="searchbutton" type="button" @onclick="search">
             <span>
                 <i class="fa-solid fa-magnifying-glass searchIcon"></i>
@@ -113,12 +115,14 @@
     {
         searchInput = (string)changeEvent.Value;
     }
+    
+
     void search(){
-        Console.WriteLine(searchInput);
         var tagsChosen = tags.Where(t => t.Item2).Select(t => t.Item1);
         var URL = $"material?searchKey={searchInput.Replace(" ", "+")}&tags={string.Join(",",tagsChosen.Select(t => $"{t}"))}&startyear={period.Item1}&endyear={period.Item2}";
         Navigation.NavigateTo(URL);
-        //@searchInput
+        Console.WriteLine("helt sikkert");
+        updateURLChanges();
     }
 
     void enterSearch(KeyboardEventArgs e){
@@ -131,6 +135,39 @@
     void updateSortBy(string sortByValue){
         sortByValues = sortByValues.Select( sb => (sb.Item1, false));
         sortByValues = sortByValues.Select( sb => sb.Item1 == sortByValue ? (sb.Item1, true) : sb);
+
+    }
+
+    private string _searchKeyURL;
+    private string _tagsURL;
+    private string _startyearURL;
+    private string _endyearURL;
+
+
+    protected override void OnInitialized()
+    {
+        updateURLChanges();
+    }
+
+    void updateURLChanges(){
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var queryStrings = QueryHelpers.ParseQuery(uri.Query);
+        if(queryStrings.TryGetValue("tags", out var tagsURL))
+        {
+            _tagsURL = tagsURL;
+        }
+        if(queryStrings.TryGetValue("startyear", out var startyear))
+        {
+            _startyearURL = startyear;
+        }
+        if(queryStrings.TryGetValue("endyear", out var endyear))
+        {
+            _endyearURL = endyear;
+        }
+        if(queryStrings.TryGetValue("searchKey", out var searchKeyURL))
+        {
+            _searchKeyURL = searchKeyURL;
+        }
 
     }
 }
