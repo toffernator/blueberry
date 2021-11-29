@@ -16,7 +16,7 @@ public class UserRepositoryTests : IDisposable
 
         context.Database.EnsureCreated();
 
-        context.Tags.AddRange(new Tag("Docker"){ Id = 1 }, new Tag("Framework"){ Id = 2 });
+        context.Tags.AddRange(new Tag{ Id = 1, Name = "Docker"}, new Tag{ Id = 2 , Name = "Framework"});
         context.Users.AddRange(new User{ Id = 1, Name = "Jalle" }, new User{ Id = 2, Name = "Kobo" , Tags = new HashSet<Tag>(){context.Tags.Find(1), context.Tags.Find(2)} });
 
         context.SaveChanges();
