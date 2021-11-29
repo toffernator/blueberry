@@ -8,12 +8,12 @@ public static class SeedExtensions
         {
             var context = scope.ServiceProvider.GetRequiredService<BlueberryContext>();
 
-            SeedMaterials(context);
+            SeedMaterialsAndTags(context);
         }
         return host;
     }
 
-    private static void SeedMaterials(BlueberryContext context)
+    private static void SeedMaterialsAndTags(BlueberryContext context)
     {
         context.Database.Migrate();
 
