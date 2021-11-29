@@ -1,62 +1,17 @@
-
-.a{
-    background-color: blue;
-
-}
-.searchModule{
-   margin:250px;
+.content{
+    margin: 250px;
 }
 
-.searchComponent {
-    display:flex;
-    flex-direction:row;
-    border:1px solid gray;
-    border-radius: 10px;
-    padding: 5px;
-  }
-  .searchComponent:focus-within{
-      border: 1px solid blue;
-  }
-  
-.searchbar {
-    width: 100%;
-    flex-grow:2;
-    border: none;
-  }
-  
-.searchbar:focus {
-    outline: none;
-  }
-  
-.searchbutton {
-    border:none;
-    background:white;
-  }
-
-  .filters{
-      display: flex;
-      flex-direction: row;
-  }
-
-  .filterButton{
-    background-color: white;
-    border: none;
-    color: gray;
-    margin: 20px;
-  }
-  .filterButton:focus{
-      color: blue;
-      box-shadow: none;
-  }
-
-  .clearAll{
-      color: blue;
-  }
-    .tag{
-        margin: 2px;
-    }
-.searchbarForTags{
-    border:1px solid gray;
-    margin: 5px;
+.tags {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
 }
-  
+
+.tag {
+    -webkit-flex: 1 auto;
+    flex: 1 auto;
+    text-align: center;
+    margin: 2px;
+}

@@ -1,0 +1,136 @@
+@page "/materials"
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+<RemoteAuthenticatorView Action="@Action" />
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<PageTitle>Materials</PageTitle>
+
+
+<div class="pageContent">
+    <div class="tagComponent">
+        <div class="tags">
+            <span class="badge bg-secondary rounded-pill tag">Blazor</span>
+            <span class="badge bg-secondary rounded-pill tag">React</span>
+            <span class="badge bg-secondary rounded-pill tag">Flutter</span>
+            <span class="badge bg-secondary rounded-pill tag">Docker</span>
+            <span class="badge bg-secondary rounded-pill tag">CSS</span>
+        </div>
+        <div class="tagTitle">
+            <h3> Chosen tags</h3>
+        </div>
+        <div class="tags">
+            <span class="badge bg-primary rounded-pill tag">Blazor</span>
+            <span class="badge bg-primary rounded-pill tag">React</span>
+            <span class="badge bg-primary rounded-pill tag">Flutter</span>
+            <span class="badge bg-primary rounded-pill tag">Docker</span>
+            <span class="badge bg-primary rounded-pill tag">CSS</span>
+            <span class="badge bg-primary rounded-pill tag">Blazor</span>
+            <span class="badge bg-primary rounded-pill tag">React</span>
+            <span class="badge bg-primary rounded-pill tag">Flutter</span>
+            <span class="badge bg-primary rounded-pill tag">Docker</span>
+            <span class="badge bg-primary rounded-pill tag">CSS</span>
+        </div>
+    </div>
+
+    <div class="materials">
+        <div class="searchComponent">
+            <SearchComponent />
+        </div>
+        <div class="card mb-3 material" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Material title</h5>
+                        <p class="card-text">This is a short describtiob about the material. Lorem ipsum dolor sit amet,
+                            consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                            magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
+                            ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
+                        <p class="card-text"><small class="text-muted">published 2008</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3 material" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Material title</h5>
+                        <p class="card-text">This is a short describtiob about the material.</p>
+                        <p class="card-text"><small class="text-muted">published 2008</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3 material" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Material title</h5>
+                        <p class="card-text">This is a short describtiob about the material.</p>
+                        <p class="card-text"><small class="text-muted">published 2008</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3 material" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Material title</h5>
+                        <p class="card-text">This is a short describtiob about the material.</p>
+                        <p class="card-text"><small class="text-muted">published 2008</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3 material" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Material title</h5>
+                        <p class="card-text">This is a short describtiob about the material.</p>
+                        <p class="card-text"><small class="text-muted">published 2008</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3 material" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Material title</h5>
+                        <p class="card-text">This is a short describtiob about the material. </p>
+                        <p class="card-text"><small class="text-muted">published 2008</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+@code {
+    [Parameter] public string? Action { get; set; }
+}

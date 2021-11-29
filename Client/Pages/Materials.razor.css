@@ -1,0 +1,55 @@
+.pageContent{
+    display: flex;
+    flex-direction: row;
+    padding: 30px;
+}
+
+.searchComponent {
+    display: flex;
+    flex-direction: row;
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    width: 100%;
+  }
+
+
+.tagComponent{
+    width: 20%;
+    border-radius: 15px;
+    background-color: gainsboro;
+    color: white;
+    padding: 20px;
+    margin-bottom: 30%;
+}
+
+.tagTitle{
+    margin-top: 20px;
+}
+
+.tags {
+    margin-top: 30px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
+.tag {
+    -webkit-flex: 1 auto;
+    flex: 1 auto;
+    text-align: center;
+    margin: 2px;
+}
+
+.materials{
+    display: flex;
+    flex-direction: column;
+    margin-left: 8%;
+    width: 50%;
+}
+
+.material{
+    border-radius: 10px;
+    max-width: none !important;
+}
