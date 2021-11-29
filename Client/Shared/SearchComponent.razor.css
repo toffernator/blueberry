@@ -1,89 +1,104 @@
 .searchModule {
-    
-    width: 100%;
-  }
-  
-  .searchComponent {
-    display: flex;
-    flex-direction: row;
-    border: 1px solid gray;
-    border-radius: 10px;
-    padding: 5px;
-  }
-  .searchComponent:focus-within {
-    border: 1px solid blue;
-  }
-  
-  .searchbar {
-    width: 100%;
-    flex-grow: 2;
-    border: none;
-  }
-  
-  .searchbar:focus {
-    outline: none;
-  }
-  
-  .searchbutton {
-    border: none;
-    background: white;
-  }
-  
-  .filters {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .filterButton {
-    background-color: white;
-    border: none;
-    color: gray;
-    margin: 20px;
-  }
-  .filterButton:focus {
-    color: blue;
-    box-shadow: none;
-  }
-  
-  .clearAll {
-    color: blue;
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 5px;
-  }
-  .clearAll:hover {
-    text-decoration: underline;
-  }
-  .tag {
-    margin: 2px;
-  }
-  .searchbarForTags {
-    border: 1px solid gray;
-    margin: 5px;
-  }
-  
-  .rz-slider-horizontal{
-      background-color: black
-  }
-  .rz-slider-handle {
-    background-color: black !important;
-  }
-  span.rz-slider-range {
-    background-color: black !important;
-  }
-  .slider {
-    margin: 10px;
-  }
-  
-  .yearLabels {
+  width: 100%;
+}
+
+.searchComponent {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding: 5px;
+}
+.searchComponent:focus-within {
+  border: 1px solid blue;
+}
+
+.searchbar {
+  width: 100%;
+  flex-grow: 2;
+  border: none;
+}
+
+.searchbar:focus {
+  outline: none;
+}
+
+.searchbutton {
+  border: none;
+  background: white;
+}
+
+.filters {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.filterButton {
+  background-color: white;
+  border: none;
+  color: gray;
+  margin: 20px;
+}
+.filterButton:focus {
+  color: blue;
+  box-shadow: none;
+}
+
+.clearAll {
+  color: blue;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5px;
+}
+.clearAll:hover {
+  text-decoration: underline;
+}
+
+.tags {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+}
+
+.tag {
+  -webkit-flex: 1 auto;
+  flex: 1 auto;
+  text-align: center;
+  margin: 2px;
+}
+
+.searchbarForTags {
+  border: 1px solid gray;
+  margin: 5px;
+}
+
+.rz-slider-horizontal {
+  background-color: black;
+}
+.rz-slider-handle {
+  background-color: black !important;
+}
+span.rz-slider-range {
+  background-color: black !important;
+}
+.slider {
+  margin: 10px;
+}
+
+.yearLabels {
   font-size: 13px;
-    padding: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
-  .searchIcon:hover{
-      color: blue;
-  }
-  
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.searchIcon:hover {
+  color: blue;
+}
+
+.tagdropdown{
+    padding: 5px;
+}

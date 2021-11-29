@@ -3,7 +3,8 @@
 <div class="searchModule">
 
     <div class="searchComponent">
-        <input class="searchbar" type="text" placeholder="Search" @onkeydown="enterSearch" value=@searchInput />
+        
+        <input class="searchbar" type="text" placeholder="Search" @bind=@searchInput @oninput="OnInputEvent" @onkeydown="enterSearch" />
         <button class="searchbutton" type="button" @onclick="search">
             <span>
                 <i class="fa-solid fa-magnifying-glass searchIcon"></i>
@@ -23,9 +24,6 @@
                          <span class=@($"dropdown-item {(sortBy.Item2 ? "active" : " ")} ") @onclick="() => updateSortBy(sortBy.Item1)">@sortBy.Item1</span>
                      }
                 </li>
-                <!--<li><button class="dropdown-item active" href="#" aria-current="true">Most relevent</button></li>
-                <li><button class="dropdown-item" type="button">Newest</button></li>
-                <li><button class="dropdown-item" type="button">Oldest</button></li> -->
             </ul>
         </div>
 
@@ -34,15 +32,14 @@
             <button class="btn btn-secondary dropdown-toggle filterButton" type="button"
                 id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                 aria-expanded="false">
-                <!--<button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false" > -->
                 Tags
                 <span class="badge bg-primary rounded-pill">@(tags.Where(t => t.Item2).Count())</span> <!-- number of tags chosen -->
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu tagdropdown">
                 <li>
                     <input class="searchbarForTags" type="text" value=@inputValue placeholder="Search for tags"  @oninput=@onTagSearch />
                 </li>
-                <li>
+                <li class= "tags">
                      @foreach (var tag in filteredTags)
                      {
                          <span class=@($"badge {(tag.Item2 ? "bg-primary" : "bg-secondary")} rounded-pill tag") @onclick="() => onTagToggle(tag.Item1)">@tag.Item1</span>
@@ -94,7 +91,6 @@
     {
         var lowerBound = yearValues.ElementAtOrDefault(0);
         var upperBound = yearValues.ElementAtOrDefault(1);
-
         period = (lowerBound, upperBound);
     }
 
@@ -113,9 +109,16 @@
         filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputValue) || t.Item2);
     }
 
+    private void OnInputEvent(ChangeEventArgs changeEvent)
+    {
+        searchInput = (string)changeEvent.Value;
+    }
     void search(){
         Console.WriteLine(searchInput);
-        Navigation.NavigateTo("materials");
+        var tagsChosen = tags.Where(t => t.Item2).Select(t => t.Item1);
+        var URL = $"material?searchKey={searchInput.Replace(" ", "+")}&tags={string.Join(",",tagsChosen.Select(t => $"{t}"))}&startyear={period.Item1}&endyear={period.Item2}";
+        Navigation.NavigateTo(URL);
+        //@searchInput
     }
 
     void enterSearch(KeyboardEventArgs e){
@@ -124,9 +127,12 @@
         }
     }
 
+
     void updateSortBy(string sortByValue){
         sortByValues = sortByValues.Select( sb => (sb.Item1, false));
         sortByValues = sortByValues.Select( sb => sb.Item1 == sortByValue ? (sb.Item1, true) : sb);
 
     }
+
+    
 }
