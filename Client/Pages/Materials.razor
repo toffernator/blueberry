@@ -1,4 +1,4 @@
-@page "/blueberry/materials"
+@page "/materials"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 <RemoteAuthenticatorView Action="@Action" />
 
@@ -36,7 +36,7 @@
 
     <div class="materials">
         <div class="searchComponent">
-            <!--insert everything from main.razor and move it to the top of the page -->
+            <SearchComponent />
         </div>
         <div class="card mb-3 material" style="max-width: 540px;">
             <div class="row g-0">
