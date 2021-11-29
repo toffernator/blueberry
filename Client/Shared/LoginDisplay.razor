@@ -12,8 +12,8 @@
                 Hello, @context.User.Identity?.Name
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" ><button class="nav-link btn btn-link" @onclick="goToInterests">Update interests</button></a></li>
-                <li><a class="dropdown-item" ><button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button></a></li>
+                <li><a class="dropdown-item" @onclick="goToInterests"><button class="nav-link btn btn-link" >Update interests</button></a></li>
+                <li><a class="dropdown-item" @onclick="BeginLogout"><button class="nav-link btn btn-link" >Log out</button></a></li>
             </ul>
         </div>
 
