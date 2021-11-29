@@ -40,101 +40,40 @@
         <div class="searchComponent">
             <SearchComponent />
         </div>
+        @foreach (var material in materials)
+        {
         <div class="card mb-3 material" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="/Assets/img/react.jpg" class="img-fluid rounded-start img-fill">
+                    <img src=@material.ImageUrl class="img-fluid rounded-start img-fill">
                 </div>
                 <div class="col-md-8">
+                    <div class="card-header bg-transparent">@material.Type</div>
                     <div class="card-body">
-                        <h5 class="card-title">Material title</h5>
-                        <p class="card-text">This is a short describtiob about the material. Lorem ipsum dolor sit amet,
-                            Lorem ipsum dolor sit amet,
-                            ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-                            Lorem ipsum dolor sit amet,
-                            ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-                            ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. </p>
-                        <p class="card-text"><small class="text-muted">published 2008</small></p>
+                        <h5 class="card-title">@material.Title</h5>
+                        <p class="card-text">@material.ShortDescription</p>
+                        <p class="card-text"><small class="text-muted">published @material.Date.ToString("dd/MM/yyyy")</small></p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        @foreach (var tag in material.Tags)
+                        {
+                            <span class=@($"badge bg-primary rounded-pill tag")>@tag</span>
+                        }
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card mb-3 material" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="/Assets/img/react.jpg" class="img-fluid rounded-start img-fill">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">Material title</h5>
-                        <p class="card-text">This is a short describtiob about the material.</p>
-                        <p class="card-text"><small class="text-muted">published 2008</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card mb-3 material" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="/Assets/img/react.jpg" class="img-fluid rounded-start img-fill">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">Material title</h5>
-                        <p class="card-text">This is a short describtiob about the material.</p>
-                        <p class="card-text"><small class="text-muted">published 2008</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card mb-3 material" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="/Assets/img/react.jpg" class="img-fluid rounded-start img-fill">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">Material title</h5>
-                        <p class="card-text">This is a short describtiob about the material.</p>
-                        <p class="card-text"><small class="text-muted">published 2008</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card mb-3 material" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="/Assets/img/react.jpg" class="img-fluid rounded-start img-fill">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">Material title</h5>
-                        <p class="card-text">This is a short describtiob about the material.</p>
-                        <p class="card-text"><small class="text-muted">published 2008</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card mb-3 material" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="/Assets/img/react.jpg" class="img-fluid rounded-start img-fill">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">Material title</h5>
-                        <p class="card-text">This is a short describtiob about the material. </p>
-                        <p class="card-text"><small class="text-muted">published 2008</small></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        }
 
     </div>
-
-
 </div>
-
 @code {
-    [Parameter] public string? Action { get; set; }
+Parameter] public string? Action { get; set; }
+IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
+    new MaterialDetailsDto ( 0, "Introduction to React", new string[] { "React", "Framework" }, "React is a framework widely used in the industry.", "/Assets/img/react.jpg", "Article", new DateTime(2020, 4, 11) ),
+    new MaterialDetailsDto ( 1, "Introduction to Blazor", new string[] { "Blazor", "Framework" }, "Blazor is a new framework ready to take on react as the leading frontend framework.", "/Assets/img/react.jpg", "Article", new DateTime(2021, 2, 8) ),
+    new MaterialDetailsDto ( 2, "Introduction to Bootstrap", new string[] { "Bootstrap", "Framework" }, "Bootstrap is a CSS framework widely used in the industry.", "/Assets/img/react.jpg", "Video", new DateTime(2018, 11, 23) ),
+    new MaterialDetailsDto ( 3, "Using Blazor with Bootstrap",new string[] { "Bootstrap", "Framework", "Blazor" }, "Blazor and Bootstrap is a force to be reckoned with!", "/Assets/img/react.jpg", "Video", new DateTime(2021, 8, 29)),
+    new MaterialDetailsDto ( 4, "Using React with Bootstrap",new string[] { "React", "Bootstrap", "Framework" }, "React and Bootstrap is a classic combination widely used in the industry", "/Assets/img/react.jpg", "Article", new DateTime(2019, 9, 4)),
+    };
 }
