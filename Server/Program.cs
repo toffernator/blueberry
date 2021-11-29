@@ -12,6 +12,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddDbContext<BlueberryContext>();
+builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
+builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
