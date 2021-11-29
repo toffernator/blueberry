@@ -1,7 +1,6 @@
 @page "/material"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action" />
-
+@attribute [Authorize]
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
@@ -68,7 +67,6 @@
     </div>
 </div>
 @code {
-[Parameter] public string? Action { get; set; }
 IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
     new MaterialDetailsDto ( 0, "Introduction to React", new string[] { "React", "Framework" }, "React is a framework widely used in the industry.", "/Assets/img/react.jpg", "Article", new DateTime(2020, 4, 11) ),
     new MaterialDetailsDto ( 1, "Introduction to Blazor", new string[] { "Blazor", "Framework" }, "Blazor is a new framework ready to take on react as the leading frontend framework.", "/Assets/img/react.jpg", "Article", new DateTime(2021, 2, 8) ),
