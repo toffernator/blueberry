@@ -50,7 +50,7 @@
                 <li>
                     <input class="searchbarForTags" type="text" value=@inputValue placeholder="Search for tags"  @oninput=@onTagSearch />
                 </li>
-                <li>
+                <li class="tags">
                      @foreach (var tag in filteredTags)
                      {
                          <span class=@($"badge {(tag.Item2 ? "bg-primary" : "bg-secondary")} rounded-pill tag") @onclick="() => onTagToggle(tag.Item1)">@tag.Item1</span>

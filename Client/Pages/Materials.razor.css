@@ -21,11 +21,25 @@
     color: white;
     padding: 20px;
     margin-bottom: 30%;
-
 }
 
 .tagTitle{
     margin-top: 20px;
+}
+
+.tags {
+    margin-top: 30px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
+.tag {
+    -webkit-flex: 1 auto;
+    flex: 1 auto;
+    text-align: center;
+    margin: 2px;
 }
 
 .materials{
