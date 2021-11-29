@@ -39,7 +39,7 @@ public class MaterialRepositoryTests
     public async Task SearchGivenEmptyStringReturnsEverything()
     {
         var options = new SearchOptions{SearchString = ""};
-        var results = await _repository.Search(options);
+        var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
@@ -51,7 +51,7 @@ public class MaterialRepositoryTests
             new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, results);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -66,7 +66,7 @@ public class MaterialRepositoryTests
             new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
         };
 
-        var isEqual = MaterialsEquals(expected, result); 
+        var isEqual = Utility.MaterialsEquals(expected, result); 
         Assert.True(isEqual);
     }
 
@@ -74,7 +74,7 @@ public class MaterialRepositoryTests
     public async Task SearchGivenLectureReturnsLecture9AndLecture10AndLecture16AndLecture20()
     {
         var options = new SearchOptions{SearchString = "Lecture"};
-        var results = await _repository.Search(options);
+        var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
@@ -84,7 +84,7 @@ public class MaterialRepositoryTests
             new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, results);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -98,7 +98,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
 
     }
 
@@ -114,7 +114,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -131,7 +131,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -147,7 +147,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
     
@@ -166,7 +166,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -182,7 +182,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string> {"C#"}),
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -197,7 +197,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -212,7 +212,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -224,7 +224,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>();
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -239,7 +239,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -254,7 +254,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -270,7 +270,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
     
@@ -286,7 +286,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -298,7 +298,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>();
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -313,7 +313,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -328,7 +328,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -345,7 +345,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -366,7 +366,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -386,7 +386,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -406,7 +406,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"}),
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -427,7 +427,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -447,7 +447,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -468,7 +468,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -488,7 +488,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -508,7 +508,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -528,7 +528,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -548,7 +548,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string> {"C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -569,7 +569,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -590,7 +590,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string>() {"C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -611,7 +611,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(20, "Lecture 20", new HashSet<string>() {"Mobile", "C#"})
         };
         
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -632,7 +632,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -653,7 +653,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string>() {"C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -674,7 +674,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string>() {"C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
@@ -696,45 +696,10 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
             new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string>() {"C#"})
         };
 
-        var isEqual = MaterialsEquals(expected, result);
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
-    private bool MaterialsEquals(IEnumerable<MaterialDto> materials, IEnumerable<MaterialDto> others)
-    {
-        if (materials.Count() != others.Count())
-        {
-            return false;
-        }
-
-        var mList = materials.OrderBy(m => m.Id).ToList();
-        var oList = others.OrderBy(m => m.Id).ToList();
-        others.GetEnumerator().MoveNext();
-        for (int i = 0; i < mList.Count(); i++)
-        {
-            if (!MaterialEquals(mList[i], oList[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private bool MaterialEquals(MaterialDto material, MaterialDto other)
-    {
-        if (material.Id != other.Id && material.Title != other.Title)
-        {
-            return false;
-        }
-
-        // Magic sauce to check that two enumerables have identical contents.
-        // https://stackoverflow.com/questions/4576723/test-whether-two-ienumerablet-have-the-same-values-with-the-same-frequencies
-        var tagsGroups = material.Tags.ToLookup(t => t);
-        var otherTagsGroups = other.Tags.ToLookup(t => t);
-        return tagsGroups.Count() == otherTagsGroups.Count()
-            && tagsGroups.All(g => g.Count() == otherTagsGroups[g.Key].Count());
-    }
 
     protected virtual void Dispose(bool disposing)
     {
