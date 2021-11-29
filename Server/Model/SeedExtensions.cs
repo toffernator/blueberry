@@ -17,10 +17,10 @@ public static class SeedExtensions
     {
         context.Database.Migrate();
 
-        var react = new Tag("React");
-        var blazor = new Tag("Blazor");
-        var bootstrap = new Tag("Bootstrap");
-        var framework = new Tag("Framework");
+        var react = new Tag { Name = "React" };
+        var blazor = new Tag { Name = "Blazor" };
+        var bootstrap = new Tag{ Name = "Bootstrap" };
+        var framework = new Tag{ Name = "Framework" };
 
         if (!context.Tags.Any())
         {
