@@ -22,7 +22,7 @@ public class TagRepository : ITagRepository
             return (Conflict, conflict);
         }
 
-        var entity = new Tag(tag.Name);
+        var entity = new Tag{ Name = tag.Name };
         
         _context.Tags.Add(entity);
 
