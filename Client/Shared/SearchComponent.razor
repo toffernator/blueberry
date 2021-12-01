@@ -51,7 +51,6 @@
             <button class="btn btn-secondary dropdown-toggle filterButton" type="button"
                 id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                 aria-expanded="false">
-                <!--<button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false"> -->
                 Year
             </button>
             <ul class="dropdown-menu">
@@ -80,9 +79,13 @@
     IEnumerable<(string, bool)> filteredTags = new (string,bool)[] {("React", true),("Bootstrap", false),("Blazor", false),("Flutter",false)}; 
     IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevent", true),("A-Z", false),("Z-A",false),("Newest", false), ("Oldest", false)}; 
     [Parameter] public string? Action { get; set; }
+
+    //values
     (int, int) period = (1970, 2021);
-    string inputForTagSearch;
+    string? inputForTagSearch;
     IEnumerable<int> yearValues = new int[] { 1970, 2021 };
+
+    //Parameters
 
     [Parameter]    
     public string? searchInput {get; set; }
@@ -95,7 +98,6 @@
     [Parameter]    
     public string? chosenSortBY {get; set; }
 
-    
     
     //URL Values
     /*private string _searchKeyURL;
