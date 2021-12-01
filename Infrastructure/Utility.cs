@@ -1,9 +1,11 @@
-namespace Infrastructure;
+namespace blueberry.Infrastructure;
 
 public class Utility
 {
-    public static bool MaterialsEquals(IEnumerable<MaterialDto> materials, IEnumerable<MaterialDto> others)
+    public static bool MaterialsEquals(IEnumerable<MaterialDto> materials, IEnumerable<MaterialDto>? others)
     {
+        if (others == null) return false;
+
         if (materials.Count() != others.Count())
         {
             return false;

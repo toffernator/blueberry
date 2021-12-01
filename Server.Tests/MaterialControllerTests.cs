@@ -21,8 +21,8 @@ public class MaterialControllerTests
         
         var controller = new MaterialController(logger.Object, repository.Object);
         var response = await controller.Get("Lecture", new HashSet<string> {"Docker"}, 2021, 2022, "Video");
-        
-        var isEqual = Utility.MaterialsEquals(expected, response.Value);
+
+        var isEqual = MaterialsEquals(expected, response.Value);
         Assert.True(true);
-    } 
+    }
 }
