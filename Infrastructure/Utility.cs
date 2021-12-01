@@ -13,7 +13,6 @@ public class Utility
 
         var mList = materials.OrderBy(m => m.Id).ToList();
         var oList = others.OrderBy(m => m.Id).ToList();
-        others.GetEnumerator().MoveNext();
         for (int i = 0; i < mList.Count(); i++)
         {
             if (!MaterialEquals(mList[i], oList[i]))
