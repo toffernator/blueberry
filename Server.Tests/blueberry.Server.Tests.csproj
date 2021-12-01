@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Server\blueberry.Server.csproj" />
+    <ProjectReference Include="..\Infrastructure\blueberry.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
