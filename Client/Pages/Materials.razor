@@ -11,12 +11,11 @@
 
 <div class="pageContent">
     <div class="tagComponent">
-        <div class="tags">
-            <span class="badge bg-secondary rounded-pill tag">Blazor</span>
-            <span class="badge bg-secondary rounded-pill tag">React</span>
-            <span class="badge bg-secondary rounded-pill tag">Flutter</span>
-            <span class="badge bg-secondary rounded-pill tag">Docker</span>
-            <span class="badge bg-secondary rounded-pill tag">CSS</span>
+        <h3> You have searched for</h3>
+        <div class="searchedDisplayed">
+            <p>"@_searchKeyURL"</p>
+            <p> In the time period from @_startyearURL to @_endyearURL</p>
+            <p> Sorted by: @_chosenSortBy</p>
         </div>
         <div class="tagTitle">
             <h3> Chosen tags</h3>
@@ -37,7 +36,8 @@
 
     <div class="materials">
         <div class="searchComponent">
-            <SearchComponent />
+            <SearchComponent searchInput=@_searchKeyURL />
+            
         </div>
         @foreach (var material in materials)
         {
@@ -74,4 +74,44 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
     new MaterialDetailsDto ( 3, "Using Blazor with Bootstrap",new string[] { "Bootstrap", "Framework", "Blazor" }, "Blazor and Bootstrap is a force to be reckoned with!", "/Assets/img/react.jpg", "Video", new DateTime(2021, 8, 29)),
     new MaterialDetailsDto ( 4, "Using React with Bootstrap",new string[] { "React", "Bootstrap", "Framework" }, "React and Bootstrap is a classic combination widely used in the industry", "/Assets/img/react.jpg", "Article", new DateTime(2019, 9, 4)),
     };
+
+    private string _searchKeyURL;
+    private string _tagsURL;
+    private string _startyearURL;
+    private string _endyearURL;
+    private string _chosenSortBy;
+
+    void updateURLChanges(){
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var queryStrings = QueryHelpers.ParseQuery(uri.Query);
+        if(queryStrings.TryGetValue("tags", out var tagsURL))
+        {
+            _tagsURL = tagsURL;
+        }
+        if(queryStrings.TryGetValue("startyear", out var startyear))
+        {
+            _startyearURL = startyear;
+            //period.Item1 = int.Parse(startyear);
+        }
+        if(queryStrings.TryGetValue("endyear", out var endyear))
+        {
+            _endyearURL = endyear;
+            //period.Item2 = int.Parse(endyear);
+        }
+        if(queryStrings.TryGetValue("searchKey", out var searchKeyURL))
+        {
+            _searchKeyURL = searchKeyURL;
+        }
+        if(queryStrings.TryGetValue("sortedby", out var sortbyURL))
+        {
+            _chosenSortBy = sortbyURL;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        updateURLChanges();
+    }
+
+
 }

@@ -1,10 +1,6 @@
 @inject NavigationManager Navigation
 
 <div class="searchModule">
-<p>@_tagsURL</p>
-<p>@_startyearURL</p>
-<p>@_endyearURL</p>
-<p>@_searchKeyURL</p>
     <div class="searchComponent">
         <input class="searchbar" type="text" placeholder= "search" @bind=@searchInput @oninput="OnInputEvent"  @onkeydown="enterSearch"/>
         <button class="searchbutton" type="button" @onclick="search">
@@ -39,7 +35,7 @@
             </button>
             <ul class="dropdown-menu tagdropdown">
                 <li>
-                    <input class="searchbarForTags" type="text" @bind-value=@inputValue placeholder="Search for tags"  @oninput=@onTagSearch />
+                    <input class="searchbarForTags" type="text" @bind-value=@inputForTagSearch placeholder="Search for tags"  @oninput=@onTagSearch />
                 </li>
                 <li class= "tags">
                      @foreach (var tag in filteredTags)
@@ -68,7 +64,7 @@
                 </li>
                 <li>
                     <div class="slider">
-                        <RadzenSlider Range="true" @bind-Value=@yearValues Min="1970" Max="2021" TValue="IEnumerable<int>"
+                        <RadzenSlider style="background-color: black;" Min="1970" Max="2021" Range="true" @bind-Value=@yearValues TValue="IEnumerable<int>"
                             Change=@OnChange />
                     </div>
                 </li>
@@ -79,16 +75,35 @@
 
 
 @code{
-
+    //Lists
     IEnumerable<(string, bool)> tags = new (string,bool)[] {("React", true),("Bootstrap", false),("Blazor", false),("Flutter",false)};
     IEnumerable<(string, bool)> filteredTags = new (string,bool)[] {("React", true),("Bootstrap", false),("Blazor", false),("Flutter",false)}; 
-
-    IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevent", true),("Newest", false), ("Oldest", false)}; 
+    IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevent", true),("A-Z", false),("Z-A",false),("Newest", false), ("Oldest", false)}; 
     [Parameter] public string? Action { get; set; }
     (int, int) period = (1970, 2021);
-    string inputValue;
+    string inputForTagSearch;
     IEnumerable<int> yearValues = new int[] { 1970, 2021 };
+
+    [Parameter]    
     public string? searchInput {get; set; }
+    [Parameter]    
+    public string? tagsChosen {get; set; }
+    [Parameter]    
+    public string? yearfrom {get; set; }
+    [Parameter]    
+    public string? yearto {get; set; }
+    [Parameter]    
+    public string? chosenSortBY {get; set; }
+
+    
+    
+    //URL Values
+    /*private string _searchKeyURL;
+    private string _tagsURL;
+    private string _startyearURL;
+    private string _endyearURL;
+    private string _chosenSortBy; */
+
     void OnChange(IEnumerable<int> yearValues)
     {
         var lowerBound = yearValues.ElementAtOrDefault(0);
@@ -102,27 +117,27 @@
 
     void onTagToggle(string tagName) {
         tags = tags.Select(t => t.Item1 == tagName ? (t.Item1, !t.Item2) : t);
-        if (inputValue==null) inputValue = "";
-        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputValue) || t.Item2);
+        if (inputForTagSearch==null) inputForTagSearch = "";
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputForTagSearch) || t.Item2);
     }
     void clearAll(){
         tags = tags.Select(t => (t.Item1, false));
-        if (inputValue==null) inputValue = "";
-        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputValue) || t.Item2);
+        if (inputForTagSearch==null) inputForTagSearch = "";
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputForTagSearch) || t.Item2);
     }
 
     private void OnInputEvent(ChangeEventArgs changeEvent)
     {
         searchInput = (string)changeEvent.Value;
+        //updateURLChanges();
     }
-    
 
     void search(){
         var tagsChosen = tags.Where(t => t.Item2).Select(t => t.Item1);
-        var URL = $"material?searchKey={searchInput.Replace(" ", "+")}&tags={string.Join(",",tagsChosen.Select(t => $"{t}"))}&startyear={period.Item1}&endyear={period.Item2}";
+        var sortByChosen = sortByValues.Where(sb => sb.Item2).Select(sb => sb.Item1);
+        var URL = $"material?searchKey={(searchInput != null ? searchInput.Replace(" ", "+") : "")}&tags={string.Join(",",tagsChosen.Select(t => $"{t}"))}&startyear={period.Item1}&endyear={period.Item2}&sortedby={string.Join("_",sortByChosen.Select(t => $"{t}"))}";
         Navigation.NavigateTo(URL);
-        Console.WriteLine("helt sikkert");
-        updateURLChanges();
+        //updateURLChanges();
     }
 
     void enterSearch(KeyboardEventArgs e){
@@ -138,18 +153,7 @@
 
     }
 
-    private string _searchKeyURL;
-    private string _tagsURL;
-    private string _startyearURL;
-    private string _endyearURL;
-
-
-    protected override void OnInitialized()
-    {
-        updateURLChanges();
-    }
-
-    void updateURLChanges(){
+    /*void updateURLChanges(){
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
         var queryStrings = QueryHelpers.ParseQuery(uri.Query);
         if(queryStrings.TryGetValue("tags", out var tagsURL))
@@ -159,15 +163,23 @@
         if(queryStrings.TryGetValue("startyear", out var startyear))
         {
             _startyearURL = startyear;
+            //period.Item1 = int.Parse(startyear);
         }
         if(queryStrings.TryGetValue("endyear", out var endyear))
         {
             _endyearURL = endyear;
+            //period.Item2 = int.Parse(endyear);
         }
         if(queryStrings.TryGetValue("searchKey", out var searchKeyURL))
         {
             _searchKeyURL = searchKeyURL;
         }
-
+        if(queryStrings.TryGetValue("sortedby", out var sortbyURL))
+        {
+            _chosenSortBy = sortbyURL;
+        }
     }
+    protected override void OnInitialized()
+    {
+    }*/
 }

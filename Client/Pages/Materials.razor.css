@@ -18,11 +18,13 @@
     width: 20%;
     border-radius: 15px;
     background-color: gainsboro;
-    color: white;
     padding: 20px;
     margin-bottom: 30%;
+    height: fit-content;
 }
-
+.searchedDisplayed{
+    color: #0d6efd;;
+}
 .tagTitle{
     margin-top: 20px;
 }

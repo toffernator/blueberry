@@ -10,7 +10,7 @@
   padding: 5px;
 }
 .searchComponent:focus-within {
-  border: 1px solid blue;
+  border: 1px solid #0d6efd;
 }
 
 .searchbar {
@@ -41,12 +41,12 @@
   margin: 20px;
 }
 .filterButton:focus {
-  color: blue;
+  color: #0d6efd;
   box-shadow: none;
 }
 
 .clearAll {
-  color: blue;
+  color: #0d6efd;
   display: flex;
   justify-content: flex-end;
   margin-right: 5px;
@@ -96,7 +96,7 @@ span.rz-slider-range {
 }
 
 .searchIcon:hover {
-  color: blue;
+  color: #0d6efd;
 }
 
 .tagdropdown{
