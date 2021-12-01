@@ -1,3 +1,12 @@
 .content{
-    margin: 250px;
+    margin: 150px;
+}
+
+.logo{
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+.logoImage{
+    width: 20%;
 }

@@ -37,7 +37,7 @@
     <div class="materials">
         <div class="searchComponent">
             <SearchComponent searchInput=@_searchKeyURL />
-            
+
         </div>
         @foreach (var material in materials)
         {
@@ -65,6 +65,11 @@
         }
 
     </div>
+    <div class="logo">
+        <button class="logobutton" @onclick="goToMain">
+            <img src="/Assets/img/logo.svg" class="logoImage" alt="">
+        </button>
+    </div>
 </div>
 @code {
 IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
@@ -91,12 +96,10 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
         if(queryStrings.TryGetValue("startyear", out var startyear))
         {
             _startyearURL = startyear;
-            //period.Item1 = int.Parse(startyear);
         }
         if(queryStrings.TryGetValue("endyear", out var endyear))
         {
             _endyearURL = endyear;
-            //period.Item2 = int.Parse(endyear);
         }
         if(queryStrings.TryGetValue("searchKey", out var searchKeyURL))
         {
@@ -106,6 +109,10 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
         {
             _chosenSortBy = sortbyURL;
         }
+    }
+
+    void goToMain(){
+         Navigation.NavigateTo("");
     }
 
     protected override void OnInitialized()

@@ -59,3 +59,11 @@
     object-fit:cover;
     height:100%;
 }
+.logoImage{
+    width: 40%;
+}
+
+.logobutton{
+    border: none;
+    background-color: white;
+}
