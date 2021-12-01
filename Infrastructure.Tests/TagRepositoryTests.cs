@@ -34,7 +34,7 @@ public class TagRepositoryTests : IDisposable
         var tag = new TagCreateDto("Requirements Analysis Document");
 
         var created = await _repository.Create(tag);
-        Console.WriteLine(tag.Name);
+        
         (Status, TagDto) expected = (Created, new TagDto(3, "Requirements Analysis Document"));
 
         Assert.Equal(expected, created);
