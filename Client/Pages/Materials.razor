@@ -3,6 +3,7 @@
 @attribute [Authorize]
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
+@implements IDisposable
 
 <!-- PICTURE SOURCE: https://www.pexels.com/photo/black-screen-with-code-4164418/ -->
 
@@ -21,23 +22,15 @@
             <h3> Chosen tags</h3>
         </div>
         <div class="tags">
-            <span class="badge bg-primary rounded-pill tag">Blazor</span>
-            <span class="badge bg-primary rounded-pill tag">React</span>
-            <span class="badge bg-primary rounded-pill tag">Flutter</span>
-            <span class="badge bg-primary rounded-pill tag">Docker</span>
-            <span class="badge bg-primary rounded-pill tag">CSS</span>
-            <span class="badge bg-primary rounded-pill tag">Blazor</span>
-            <span class="badge bg-primary rounded-pill tag">React</span>
-            <span class="badge bg-primary rounded-pill tag">Flutter</span>
-            <span class="badge bg-primary rounded-pill tag">Docker</span>
-            <span class="badge bg-primary rounded-pill tag">CSS</span>
+            @foreach (var tag in @_tagsURL.Split(',')) {
+            <span class="badge bg-primary rounded-pill tag">@tag</span>
+            }
         </div>
     </div>
 
     <div class="materials">
         <div class="searchComponent">
-            <SearchComponent searchInput=@_searchKeyURL />
-            
+            <SearchComponent searchInput=@_searchKeyURL yearValues=@(new int[] {@_startyearURL, @_endyearURL}) chosenTags=@(_tagsURL.Split(',')) chosenSortBy=@_chosenSortBy />
         </div>
         @foreach (var material in materials)
         {
@@ -77,8 +70,8 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
 
     private string _searchKeyURL;
     private string _tagsURL;
-    private string _startyearURL;
-    private string _endyearURL;
+    private int _startyearURL;
+    private int _endyearURL;
     private string _chosenSortBy;
 
     void updateURLChanges(){
@@ -90,13 +83,11 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
         }
         if(queryStrings.TryGetValue("startyear", out var startyear))
         {
-            _startyearURL = startyear;
-            //period.Item1 = int.Parse(startyear);
+            _startyearURL = int.Parse(startyear);
         }
         if(queryStrings.TryGetValue("endyear", out var endyear))
         {
-            _endyearURL = endyear;
-            //period.Item2 = int.Parse(endyear);
+            _endyearURL = int.Parse(endyear);
         }
         if(queryStrings.TryGetValue("searchKey", out var searchKeyURL))
         {
@@ -108,9 +99,23 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
         }
     }
 
-    protected override void OnInitialized()
+   protected override void OnInitialized()
+    {
+        // Subscribe
+        Navigation.LocationChanged += LocationChanged;
+        base.OnInitialized();
+
+        updateURLChanges();
+    }
+    void LocationChanged(object sender, LocationChangedEventArgs e)
     {
         updateURLChanges();
+        
+    }
+    void IDisposable.Dispose()
+    {
+        // Unsubscribe when component is disposed
+        Navigation.LocationChanged -= LocationChanged;
     }
 
 
