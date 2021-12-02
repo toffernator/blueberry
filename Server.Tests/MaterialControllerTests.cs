@@ -22,7 +22,10 @@ public class MaterialControllerTests
             new MaterialDto(1, "Lecture 10", new [] {"Docker", "C#"}),
             new MaterialDto(2, "Lecture 16", new [] {"Docker", "C#"})
         };
-        repository.Setup(m => m.Search(mockOptions)).ReturnsAsync(expected);
+        repository.Setup(m => m.Search(It.IsAny<SearchOptions>())).ReturnsAsync(expected);
+    
+    
+
         
         var controller = new MaterialController(logger.Object, repository.Object);
         var response = await controller.Get("Lecture", new HashSet<string> {"Docker"}, 2021, 2022, "Video", 0, 2);
