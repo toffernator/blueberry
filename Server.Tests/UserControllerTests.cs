@@ -10,9 +10,9 @@ public class UserControllerTests
         // Arrange
         var logger = new Mock<ILogger<UserController>>();
         var repository = new Mock<IUserRepository>();
-        var tags = new HashSet<string>();
+        var tags = new PrimitiveCollection<string>();
         var userToPost = new UserCreateDto("Jalle", tags);
-        repository.Setup(u => u.Create(userToPost)).ReturnsAsync(new UserDto(1, "Jalle", tags));
+        repository.Setup(u => u.Create(It.IsAny<UserCreateDto>())).ReturnsAsync(new UserDto(1, "Jalle", tags));
 
         // Act
         var controller = new UserController(logger.Object, repository.Object);
@@ -61,7 +61,7 @@ public class UserControllerTests
         // Arrange
         var logger = new Mock<ILogger<UserController>>();
         var repository = new Mock<IUserRepository>();
-        var user = new UserDto(1, "Jalle", new HashSet<string>());
+        var user = new UserDto(1, "Jalle", new PrimitiveCollection<string>());
         repository.Setup(m => m.Read(1)).ReturnsAsync(user);
         var controller = new UserController(logger.Object, repository.Object);
 
@@ -79,7 +79,7 @@ public class UserControllerTests
         // Arrange
         var logger = new Mock<ILogger<UserController>>();
         var repository = new Mock<IUserRepository>();
-        var tags = new HashSet<string>();
+        var tags = new PrimitiveCollection<string>();
         var userUpdate = new UserUpdateDto(1, tags);
         repository.Setup(m => m.Update(1, userUpdate)).ReturnsAsync(Updated);
         var controller = new UserController(logger.Object, repository.Object);
