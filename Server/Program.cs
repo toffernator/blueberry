@@ -13,6 +13,7 @@ builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(
 builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
 
 var app = builder.Build();
 
