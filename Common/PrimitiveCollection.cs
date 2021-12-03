@@ -7,8 +7,10 @@ public class PrimitiveCollection<T> : ICollection<T>, IReadOnlyCollection<T>, IE
 {
     private ICollection<T> _backing;
 
+
+    public PrimitiveCollection(IEnumerable<T> backing) => _backing = backing.ToList();
     public PrimitiveCollection(ICollection<T> backing) => _backing = backing;
-    public PrimitiveCollection() => _backing = new HashSet<T>();
+    public PrimitiveCollection() => _backing = new List<T>();
 
     public int Count { get => _backing.Count; }
 

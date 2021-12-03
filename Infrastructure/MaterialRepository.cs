@@ -35,7 +35,7 @@ public class MaterialRepository : IMaterialRepository
         }
 
         return await result
-            .Select(m => new MaterialDto(m.Id, m.Title, new HashSet<string>(m.Tags.Select(t => t.Name))))
+            .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name))))
             .ToListAsync();
     }
 
