@@ -22,11 +22,7 @@ public class UserRepository : IUserRepository
 
         await _context.SaveChangesAsync();
 
-        return new UserDto(
-                        entity.Id,
-                        entity.Name,
-                        entity.Tags.Select(u => u.Name).ToHashSet()
-                    );
+        return new UserDto(entity.Id, entity.Name, new PrimitiveCollection<string>(entity.Tags.Select(u => u.Name)));
     }
 
     public async Task<Option<UserDto>> Read(int userId)
@@ -36,7 +32,7 @@ public class UserRepository : IUserRepository
                     select new UserDto(
                         u.Id,
                         u.Name,
-                        u.Tags.Select(u => u.Name).ToHashSet()
+                        new PrimitiveCollection<string>(u.Tags.Select(u => u.Name))
                     );
 
         return await users.FirstOrDefaultAsync();
@@ -44,7 +40,7 @@ public class UserRepository : IUserRepository
 
     public async Task<IReadOnlyCollection<UserDto>> Read() =>
         (await _context.Users
-                    .Select(u => new UserDto(u.Id, u.Name, u.Tags.Select(u => u.Name).ToHashSet()))
+                    .Select(u => new UserDto(u.Id, u.Name, new PrimitiveCollection<string>(u.Tags.Select(u => u.Name))))
                     .ToListAsync())
                     .AsReadOnly();
 
@@ -87,6 +83,5 @@ public class UserRepository : IUserRepository
         {
             yield return existing.TryGetValue(tag, out var t) ? t : new Tag { Name = tag };
         }
-
     }
 }

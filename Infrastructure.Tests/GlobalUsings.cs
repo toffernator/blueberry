@@ -7,4 +7,4 @@ global using Microsoft.Data.Sqlite;
 global using Microsoft.EntityFrameworkCore;
 global using static blueberry.Core.Status;
 global using blueberry.Infrastructure;
-
+global using blueberry.Common;

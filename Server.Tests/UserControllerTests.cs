@@ -98,7 +98,7 @@ public class UserControllerTests
         // Arrange
         var logger = new Mock<ILogger<UserController>>();
         var repository = new Mock<IUserRepository>();
-        var tags = new HashSet<string>();
+        var tags = new PrimitiveCollection<string>();
         var userUpdate = new UserUpdateDto(1, tags);
         repository.Setup(m => m.Update(1, userUpdate)).ReturnsAsync(NotFound);
         var controller = new UserController(logger.Object, repository.Object);
