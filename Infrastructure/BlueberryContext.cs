@@ -12,7 +12,7 @@ public class BlueberryContext : DbContext, IBlueberryContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>();
-        
+
         modelBuilder.Entity<Material>();
 
         modelBuilder.Entity<Tag>()

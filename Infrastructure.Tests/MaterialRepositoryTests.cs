@@ -10,24 +10,24 @@ public class MaterialRepositoryTests
     {
         var connection = new SqliteConnection("Filename=:memory:");
         connection.Open();
-        
+
         var builder = new DbContextOptionsBuilder<BlueberryContext>();
         builder.UseSqlite(connection);
         var context = new BlueberryContext(builder.Options);
         context.Database.EnsureCreated();
 
-        var Docker = new Tag{Name = "Docker"};
-        var Mobile = new Tag{Name = "Mobile"};
-        var SE = new Tag{Name = "Software Engineering"};
-        var CS = new Tag{Name = "C#"};
+        var Docker = new Tag { Name = "Docker" };
+        var Mobile = new Tag { Name = "Mobile" };
+        var SE = new Tag { Name = "Software Engineering" };
+        var CS = new Tag { Name = "C#" };
 
         context.Materials.AddRange(
-            new Material {Id = 1, Title = "OOSE", ShortDescription = "", Tags = new [] {SE}, ImageUrl = "", Type = "Book", Date = new DateTime(2013, 4, 20)},
-            new Material {Id = 2, Title = "C# 9.0 in a Nutshell", ShortDescription = "", Tags = new [] {CS}, ImageUrl = "", Type = "Book", Date = new DateTime(2021, 2, 26)},
-            new Material {Id = 9, Title = "Lecture 9", ShortDescription ="", Tags = new [] {SE}, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 9, 29)},
-            new Material {Id = 10, Title = "Lecture 10", ShortDescription = "", Tags = new [] {Docker, CS}, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 10, 1)},
-            new Material {Id = 16, Title = "Lecture 16", ShortDescription = "", Tags = new [] {Docker, CS}, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 10, 29)},
-            new Material {Id = 20, Title = "Lecture 20", ShortDescription = "", Tags = new [] {Mobile, CS}, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 11, 12)}
+            new Material { Id = 1, Title = "OOSE", ShortDescription = "", Tags = new[] { SE }, ImageUrl = "", Type = "Book", Date = new DateTime(2013, 4, 20) },
+            new Material { Id = 2, Title = "C# 9.0 in a Nutshell", ShortDescription = "", Tags = new[] { CS }, ImageUrl = "", Type = "Book", Date = new DateTime(2021, 2, 26) },
+            new Material { Id = 9, Title = "Lecture 9", ShortDescription = "", Tags = new[] { SE }, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 9, 29) },
+            new Material { Id = 10, Title = "Lecture 10", ShortDescription = "", Tags = new[] { Docker, CS }, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 10, 1) },
+            new Material { Id = 16, Title = "Lecture 16", ShortDescription = "", Tags = new[] { Docker, CS }, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 10, 29) },
+            new Material { Id = 20, Title = "Lecture 20", ShortDescription = "", Tags = new[] { Mobile, CS }, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 11, 12) }
         );
         context.SaveChanges();
 
@@ -38,7 +38,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenEmptyStringReturnsEverything()
     {
-        var options = new SearchOptions{SearchString = ""};
+        var options = new SearchOptions { SearchString = "" };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -58,7 +58,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenLecture10ReturnsLecture10()
     {
-        var options = new SearchOptions{SearchString = "Lecture 10"};
+        var options = new SearchOptions { SearchString = "Lecture 10" };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -66,14 +66,14 @@ public class MaterialRepositoryTests
             new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result); 
+        var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
 
     [Fact]
     public async Task SearchGivenLectureReturnsLecture9AndLecture10AndLecture16AndLecture20()
     {
-        var options = new SearchOptions{SearchString = "Lecture"};
+        var options = new SearchOptions { SearchString = "Lecture" };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -91,9 +91,9 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenTitleIgnoresCase()
     {
-        var options = new SearchOptions{SearchString = "lEcTuRe 10"};
+        var options = new SearchOptions { SearchString = "lEcTuRe 10" };
         var result = await _repository.Search(options);
-IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
             new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
         };
@@ -105,7 +105,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenDockerTagReturnsLecture10AndLecture16()
     {
-        var options = new SearchOptions{Tags = new HashSet<string>() {"Docker"}};
+        var options = new SearchOptions { Tags = new HashSet<string>() { "Docker" } };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -121,7 +121,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenDockerAndMobileTagReturnsLecture10AndLecture16AndLecture20()
     {
-        var options = new SearchOptions{Tags = new HashSet<string>() {"Docker", "Mobile"}};
+        var options = new SearchOptions { Tags = new HashSet<string>() { "Docker", "Mobile" } };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -138,7 +138,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenStartDate29102021ReturnsLecture16AndLecture20()
     {
-        var options = new SearchOptions{StartDate = new DateTime(2021, 10, 29)};
+        var options = new SearchOptions { StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -150,15 +150,15 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
-    
+
     [Fact]
     public async Task SearchGivenEndDate29102021ReturnsOOSEAndCS90AndLecture9Lecture10AndLecture16()
     {
-        var options = new SearchOptions{EndDate = new DateTime(2021, 10, 29)};
+        var options = new SearchOptions { EndDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
-        {   
+        {
             new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"}),
             new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string> {"C#"}),
             new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"}),
@@ -173,9 +173,9 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenTypeBookReturnsOOSEAndCS90()
     {
-        var options = new SearchOptions{Type = "Book"};
+        var options = new SearchOptions { Type = "Book" };
         var result = await _repository.Search(options);
-        
+
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
             new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"}),
@@ -189,7 +189,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenStartDate29102021AndEndDate29102021ReturnsLecture16()
     {
-        var options = new SearchOptions{StartDate =  new DateTime(2021, 10, 29), EndDate = new DateTime(2021, 10, 29)};
+        var options = new SearchOptions { StartDate = new DateTime(2021, 10, 29), EndDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -204,7 +204,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGiven10AndDockerTagReturnsLecture10()
     {
-        var options = new SearchOptions{SearchString = "10", Tags = new HashSet<string>() {"Docker"}};
+        var options = new SearchOptions { SearchString = "10", Tags = new HashSet<string>() { "Docker" } };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -219,7 +219,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGiven10AndStartDate29102021ReturnsNothing()
     {
-        var options = new SearchOptions{SearchString = "10", StartDate = new DateTime(2021, 10, 29)};
+        var options = new SearchOptions { SearchString = "10", StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>();
@@ -231,7 +231,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGiven10AndEndDate29102021ReturnsLecture10()
     {
-        var options = new SearchOptions{SearchString = "10", EndDate = new DateTime(2021, 10, 29)};
+        var options = new SearchOptions { SearchString = "10", EndDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -246,7 +246,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenLectureAndDockerAndStartDate29102021ReturnsLecture16()
     {
-        var options = new SearchOptions{SearchString = "Lecture", Tags = new HashSet<string>() {"Docker"}, StartDate = new DateTime(2021, 10, 29)};
+        var options = new SearchOptions { SearchString = "Lecture", Tags = new HashSet<string>() { "Docker" }, StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -262,7 +262,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenDockerTagAndStartDate29102021ReturnsLecture16()
     {
-        var options = new SearchOptions{Tags = new HashSet<string> {"Docker"}, StartDate = new DateTime(2021, 10, 29)};
+        var options = new SearchOptions { Tags = new HashSet<string> { "Docker" }, StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -273,11 +273,11 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
-    
+
     [Fact]
     public async Task SearchGivenDockerTagAndEndDate29102021ReturnsLecture10AndLecture16()
     {
-        var options = new SearchOptions{Tags = new HashSet<string> {"Docker"}, EndDate = new DateTime(2021, 10, 29)};
+        var options = new SearchOptions { Tags = new HashSet<string> { "Docker" }, EndDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -293,7 +293,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenTypeBookAndLectureReturnsNothing()
     {
-        var options = new SearchOptions{SearchString = "Lecture", Type = "Book"};
+        var options = new SearchOptions { SearchString = "Lecture", Type = "Book" };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>();
@@ -305,7 +305,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenTypeBookAndSoftwareEngineeringRetunsOOSE()
     {
-        var options = new SearchOptions{Tags = new HashSet<string> {"Software Engineering"}, Type = "Book"};
+        var options = new SearchOptions { Tags = new HashSet<string> { "Software Engineering" }, Type = "Book" };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -320,7 +320,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenTypeVideoAndStartDate12112021ReturnsLecture20()
     {
-        var options = new SearchOptions{StartDate = new DateTime(2021, 11, 12), Type = "Video"};
+        var options = new SearchOptions { StartDate = new DateTime(2021, 11, 12), Type = "Video" };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -335,7 +335,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     [Fact]
     public async Task SearchGivenTypeVideoAndEndDate29102021ReturnsLecture10AndLecture16()
     {
-        var options = new SearchOptions{EndDate = new DateTime(2021, 10, 29), Type = "Video"};
+        var options = new SearchOptions { EndDate = new DateTime(2021, 10, 29), Type = "Video" };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
@@ -355,8 +355,8 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
 
         var options = new SearchOptions
         {
-            SearchString = "10", 
-            Tags = new HashSet<string>() {"Docker"},
+            SearchString = "10",
+            Tags = new HashSet<string>() { "Docker" },
             StartDate = new DateTime(2021, 10, 1)
         };
         var result = await _repository.Search(options);
@@ -375,8 +375,8 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     {
         var options = new SearchOptions
         {
-            SearchString = "16", 
-            Tags = new HashSet<string>() {"Docker"},
+            SearchString = "16",
+            Tags = new HashSet<string>() { "Docker" },
             EndDate = new DateTime(2021, 10, 29)
         };
         var result = await _repository.Search(options);
@@ -395,8 +395,8 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     {
         var options = new SearchOptions
         {
-            SearchString = "O", 
-            Tags = new HashSet<string>() {"Software Engineering"},
+            SearchString = "O",
+            Tags = new HashSet<string>() { "Software Engineering" },
             Type = "Book"
         };
         var result = await _repository.Search(options);
@@ -477,7 +477,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     {
         var options = new SearchOptions
         {
-            Tags = new HashSet<string> {"Docker"},
+            Tags = new HashSet<string> { "Docker" },
             StartDate = new DateTime(2021, 10, 29),
             EndDate = new DateTime(2021, 10, 29)
         };
@@ -497,7 +497,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     {
         var options = new SearchOptions
         {
-            Tags = new HashSet<string> {"Software Engineering"},
+            Tags = new HashSet<string> { "Software Engineering" },
             StartDate = new DateTime(2013, 4, 20),
             Type = "Video"
         };
@@ -517,7 +517,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     {
         var options = new SearchOptions
         {
-            Tags = new HashSet<string> {"Software Engineering"},
+            Tags = new HashSet<string> { "Software Engineering" },
             EndDate = new DateTime(2021, 9, 29),
             Type = "Video"
         };
@@ -558,12 +558,12 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         var options = new SearchOptions
         {
             SearchString = "Lecture",
-            Tags = new HashSet<string> {"Docker"},
+            Tags = new HashSet<string> { "Docker" },
             StartDate = new DateTime(2021, 10, 29),
             EndDate = new DateTime(2021, 11, 12)
         };
         var result = await _repository.Search(options);
-        
+
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
             new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
@@ -579,12 +579,12 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         var options = new SearchOptions
         {
             SearchString = "9",
-            Tags = new HashSet<string>() {"C#"},
+            Tags = new HashSet<string>() { "C#" },
             StartDate = new DateTime(2021, 2, 26),
             Type = "Book"
         };
         var result = await _repository.Search(options);
-        
+
         IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
             new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string>() {"C#"})
@@ -600,7 +600,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         var options = new SearchOptions
         {
             SearchString = "c",
-            Tags = new HashSet<string>() {"Mobile"},
+            Tags = new HashSet<string>() { "Mobile" },
             EndDate = new DateTime(2021, 11, 12),
             Type = "Video"
         };
@@ -610,7 +610,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         {
             new MaterialDto(20, "Lecture 20", new HashSet<string>() {"Mobile", "C#"})
         };
-        
+
         var isEqual = Utility.MaterialsEquals(expected, result);
         Assert.True(isEqual);
     }
@@ -662,7 +662,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
     {
         var options = new SearchOptions
         {
-            Tags = new HashSet<string>() {"C#"},
+            Tags = new HashSet<string>() { "C#" },
             StartDate = new DateTime(2021, 2, 26),
             EndDate = new DateTime(2021, 10, 29),
             Type = "Book"
@@ -684,7 +684,7 @@ IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
         var options = new SearchOptions
         {
             SearchString = "C",
-            Tags = new HashSet<string>() {"C#"},
+            Tags = new HashSet<string>() { "C#" },
             StartDate = new DateTime(2021, 2, 26),
             EndDate = new DateTime(2021, 11, 12),
             Type = "Book"

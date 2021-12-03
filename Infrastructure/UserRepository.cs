@@ -42,7 +42,7 @@ public class UserRepository : IUserRepository
         return await users.FirstOrDefaultAsync();
     }
 
-    public async Task<IReadOnlyCollection<UserDto>> Read() => 
+    public async Task<IReadOnlyCollection<UserDto>> Read() =>
         (await _context.Users
                     .Select(u => new UserDto(u.Id, u.Name, u.Tags.Select(u => u.Name).ToHashSet()))
                     .ToListAsync())
@@ -52,7 +52,7 @@ public class UserRepository : IUserRepository
     {
         var entity = await _context.Users.Include(u => u.Tags).FirstOrDefaultAsync(u => u.Id == User.Id);
 
-        if(entity == null)
+        if (entity == null)
         {
             return NotFound;
         }
@@ -68,7 +68,7 @@ public class UserRepository : IUserRepository
     {
         var entity = await _context.Users.FindAsync(userId);
 
-        if(entity == null)
+        if (entity == null)
         {
             return NotFound;
         }
@@ -85,7 +85,7 @@ public class UserRepository : IUserRepository
 
         foreach (var tag in tags)
         {
-            yield return existing.TryGetValue(tag, out var t) ? t : new Tag{ Name = tag};
+            yield return existing.TryGetValue(tag, out var t) ? t : new Tag { Name = tag };
         }
 
     }
