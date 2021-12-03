@@ -5,3 +5,5 @@ global using Microsoft.Identity.Web;
 global using blueberry.Infrastructure;
 global using blueberry.Core;
 global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Mvc;
+global using blueberry.Server.Model;
