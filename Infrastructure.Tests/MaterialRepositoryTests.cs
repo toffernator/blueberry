@@ -575,7 +575,8 @@ public class MaterialRepositoryTests
             new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string>() {"Mobile", "C#"})
         };
         
-        Assert.Equal(expected, result    }
+        Assert.Equal(expected, result);
+    }
 
     [Fact]
     public async Task SearchGiven1StartDate29102021EndDate12112021TypeVideoReturnsLecture16AndLecture20()
