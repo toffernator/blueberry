@@ -1,5 +1,3 @@
-using Xunit;
-using blueberry.Core;
 using Moq;
 
 namespace blueberry.Infrastructure;
@@ -81,6 +79,6 @@ public class SearchTests
         var actual = await search.Search("Typescript");
 
         Assert.Equal(filteredMockData, actual);
-        mockedRepo.Verify(mock => mock.Search(searchOptions), Times.Once);
+        mockedRepo.Verify(mock => mock.Search(searchOptions), Times.Exactly(2));
     }
 }
