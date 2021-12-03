@@ -18,6 +18,5 @@ public class SearchProvider : ISearch
     public Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
     {
         return _repo.Search(options);
-
     }
 }

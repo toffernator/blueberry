@@ -61,8 +61,6 @@ public class SearchTests
 
 
         Assert.Equal(It.IsAny<SearchOptions>(), providedOptions);
-
-        // mockedRepo.Verify(mock => mock.Search(searchOptions), Times.Once);
     }
 
     [Fact]
