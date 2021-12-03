@@ -1,50 +1,90 @@
 using blueberry.Server.Model;
-string connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? (args.Length > 0 ? args[0] : throw new ArgumentException("No connection string supplied"));
+using System.CommandLine;
+using System.CommandLine.Invocation;
 
-var builder = WebApplication.CreateBuilder(args);
+var connectionStringOption =
+    new System.CommandLine.Option<string>(
+        "--connectionString",
+        description: "Optionally provide a connection string through commandline arguments instead of env-variable"
+    );
+connectionStringOption.AddAlias("--cs");
 
-// Add services to the container.
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+var seedCommand = new System.CommandLine.Command(
+    "seed",
+    description: "Seed the database with dummy data"
+);
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
+var rootCommand = new RootCommand {
+    connectionStringOption,
+    seedCommand
+};
 
-builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
-builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ITagRepository, TagRepository>();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+seedCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) =>
 {
-    app.UseWebAssemblyDebugging();
-}
-else
+    string connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? (connectionStringFromArgs ?? throw new ArgumentException("No connection string supplied"));
+
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(connectionString));
+    builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
+    builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<ITagRepository, TagRepository>();
+
+    var app = builder.Build();
+
+    app.Seed();
+});
+
+rootCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) =>
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+    string connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? (connectionStringFromArgs ?? throw new ArgumentException("No connection string supplied"));
 
-app.UseHttpsRedirection();
+    var builder = WebApplication.CreateBuilder(args);
 
-app.UseBlazorFrameworkFiles();
-app.UseStaticFiles();
+    // Add services to the container.
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
-app.UseRouting();
+    builder.Services.AddControllersWithViews();
+    builder.Services.AddRazorPages();
 
-app.UseAuthentication();
-app.UseAuthorization();
+    builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(connectionString));
+    builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
+    builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<ITagRepository, TagRepository>();
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseWebAssemblyDebugging();
+    }
+    else
+    {
+        app.UseExceptionHandler("/Error");
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+    }
+
+    app.UseHttpsRedirection();
+
+    app.UseBlazorFrameworkFiles();
+    app.UseStaticFiles();
+
+    app.UseRouting();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
 
 
-app.MapRazorPages();
-app.MapControllers();
-app.MapFallbackToFile("index.html");
+    app.MapRazorPages();
+    app.MapControllers();
+    app.MapFallbackToFile("index.html");
 
-app.Seed();
+    app.Run();
+});
 
-app.Run();
+return rootCommand.Invoke(args);
