@@ -12,8 +12,14 @@ public class UserControllerTests
         var repository = new Mock<IUserRepository>();
         var tags = new HashSet<string>();
         var userToPost = new UserCreateDto("Jalle", tags);
-        repository.Setup(u => u.Create(userToPost)).ReturnsAsync(Created);
+        repository.Setup(u => u.Create(userToPost)).ReturnsAsync(new UserDto(1, "Jalle", tags));
+
+        // Act
         var controller = new UserController(logger.Object, repository.Object);
+        var created = await controller.Post(userToPost) as CreatedAtActionResult;
+
+        // Assert
+        Assert.Equal(new UserDto(1, "Jalle", tags), created.Value);
     }
 
     [Fact]
