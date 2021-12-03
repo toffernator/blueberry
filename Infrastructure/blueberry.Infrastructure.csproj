@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\blueberry.Core.csproj" />
+    <ProjectReference Include="..\Common\blueberry.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

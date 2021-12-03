@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using blueberry.Infrastructure;
 
@@ -11,9 +12,10 @@ using blueberry.Infrastructure;
 namespace blueberry.Infrastructure.Migrations
 {
     [DbContext(typeof(BlueberryContext))]
-    partial class BlueberryContextModelSnapshot : ModelSnapshot
+    [Migration("20211203155959_Make imageUrl nullable")]
+    partial class MakeimageUrlnullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
