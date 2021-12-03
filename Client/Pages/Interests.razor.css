@@ -8,7 +8,6 @@
     width: 20%;
     border-radius: 15px;
     background-color: gainsboro;
-    color: white;
     padding: 20px;
 }
 
@@ -64,6 +63,7 @@
     flex: 1 auto;
     text-align: center;
     margin: 2px;
+    tab-size: 12px;
 }
 
 .tagNav {

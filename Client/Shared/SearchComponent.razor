@@ -24,8 +24,6 @@
                 </li>
             </ul>
         </div>
-
-
         <div class="btn-group">
             <button class="btn btn-secondary dropdown-toggle filterButton" type="button"
                 id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside"
@@ -51,7 +49,6 @@
             <button class="btn btn-secondary dropdown-toggle filterButton" type="button"
                 id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                 aria-expanded="false">
-                <!--<button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button" data-bs-toggle="dropdown" aria-expanded="false"> -->
                 Year
             </button>
             <ul class="dropdown-menu">
@@ -59,7 +56,6 @@
                     <div class="yearLabels">
                             <b>From :</b>@yearValues.First() 
                             <b>To :</b> @yearValues.Last()
-                            
                     </div>
                 </li>
                 <li>
@@ -80,6 +76,7 @@
     IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevant", false),("A-Z", false),("Z-A",false),("Newest", false), ("Oldest", false)}; 
     string inputForTagSearch;
 
+    //Parameters
     [Parameter]    
     public string searchInput {get; set; } = "";
     [Parameter]    
@@ -88,6 +85,7 @@
     public IEnumerable<int> yearValues {get; set;} = new int[]{1970, 2021};
     [Parameter]    
     public string chosenSortBy {get; set;} = "Most relevant";
+
 
     void onTagSearch(ChangeEventArgs args) {
         filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)args.Value) || t.Item2);
