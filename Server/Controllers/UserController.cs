@@ -1,14 +1,8 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-using blueberry.Core;
-
 namespace blueberry.Server.Controllers;
+//Made with inspiration from Rasmus Repo : https://github.com/ondfisk/BDSA2021/blob/main/MyApp.Server/Controllers/CharactersController.cs
 
-//[Authorize]
 [ApiController]
 [Route("[controller]")]
-//[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
@@ -36,8 +30,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Put(int id, [FromBody] UserUpdateDto user)
         => (await _repository.Update(id, user)).ToActionResult(); 
 
-
-    [Authorize]
     [HttpPost]
     [ProducesResponseType(typeof(UserDto), 201)]
     public async Task<IActionResult> Post(UserCreateDto character)
