@@ -6,22 +6,18 @@ public class TagControllerTests {
     {
         // Arrange
         var logger = new Mock<ILogger<TagController>>();
-        var expected = Array.Empty<TagDto>();
+        var expected = new TagDto[] {
+            new TagDto(1, "Docker"),
+            new TagDto(2, "React"),
+        };
         var repository = new Mock<ITagRepository>();
         repository.Setup(m => m.Read()).ReturnsAsync(expected);
         var controller = new TagController(logger.Object, repository.Object);
 
         // Act
-        // FIXME: Throws NotImplementedException
-        // var actual = await controller.Get();
-        var exception = await Record.ExceptionAsync(() =>
-            controller.Get()
-        );
-
+        var actual = await controller.Get();
+        
         // Assert
-        // FIXME: Use this once NotImplemetedException is no longer thrown
-        // Assert.Equal(expected, actual);
-        Assert.NotNull(exception);
-        Assert.IsType<NotImplementedException>(exception);
+        Assert.Equal(expected, actual);
     }
 }

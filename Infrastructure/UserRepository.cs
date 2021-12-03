@@ -1,4 +1,5 @@
 namespace blueberry.Infrastructure;
+//Class made with inspiration from Rasmus Lystrøm's repository: https://github.com/ondfisk/BDSA2021/blob/main/MyApp.Infrastructure/CharacterRepository.cs
 
 public class UserRepository : IUserRepository
 {
