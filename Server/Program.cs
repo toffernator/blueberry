@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Identity.Web;
+string connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? (args.Length > 0 ? args[0] : throw new ArgumentException("No connection string supplied"));
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +13,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Blueberry")));
+builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
-builder.Services.AddScoped<IMaterialRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 var app = builder.Build();
 

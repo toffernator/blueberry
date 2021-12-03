@@ -1,0 +1,40 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
+using blueberry.Core;
+
+namespace blueberry.Server.Controllers;
+
+//[Authorize]
+[ApiController]
+[Route("[controller]")]
+//[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+public class MaterialController : ControllerBase
+{
+    private readonly ILogger<MaterialController> _logger;
+    private readonly IMaterialRepository _repository;
+
+    public MaterialController(ILogger<MaterialController> logger, IMaterialRepository repository)
+    {
+        _logger = logger;
+        _repository = repository;
+    }
+    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(IEnumerable<MaterialDto>), 200)]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<MaterialDto>>> Get([FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "tag")] ISet<string> tags,
+                                                                  [FromQuery(Name = "startyear")] int? startYear, [FromQuery(Name = "endyear")] int? endYear, string? type)
+    {
+        var options = new SearchOptions
+        {
+            SearchString = searchString is null ? "" : searchString,
+            Tags = tags,
+            StartDate = startYear is null ? null : new DateTime((int) startYear, 1, 1),
+            EndDate = endYear is null ? null : new DateTime((int) endYear, 1, 1),
+            Type = type
+        };
+
+        var result = await _repository.Search(options);
+        return new ActionResult<IEnumerable<MaterialDto>>(result);
+    }
+}

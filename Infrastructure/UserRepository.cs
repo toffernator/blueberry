@@ -1,4 +1,5 @@
 namespace blueberry.Infrastructure;
+//Class made with inspiration from Rasmus Lystrøm's repository: https://github.com/ondfisk/BDSA2021/blob/main/MyApp.Infrastructure/CharacterRepository.cs
 
 public class UserRepository : IUserRepository
 {
@@ -14,7 +15,7 @@ public class UserRepository : IUserRepository
         var entity = new User
         {
             Name = User.Name,
-            Interests = await GetInterests(User.Interests).ToListAsync()
+            Tags = await GetTags(User.Tags).ToListAsync()
         };
 
         _context.Users.Add(entity);
@@ -24,7 +25,7 @@ public class UserRepository : IUserRepository
         return new UserDto(
                         entity.Id,
                         entity.Name,
-                        entity.Interests.Select(u => u.Name).ToHashSet()
+                        entity.Tags.Select(u => u.Name).ToHashSet()
                     );
     }
 
@@ -35,29 +36,28 @@ public class UserRepository : IUserRepository
                     select new UserDto(
                         u.Id,
                         u.Name,
-                        u.Interests.Select(u => u.Name).ToHashSet()
+                        u.Tags.Select(u => u.Name).ToHashSet()
                     );
 
         return await users.FirstOrDefaultAsync();
     }
 
-    public async Task<IReadOnlyCollection<UserDto>> Read() => 
+    public async Task<IReadOnlyCollection<UserDto>> Read() =>
         (await _context.Users
-                    .Select(u => new UserDto(u.Id, u.Name, u.Interests.Select(u => u.Name).ToHashSet()))
+                    .Select(u => new UserDto(u.Id, u.Name, u.Tags.Select(u => u.Name).ToHashSet()))
                     .ToListAsync())
                     .AsReadOnly();
 
     public async Task<Status> Update(UserUpdateDto User)
     {
-        var entity = await _context.Users.Include(u => u.Interests).FirstOrDefaultAsync(u => u.Id == User.Id);
+        var entity = await _context.Users.Include(u => u.Tags).FirstOrDefaultAsync(u => u.Id == User.Id);
 
-        if(entity == null)
+        if (entity == null)
         {
             return NotFound;
         }
 
-        entity.Name = User.Name;
-        entity.Interests = await GetInterests(User.Interests).ToListAsync();
+        entity.Tags = await GetTags(User.Tags).ToListAsync();
 
         await _context.SaveChangesAsync();
 
@@ -68,7 +68,7 @@ public class UserRepository : IUserRepository
     {
         var entity = await _context.Users.FindAsync(userId);
 
-        if(entity == null)
+        if (entity == null)
         {
             return NotFound;
         }
@@ -79,13 +79,13 @@ public class UserRepository : IUserRepository
         return Deleted;
     }
 
-    private async IAsyncEnumerable<Tag> GetInterests(IEnumerable<string> interests)
+    private async IAsyncEnumerable<Tag> GetTags(IEnumerable<string> tags)
     {
-        var existing = await _context.Tags.Where(i => interests.Contains(i.Name)).ToDictionaryAsync(i => i.Name);
+        var existing = await _context.Tags.Where(t => tags.Contains(t.Name)).ToDictionaryAsync(t => t.Name);
 
-        foreach (var tag in interests)
+        foreach (var tag in tags)
         {
-            yield return existing.TryGetValue(tag, out var i) ? i : new Tag(tag);
+            yield return existing.TryGetValue(tag, out var t) ? t : new Tag { Name = tag };
         }
 
     }
