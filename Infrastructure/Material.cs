@@ -3,7 +3,7 @@ namespace blueberry.Infrastructure;
 public class Material
 {
     public int Id { get; set; }
-    
+
     [StringLength(50)]
     public string Title { get; set; }
 
@@ -14,7 +14,7 @@ public class Material
 
     [StringLength(250)]
     [Url]
-    public string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     public string Type { get; set; }
 

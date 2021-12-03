@@ -31,131 +31,91 @@ public class UserRepositoryTests : IDisposable
     [Fact]
     public async Task CreateCreatesNewUserWithGeneratedId ()
     {
-        var user = new UserCreateDto("Boerge", new HashSet<string>(){"vscode", "Microsoft"});
+        var user = new UserCreateDto("Boerge", new PrimitiveCollection<string>() {"vscode", "Microsoft"});
 
         var created = await _repository.Create(user);
 
-        UserDto expected = new UserDto(3, "Boerge", new HashSet<string>(){"vscode", "Microsoft"});
+        UserDto expected = new UserDto(3, "Boerge", new PrimitiveCollection<string>() {"vscode", "Microsoft"});
 
-       Assert.Equal(expected.Id, created.Id);
-       Assert.Equal(expected.Name, created.Name);
-       Assert.True(created.Tags.SetEquals(expected.Tags));
+        Assert.Equal(expected, created);
     }
 
-[Fact]
-public async Task ReadReturnAllUsers()
-{
-    var users = await _repository.Read();
-    
-    var expected = new HashSet<UserDto>(){ new UserDto( 1, "Jalle", new HashSet<string>() ), new UserDto( 2, "Kobo", new HashSet<string>(){ "Docker", "Framework" })};
-
-    var equals = UsersEquals(users, expected);
-    Assert.True(equals);
-}
-
-[Fact]
-public async Task ReadGivenExistingIdReturnOptionAndUserDto()
-{
-    var option = await _repository.Read(2);
-    
-    var expected = new UserDto(2, "Kobo", new HashSet<string>(){"Docker", "Framework"});
-
-    Assert.Equal(expected.Id, option.Value.Id);
-    Assert.Equal(expected.Name, option.Value.Name);
-    Assert.True(option.Value.Tags.SetEquals(expected.Tags));
-}
-
-[Fact]
-public async Task ReadGivenNonExistingIdReturnOptionIsNone()
-{
-    var option = await _repository.Read(3);
-
-    Assert.True(option.IsNone);
-}
-
-[Fact]
-public async Task UpdateGivenExistingIdUpdateUserAndReturnUpdated()
-{
-    var userUpdateDto = new UserUpdateDto(1, new HashSet<string>(){"Docker", "Framework", "dotnet"});
-
-    var update = await _repository.Update(userUpdateDto);
-
-    var option = await _repository.Read(1);
-
-    var expected = new UserDto(1, "Jalle", new HashSet<string>(){ "Docker", "Framework", "dotnet" });
-
-    Assert.Equal(Updated, update);
-    Assert.Equal(expected.Id, option.Value.Id);
-    Assert.Equal(expected.Name, option.Value.Name);
-    Assert.True(option.Value.Tags.SetEquals(expected.Tags));
-}
-
-[Fact]
-public async Task UpdateGivenNonExistingIdReturnNotFound()
-{
-
-    var userUpdateDto = new UserUpdateDto(3, new HashSet<string>());
-
-    var status = await _repository.Update(userUpdateDto);
-
-    Assert.Equal(NotFound, status);
-}
-
-
-[Fact]
-public async Task DeleteGivenExistingIdReturnDeleted()
-{
-    var status = await _repository.Delete(2);
-
-    var entity = await _context.Users.FindAsync(2);
-
-    Assert.Null(entity);
-    Assert.Equal(Deleted, status);
-}
-
-[Fact]
-public async Task DeleteGivenExistingIdReturnNotFound()
-{
-    var status = await _repository.Delete(3);
-
-    Assert.Equal(NotFound, status);
-}
-
-
- private bool UsersEquals(IEnumerable<UserDto> users, IEnumerable<UserDto> others)
+    [Fact]
+    public async Task ReadReturnAllUsers()
     {
-        if (users.Count() != others.Count())
-        {
-            return false;
-        }
+        var users = await _repository.Read();
+        
+        var expected = new PrimitiveCollection<UserDto>()
+        { 
+            new UserDto(1, "Jalle", new PrimitiveCollection<string>()),
+            new UserDto(2, "Kobo", new PrimitiveCollection<string>() { "Docker", "Framework" })
+        };
 
-        var uList = users.OrderBy(u => u.Id).ToList();
-        var oList = others.OrderBy(u => u.Id).ToList();
-        others.GetEnumerator().MoveNext();
-        for (int i = 0; i < uList.Count(); i++)
-        {
-            if (!UserEquals(uList[i], oList[i]))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        Assert.Equal(expected, users);
     }
 
-    private bool UserEquals(UserDto user, UserDto other)
+    [Fact]
+    public async Task ReadGivenExistingIdReturnOptionAndUserDto()
     {
-        if (user.Id != other.Id && user.Name != other.Name)
-        {
-            return false;
-        }
+        var option = await _repository.Read(2);
+        
+        var expected = new UserDto(2, "Kobo", new PrimitiveCollection<string>() {"Docker", "Framework"});
 
-        // Magic sauce to check that two enumerables have identical contents.
-        // https://stackoverflow.com/questions/4576723/test-whether-two-ienumerablet-have-the-same-values-with-the-same-frequencies
-        var tags = user.Tags.ToLookup(t => t);
-        var otherTags = other.Tags.ToLookup(t => t);
-        return tags.Count() == otherTags.Count()
-            && tags.All(g => g.Count() == otherTags[g.Key].Count());
+        Assert.Equal(expected, option.Value);
+    }
+
+    [Fact]
+    public async Task ReadGivenNonExistingIdReturnOptionIsNone()
+    {
+        var option = await _repository.Read(3);
+
+        Assert.True(option.IsNone);
+    }
+
+    [Fact]
+    public async Task UpdateGivenExistingIdUpdateUserAndReturnUpdated()
+    {
+        var userUpdateDto = new UserUpdateDto(1, new PrimitiveCollection<string>() {"Docker", "Framework", "dotnet"});
+
+        var update = await _repository.Update(userUpdateDto);
+
+        var option = await _repository.Read(1);
+
+        var expected = new UserDto(1, "Jalle", new PrimitiveCollection<string>() { "Docker", "Framework", "dotnet" });
+        
+        Assert.Equal(Updated, update);
+        Assert.Equal(expected, option.Value);
+    }
+
+    [Fact]
+    public async Task UpdateGivenNonExistingIdReturnNotFound()
+    {
+
+        var userUpdateDto = new UserUpdateDto(3, new PrimitiveCollection<string>() );
+
+        var status = await _repository.Update(userUpdateDto);
+
+        Assert.Equal(NotFound, status);
+    }
+
+
+    [Fact]
+    public async Task DeleteGivenExistingIdReturnDeleted()
+    {
+        var status = await _repository.Delete(2);
+
+        var entity = await _context.Users.FindAsync(2);
+
+        Assert.Null(entity);
+        Assert.Equal(Deleted, status);
+    }
+
+    [Fact]
+    public async Task DeleteGivenExistingIdReturnNotFound()
+    {
+        var status = await _repository.Delete(3);
+
+        Assert.Equal(NotFound, status);
     }
 
     private bool disposed;

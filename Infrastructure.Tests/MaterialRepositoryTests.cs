@@ -41,18 +41,17 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { SearchString = "" };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"}),
-            new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string> {"C#"}),
-            new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"}),
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
+            new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string> {"C#"}),
+            new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -61,13 +60,12 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { SearchString = "Lecture 10" };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
         };
-
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+      
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -76,16 +74,15 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { SearchString = "Lecture" };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"}),
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
+            new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -93,13 +90,12 @@ public class MaterialRepositoryTests
     {
         var options = new SearchOptions { SearchString = "lEcTuRe 10" };
         var result = await _repository.Search(options);
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -108,14 +104,13 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { Tags = new HashSet<string>() { "Docker" } };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -124,15 +119,14 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { Tags = new HashSet<string>() { "Docker", "Mobile" } };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -141,14 +135,13 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -157,17 +150,16 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { EndDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
-        {
-            new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"}),
-            new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string> {"C#"}),
-            new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"}),
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
+        {   
+            new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string> {"C#"}),
+            new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -175,15 +167,13 @@ public class MaterialRepositoryTests
     {
         var options = new SearchOptions { Type = "Book" };
         var result = await _repository.Search(options);
-
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"}),
-            new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string> {"C#"}),
+            new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string> {"C#"}),
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -192,13 +182,12 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { StartDate = new DateTime(2021, 10, 29), EndDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -207,13 +196,12 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { SearchString = "10", Tags = new HashSet<string>() { "Docker" } };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -222,10 +210,9 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { SearchString = "10", StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>();
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>();
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -234,13 +221,12 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { SearchString = "10", EndDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -249,13 +235,12 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { SearchString = "Lecture", Tags = new HashSet<string>() { "Docker" }, StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
 
@@ -265,13 +250,12 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { Tags = new HashSet<string> { "Docker" }, StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -280,14 +264,13 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { Tags = new HashSet<string> { "Docker" }, EndDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -296,10 +279,9 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { SearchString = "Lecture", Type = "Book" };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>();
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>();
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -308,13 +290,12 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { Tags = new HashSet<string> { "Software Engineering" }, Type = "Book" };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"})
+            new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -323,13 +304,12 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { StartDate = new DateTime(2021, 11, 12), Type = "Video" };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(20, "Lecture 20", new HashSet<string> {"Mobile", "C#"})
+            new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -338,21 +318,19 @@ public class MaterialRepositoryTests
         var options = new SearchOptions { EndDate = new DateTime(2021, 10, 29), Type = "Video" };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"}),
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
     public async Task SearchGiven10AndDockerAndStartDate01102021ReturnsLecture10()
     {
-
         var options = new SearchOptions
         {
             SearchString = "10",
@@ -361,13 +339,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -381,13 +358,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -401,13 +377,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"}),
+            new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"}),
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -421,14 +396,13 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"}),
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -442,13 +416,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(1, "OOSE", new HashSet<string> {"Software Engineering"})
+            new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"})
         };
-
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -462,14 +435,13 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"}),
-            new MaterialDto(10, "Lecture 10", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -483,13 +455,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"})
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -503,13 +474,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"})
+            new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -523,13 +493,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(9, "Lecture 9", new HashSet<string> {"Software Engineering"})
+            new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -543,13 +512,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string> {"C#"})
+            new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string> {"C#"})
         };
-
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -563,14 +531,12 @@ public class MaterialRepositoryTests
             EndDate = new DateTime(2021, 11, 12)
         };
         var result = await _repository.Search(options);
-
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -584,14 +550,12 @@ public class MaterialRepositoryTests
             Type = "Book"
         };
         var result = await _repository.Search(options);
-
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string>() {"C#"})
+            new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string>() {"C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -606,13 +570,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(20, "Lecture 20", new HashSet<string>() {"Mobile", "C#"})
+            new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string>() {"Mobile", "C#"})
         };
-
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -627,13 +590,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(16, "Lecture 16", new HashSet<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
         };
-
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -648,13 +610,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string>() {"C#"})
+            new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string>() {"C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -669,13 +630,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string>() {"C#"})
+            new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string>() {"C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
     [Fact]
@@ -691,13 +651,12 @@ public class MaterialRepositoryTests
         };
         var result = await _repository.Search(options);
 
-        IEnumerable<MaterialDto> expected = new HashSet<MaterialDto>()
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
         {
-            new MaterialDto(2, "C# 9.0 in a Nutshell", new HashSet<string>() {"C#"})
+            new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string>() {"C#"})
         };
 
-        var isEqual = Utility.MaterialsEquals(expected, result);
-        Assert.True(isEqual);
+        Assert.Equal(expected, result);
     }
 
 

@@ -14,8 +14,8 @@ public class MaterialControllerTests
         
        var expected = new [] 
         {
-            new MaterialDto(1, "Lecture 10", new [] {"Docker", "C#"}),
-            new MaterialDto(2, "Lecture 16", new [] {"Docker", "C#"})
+            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
         };
         repository.Setup(m => m.Search(It.IsAny<SearchOptions>())).ReturnsAsync(expected);
         
