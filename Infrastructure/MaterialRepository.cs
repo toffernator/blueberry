@@ -39,7 +39,7 @@ public class MaterialRepository : IMaterialRepository
             .ToListAsync();
     }
 
-    private IQueryable<Material> QueryTitle(IQueryable<Material> source, string title) => source.Where(m => m.Title.Contains(title));
+    private IQueryable<Material> QueryTitle(IQueryable<Material> source, string title) => source.Where(m => m.Title.ToUpper().Contains(title.ToUpper()));
     
     private IQueryable<Material> QueryTitle(string title) => QueryTitle(_context.Materials, title);
 
