@@ -17,9 +17,24 @@ public class MaterialController : ControllerBase
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(IEnumerable<MaterialDto>), 200)]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MaterialDto>>> Get([FromQuery(Name = "tag")] string? tag, [FromQuery(Name = "keywords")] string? keywords,
-                                                                  [FromQuery(Name = "startyear")] int? startYear, [FromQuery(Name = "endyear")] int? endYear)
+    public async Task<ActionResult<IEnumerable<MaterialDto>>> Get([FromQuery(Name = "searchString")] string? searchString, 
+                                                                  [FromQuery(Name = "tag")] ISet<string> tags,
+                                                                  [FromQuery(Name = "startyear")] int? startYear, 
+                                                                  [FromQuery(Name = "endyear")] int? endYear, 
+                                                                  [FromQuery(Name = "type")] string? type,
+                                                                  [FromQuery(Name = "offset")] int offset, 
+                                                                  [FromQuery(Name = "limit")] int limit)
     {
-        throw new NotImplementedException();
+        var options = new SearchOptions
+        {
+            SearchString = searchString is null ? "" : searchString,
+            Tags = tags,
+            StartDate = startYear is null ? null : new DateTime((int) startYear, 1, 1),
+            EndDate = endYear is null ? null : new DateTime((int) endYear, 1, 1),
+            Type = type 
+        };
+
+        var result = await _repository.Search(options);
+        return new ActionResult<IEnumerable<MaterialDto>>(result.Skip(offset).Take(limit));
     }
 }

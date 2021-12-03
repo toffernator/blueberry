@@ -20,6 +20,6 @@ public class TagController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<TagDto>> Get()
     {
-        throw new NotImplementedException();
+        return await _repository.Read();
     }
 }

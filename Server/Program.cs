@@ -1,4 +1,6 @@
 using blueberry.Server.Model;
+string connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? (args.Length > 0 ? args[0] : throw new ArgumentException("No connection string supplied"));
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,7 +10,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Blueberry")));
+builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
 builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

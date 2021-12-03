@@ -18,15 +18,15 @@ public class MaterialRepository : IMaterialRepository
         {
             result = QueryTags(result, options.Tags);
         }
-        
+
         if (options.StartDate != null)
         {
-            result = QueryStartDate(result, (DateTime) options.StartDate);
+            result = QueryStartDate(result, (DateTime)options.StartDate);
         }
-        
+
         if (options.EndDate != null)
         {
-            result = QueryEndDate(result, (DateTime) options.EndDate);
+            result = QueryEndDate(result, (DateTime)options.EndDate);
         }
 
         if (options.Type != null)
@@ -40,14 +40,14 @@ public class MaterialRepository : IMaterialRepository
     }
 
     private IQueryable<Material> QueryTitle(IQueryable<Material> source, string title) => source.Where(m => m.Title.Contains(title));
-    
+
     private IQueryable<Material> QueryTitle(string title) => QueryTitle(_context.Materials, title);
 
     private IQueryable<Material> QueryTags(IEnumerable<string> tags) => QueryTags(_context.Materials, tags);
 
     private IQueryable<Material> QueryTags(IQueryable<Material> source, IEnumerable<string> tags)
     {
-        var tagEntities = _context.Tags.Where(t  => tags.Contains(t.Name));
+        var tagEntities = _context.Tags.Where(t => tags.Contains(t.Name));
         return source.Where(m => m.Tags.Intersect(tagEntities).Count() > 0);
     }
 
