@@ -24,8 +24,6 @@
                 </li>
             </ul>
         </div>
-
-
         <div class="btn-group">
             <button class="btn btn-secondary dropdown-toggle filterButton" type="button"
                 id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside"
@@ -58,12 +56,11 @@
                     <div class="yearLabels">
                             <b>From :</b> @period.Item1
                             <b>To :</b> @period.Item2
-                            
                     </div>
                 </li>
                 <li>
                     <div class="slider">
-                        <RadzenSlider style="background-color: black;" Min="1970" Max="2021" Range="true" @bind-Value=@yearValues TValue="IEnumerable<int>"
+                        <RadzenSlider style="background-color: #0d6efd;" Min="1970" Max="2021" Range="true" @bind-Value=@yearValues TValue="IEnumerable<int>"
                             Change=@OnChange />
                     </div>
                 </li>

@@ -10,28 +10,12 @@
 
 
 <div class="pageContent">
-    <div class="tagComponent">
-        <h3> You have searched for</h3>
-        <div class="searchedDisplayed">
-            <p>"@_searchKeyURL"</p>
-            <p> In the time period from @_startyearURL to @_endyearURL</p>
-            <p> Sorted by: @_chosenSortBy</p>
-        </div>
-        <div class="tagTitle">
-            <h3> Chosen tags</h3>
-        </div>
-        <div class="tags">
-            <span class="badge bg-primary rounded-pill tag">Blazor</span>
-            <span class="badge bg-primary rounded-pill tag">React</span>
-            <span class="badge bg-primary rounded-pill tag">Flutter</span>
-            <span class="badge bg-primary rounded-pill tag">Docker</span>
-            <span class="badge bg-primary rounded-pill tag">CSS</span>
-            <span class="badge bg-primary rounded-pill tag">Blazor</span>
-            <span class="badge bg-primary rounded-pill tag">React</span>
-            <span class="badge bg-primary rounded-pill tag">Flutter</span>
-            <span class="badge bg-primary rounded-pill tag">Docker</span>
-            <span class="badge bg-primary rounded-pill tag">CSS</span>
-        </div>
+    <div class="logoComponent">
+        <div class="logo">
+        <button class="logobutton" @onclick="goToMain">
+            <img src="/Assets/img/logo.svg" class="logoImage" alt="">
+        </button>
+    </div>
     </div>
 
     <div class="materials">
@@ -64,11 +48,6 @@
         </div>
         }
 
-    </div>
-    <div class="logo">
-        <button class="logobutton" @onclick="goToMain">
-            <img src="/Assets/img/logo.svg" class="logoImage" alt="">
-        </button>
     </div>
 </div>
 @code {
@@ -110,11 +89,9 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
             _chosenSortBy = sortbyURL;
         }
     }
-
     void goToMain(){
          Navigation.NavigateTo("");
     }
-
     protected override void OnInitialized()
     {
         updateURLChanges();

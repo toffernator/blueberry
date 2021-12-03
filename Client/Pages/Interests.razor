@@ -11,7 +11,11 @@
             <h3> Chosen tags</h3>
         </div>
         <div class="tags">
-            <span class="badge bg-primary rounded-pill tag">Blazor</span>
+            @foreach (var tag in chosenTags)
+                     {
+                         <span class="badge rounded-pill bg-primary tag" @onclick="() => removeFromChosenTags(tag.Item1)" >@tag.Item1</span> 
+                     }
+            <!--<span class="badge bg-primary rounded-pill tag">Blazor</span>
             <span class="badge bg-primary rounded-pill tag">React</span>
             <span class="badge bg-primary rounded-pill tag">Flutter</span>
             <span class="badge bg-primary rounded-pill tag">Docker</span>
@@ -22,7 +26,7 @@
             <span class="badge bg-primary rounded-pill tag">React</span>
             <span class="badge bg-primary rounded-pill tag">Flutter</span>
             <span class="badge bg-primary rounded-pill tag">Docker</span>
-            <span class="badge bg-primary rounded-pill tag">CSS</span>
+            <span class="badge bg-primary rounded-pill tag">CSS</span> -->
         </div>
     </div>
     <div class="searchForTags">
@@ -35,7 +39,11 @@
             </button>
         </div>
         <div class="tags">
-            <span class="badge bg-secondary rounded-pill tag">Blazor</span>
+             @foreach (var tag in tags)
+                     {
+                         <span class="badge rounded-pill bg-secondary tag" @onclick="() => addToChosenTags(tag.Item1)" >@tag.Item1</span> 
+                     }
+            <!--<span class="badge bg-secondary rounded-pill tag">Blazor</span>
             <span class="badge bg-secondary rounded-pill tag">React</span>
             <span class="badge bg-secondary rounded-pill tag">Flutter</span>
             <span class="badge bg-secondary rounded-pill tag">Docker</span>
@@ -44,7 +52,7 @@
             <span class="badge bg-secondary rounded-pill tag">React</span>
             <span class="badge bg-secondary rounded-pill tag">Flutter</span>
             <span class="badge bg-secondary rounded-pill tag">Docker</span>
-            <span class="badge bg-secondary rounded-pill tag">CSS</span>
+            <span class="badge bg-secondary rounded-pill tag">CSS</span> -->
         </div>
         <nav aria-label="Page navigation example tagNav">
             <ul class="pagination justify-content-center">
@@ -69,9 +77,27 @@
 
 @code {
 
+    IEnumerable<(string, bool)> tags = new (string,bool)[] {("React", false),("Bootstrap", false),("Blazor", false),("HTML",false),("Java",false),("JavaScript",false),("CSS",false),("VS-code",false),("UML",false),("RAD",false),("Software engeneering",false),("Lamport timestamps",false),("Testing",false),("Unit-Testing",false),("Flutter",false),("ACID",false),("API",false)};
+    IEnumerable<(string, bool)> chosenTags = new (string,bool)[] {("React", true),("Bootstrap", true),("Blazor", true),("Flutter",true)}; 
+
     void done()
     {
         Navigation.NavigateTo("");
 
     }
+
+    
+    void addToChosenTags(string tagName){
+        var temp = (tagName, true);
+        chosenTags = chosenTags.Append(temp);
+    
+
+    }
+    void removeFromChosenTags(string tagName){
+
+        chosenTags = chosenTags.Where(x => x.Item1 != tagName);
+
+    }
+
+
 }

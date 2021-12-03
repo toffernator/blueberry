@@ -13,40 +13,10 @@
     width: 100%;
   }
 
-
-.tagComponent{
-    width: 20%;
-    border-radius: 15px;
-    background-color: gainsboro;
-    padding: 20px;
-    margin-bottom: 30%;
-    height: fit-content;
-}
-.searchedDisplayed{
-    color: #0d6efd;;
-}
-.tagTitle{
-    margin-top: 20px;
-}
-
-.tags {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
-}
-
-.tag {
-    -webkit-flex: 1 auto;
-    flex: 1 auto;
-    text-align: center;
-    margin: 2px;
-}
-
 .materials{
     display: flex;
     flex-direction: column;
-    margin-left: 8%;
+    margin-left: 5%;
     width: 50%;
 }
 
@@ -59,11 +29,17 @@
     object-fit:cover;
     height:100%;
 }
+
+.logoComponent{
+    width: 20%;
+}
+
 .logoImage{
-    width: 40%;
+    width: 50%;
 }
 
 .logobutton{
     border: none;
     background-color: white;
+    text-align: end;
 }
