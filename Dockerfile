@@ -14,10 +14,12 @@ RUN dotnet restore
 
 # Copy everything else and build
 COPY . .
-RUN dotnet publish -c Release -o out
+RUN export ConnectionString="Server=db;Database=blueberry;User Id=sa;Password=TESTTESTTEST123:)"
+RUN dotnet run --project ./Server
+# RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
-WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "blueberry.Server.dll"]
+# FROM mcr.microsoft.com/dotnet/aspnet:6.0
+# WORKDIR /app
+# COPY --from=build-env /app/out .
+# ENTRYPOINT ["dotnet", "blueberry.Server.dll"]
