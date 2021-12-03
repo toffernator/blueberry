@@ -20,20 +20,35 @@ public class UserController : ControllerBase
         _repository = repository;
     }
 
+    [HttpGet]
+    public async Task<IReadOnlyCollection<UserDto>> Get()
+        => await _repository.Read();
+
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(UserDto), 200)]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> Get(int id)
-    {
-        throw new NotImplementedException();
-    }
+        => (await _repository.Read(id)).ToActionResult(); 
 
     [HttpPut("{id}")]
     [ProducesResponseType(204)]
     [ProducesResponseType(404)]
-    public async Task<IActionResult> UpdateTags(int id, [FromBody] IEnumerable<string> tags)
+    public async Task<IActionResult> Put(int id, [FromBody] UserUpdateDto user)
+        => (await _repository.Update(id, user)).ToActionResult(); 
+
+
+    [Authorize]
+    [HttpPost]
+    [ProducesResponseType(typeof(UserDto), 201)]
+    public async Task<IActionResult> Post(UserCreateDto character)
     {
-        throw new NotImplementedException();
+        var created = await _repository.Create(character);
+        return CreatedAtRoute(nameof(Get), new { created.Id }, created);
     }
-   
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> Delete(int id)
+        => (await _repository.Delete(id)).ToActionResult();
 }
