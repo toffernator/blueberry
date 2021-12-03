@@ -3,6 +3,7 @@
 @attribute [Authorize]
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
+@implements IDisposable
 
 <!-- PICTURE SOURCE: https://www.pexels.com/photo/black-screen-with-code-4164418/ -->
 
@@ -20,9 +21,8 @@
 
     <div class="materials">
         <div class="searchComponent">
-            <SearchComponent searchInput=@_searchKeyURL />
-
-        </div>
+            <SearchComponent searchInput=@_searchKeyURL yearValues=@(new int[] {@_startyearURL, @_endyearURL}) chosenTags=@(_tagsURL.Split(',')) chosenSortBy=@_chosenSortBy />
+       </div>
         @foreach (var material in materials)
         {
         <div class="card mb-3 material" style="max-width: 540px;">
@@ -61,8 +61,8 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
 
     private string _searchKeyURL;
     private string _tagsURL;
-    private string _startyearURL;
-    private string _endyearURL;
+    private int _startyearURL;
+    private int _endyearURL;
     private string _chosenSortBy;
 
     void updateURLChanges(){
@@ -74,11 +74,11 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
         }
         if(queryStrings.TryGetValue("startyear", out var startyear))
         {
-            _startyearURL = startyear;
+            _startyearURL = int.Parse(startyear);
         }
         if(queryStrings.TryGetValue("endyear", out var endyear))
         {
-            _endyearURL = endyear;
+            _endyearURL = int.Parse(endyear);
         }
         if(queryStrings.TryGetValue("searchKey", out var searchKeyURL))
         {
@@ -89,13 +89,28 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
             _chosenSortBy = sortbyURL;
         }
     }
-    void goToMain(){
-         Navigation.NavigateTo("");
-    }
     protected override void OnInitialized()
     {
+        // Subscribe
+        Navigation.LocationChanged += LocationChanged;
+        base.OnInitialized();
+
         updateURLChanges();
     }
 
+    void goToMain(){
+         Navigation.NavigateTo("");
+    }
+
+    void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        updateURLChanges();
+        
+    }
+    void IDisposable.Dispose()
+    {
+        // Unsubscribe when component is disposed
+        Navigation.LocationChanged -= LocationChanged;
+    }
 
 }
