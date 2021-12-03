@@ -1,9 +1,5 @@
 string connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? (args.Length > 0 ? args[0] : throw new ArgumentException("No connection string supplied"));
 
-using Microsoft.EntityFrameworkCore;
-
-using blueberry.Infrastructure;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
