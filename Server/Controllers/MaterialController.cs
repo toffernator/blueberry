@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-using blueberry.Core;
-
 namespace blueberry.Server.Controllers;
 
 //[Authorize]
@@ -33,7 +28,7 @@ public class MaterialController : ControllerBase
         var options = new SearchOptions
         {
             SearchString = searchString is null ? "" : searchString,
-            Tags = tags,
+            Tags = new PrimitiveSet<string>(tags),
             StartDate = startYear is null ? null : new DateTime((int) startYear, 1, 1),
             EndDate = endYear is null ? null : new DateTime((int) endYear, 1, 1),
             Type = type 
