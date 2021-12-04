@@ -20,7 +20,7 @@ public class PrimitiveCollection<T> : ICollection<T>, IReadOnlyCollection<T>, IE
 
     public void Clear() => _backing.Clear();
 
-    public virtual bool Contains(T item) => _backing.Contains(item);
+    public bool Contains(T item) => _backing.Contains(item);
 
     public void CopyTo(T[] array, int arrayIndex) => _backing.CopyTo(array, arrayIndex);
 
