@@ -77,7 +77,7 @@ public class UserRepositoryTests : IDisposable
     {
         var userUpdateDto = new UserUpdateDto(1, new PrimitiveCollection<string>() {"Docker", "Framework", "dotnet"});
 
-        var update = await _repository.Update(userUpdateDto);
+        var update = await _repository.Update(1, userUpdateDto);
 
         var option = await _repository.Read(1);
 
@@ -93,7 +93,7 @@ public class UserRepositoryTests : IDisposable
 
         var userUpdateDto = new UserUpdateDto(3, new PrimitiveCollection<string>() );
 
-        var status = await _repository.Update(userUpdateDto);
+        var status = await _repository.Update(3, userUpdateDto);
 
         Assert.Equal(NotFound, status);
     }
