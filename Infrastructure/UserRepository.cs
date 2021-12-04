@@ -1,4 +1,5 @@
 namespace blueberry.Infrastructure;
+//Class made with inspiration from Rasmus Lystrøm's repository: https://github.com/ondfisk/BDSA2021/blob/main/MyApp.Infrastructure/CharacterRepository.cs
 
 public class UserRepository : IUserRepository
 {
@@ -21,11 +22,7 @@ public class UserRepository : IUserRepository
 
         await _context.SaveChangesAsync();
 
-        return new UserDto(
-                        entity.Id,
-                        entity.Name,
-                        entity.Tags.Select(u => u.Name).ToHashSet()
-                    );
+        return new UserDto(entity.Id, entity.Name, new PrimitiveCollection<string>(entity.Tags.Select(u => u.Name)));
     }
 
     public async Task<Option<UserDto>> Read(int userId)
@@ -35,15 +32,15 @@ public class UserRepository : IUserRepository
                     select new UserDto(
                         u.Id,
                         u.Name,
-                        u.Tags.Select(u => u.Name).ToHashSet()
+                        new PrimitiveCollection<string>(u.Tags.Select(u => u.Name))
                     );
 
         return await users.FirstOrDefaultAsync();
     }
 
-    public async Task<IReadOnlyCollection<UserDto>> Read() => 
+    public async Task<IReadOnlyCollection<UserDto>> Read() =>
         (await _context.Users
-                    .Select(u => new UserDto(u.Id, u.Name, u.Tags.Select(u => u.Name).ToHashSet()))
+                    .Select(u => new UserDto(u.Id, u.Name, new PrimitiveCollection<string>(u.Tags.Select(u => u.Name))))
                     .ToListAsync())
                     .AsReadOnly();
 
@@ -51,7 +48,7 @@ public class UserRepository : IUserRepository
     {
         var entity = await _context.Users.Include(u => u.Tags).FirstOrDefaultAsync(u => u.Id == User.Id);
 
-        if(entity == null)
+        if (entity == null)
         {
             return NotFound;
         }
@@ -67,7 +64,7 @@ public class UserRepository : IUserRepository
     {
         var entity = await _context.Users.FindAsync(userId);
 
-        if(entity == null)
+        if (entity == null)
         {
             return NotFound;
         }
@@ -84,8 +81,7 @@ public class UserRepository : IUserRepository
 
         foreach (var tag in tags)
         {
-            yield return existing.TryGetValue(tag, out var t) ? t : new Tag{ Name = tag};
+            yield return existing.TryGetValue(tag, out var t) ? t : new Tag { Name = tag };
         }
-
     }
 }

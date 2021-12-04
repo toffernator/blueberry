@@ -16,12 +16,12 @@ public class TagRepositoryTests : IDisposable
 
         context.Database.EnsureCreated();
 
-        context.Users.Add(new User{ Id = 1, Name = "Jakob"});
+        context.Users.Add(new User { Id = 1, Name = "Jakob" });
         context.Tags.AddRange(
-            new Tag{ Id = 1, Name = "Docker", Users = new HashSet<User>(){context.Users.Find(1)} },
-            new Tag{ Id = 2, Name = "Framework" }
+            new Tag { Id = 1, Name = "Docker", Users = new HashSet<User>() { context.Users.Find(1) } },
+            new Tag { Id = 2, Name = "Framework" }
         );
-        
+
         context.SaveChanges();
 
         _context = context;
@@ -34,7 +34,7 @@ public class TagRepositoryTests : IDisposable
         var tag = new TagCreateDto("Requirements Analysis Document");
 
         var created = await _repository.Create(tag);
-        Console.WriteLine(tag.Name);
+
         (Status, TagDto) expected = (Created, new TagDto(3, "Requirements Analysis Document"));
 
         Assert.Equal(expected, created);
@@ -76,8 +76,8 @@ public class TagRepositoryTests : IDisposable
         var tags = await _repository.Read();
 
         Assert.Collection(tags,
-                        tag => Assert.Equal(new TagDto(1,"Docker"), tag),
-                        tag => Assert.Equal(new TagDto(2,"Framework"), tag)
+                        tag => Assert.Equal(new TagDto(1, "Docker"), tag),
+                        tag => Assert.Equal(new TagDto(2, "Framework"), tag)
                         );
     }
 
@@ -126,7 +126,8 @@ public class TagRepositoryTests : IDisposable
         }
     }
 
-    public void Dispose() {
+    public void Dispose()
+    {
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }

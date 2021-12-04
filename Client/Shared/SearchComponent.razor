@@ -1,0 +1,134 @@
+@inject NavigationManager Navigation
+
+<div class="searchModule">
+    <div class="searchComponent">
+        <input class="searchbar" type="text" placeholder= "search" @bind=@searchInput @oninput="OnInputEvent"  @onkeydown="enterSearch"/>
+        <button class="searchbutton" type="button" @onclick="search">
+            <span>
+                <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+            </span>
+        </button>
+    </div>
+    <div class="filters">
+        <div class="btn-group">
+            <button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Sort by
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @foreach (var sortBy in sortByValues)
+                     {
+                         <span class=@($"dropdown-item {(sortBy.Item2 ? "active" : " ")} ") @onclick="() => updateSortBy(sortBy.Item1)">@sortBy.Item1</span>
+                     }
+                </li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle filterButton" type="button"
+                id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                aria-expanded="false">
+                Tags
+                <span class="badge bg-primary rounded-pill">@(tags.Where(t => t.Item2).Count())</span> <!-- number of tags chosen -->
+            </button>
+            <ul class="dropdown-menu tagdropdown">
+                <li>
+                    <input class="searchbarForTags" type="text" @bind=@inputForTagSearch placeholder="Search for tags"  @oninput=@onTagSearch />
+                </li>
+                <li class= "tags">
+                     @foreach (var tag in filteredTags)
+                     {
+                         <span class=@($"badge {(tag.Item2 ? "bg-primary" : "bg-secondary")} rounded-pill tag") @onclick="() => onTagToggle(tag.Item1)">@tag.Item1</span>
+                     }
+                </li>
+                <li class="clearAll"><label type="label" @onclick="clearAll">clear all</label></li>
+            </ul>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle filterButton" type="button"
+                id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                aria-expanded="false">
+                Year
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <div class="yearLabels">
+                            <b>From :</b>@yearValues.First() 
+                            <b>To :</b> @yearValues.Last()
+                    </div>
+                </li>
+                <li>
+                    <div class="slider">
+                        <RadzenSlider style="background-color: black;" Min="1970" Max="2021" Range="true" @bind-Value=@yearValues TValue="IEnumerable<int>" />
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@code{
+    //Lists
+    IEnumerable<(string, bool)> tags = new (string,bool)[] {("React", false),("Bootstrap", false),("Blazor", false),("Flutter",false)};
+    IEnumerable<(string, bool)> filteredTags; 
+    IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevant", false),("A-Z", false),("Z-A",false),("Newest", false), ("Oldest", false)}; 
+    string inputForTagSearch;
+
+    //Parameters
+    [Parameter]    
+    public string searchInput {get; set; } = "";
+    [Parameter]    
+    public IEnumerable<string> chosenTags {get; set; } = new string[0];
+    [Parameter]    
+    public IEnumerable<int> yearValues {get; set;} = new int[]{1970, 2021};
+    [Parameter]    
+    public string chosenSortBy {get; set;} = "Most relevant";
+
+
+    void onTagSearch(ChangeEventArgs args) {
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)args.Value) || t.Item2);
+    }
+
+    void onTagToggle(string tagName) {
+        tags = tags.Select(t => t.Item1 == tagName ? (t.Item1, !t.Item2) : t);
+        if (inputForTagSearch==null) inputForTagSearch = "";
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputForTagSearch) || t.Item2);
+    }
+    void clearAll(){
+        tags = tags.Select(t => (t.Item1, false));
+        if (inputForTagSearch==null) inputForTagSearch = "";
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputForTagSearch) || t.Item2);
+    }
+
+    private void OnInputEvent(ChangeEventArgs changeEvent)
+    {
+        searchInput = (string)changeEvent.Value;
+    }
+
+    void search(){
+        var tagsChosen = tags.Where(t => t.Item2).Select(t => t.Item1);
+        var sortByChosen = sortByValues.Where(sb => sb.Item2).Select(sb => sb.Item1);
+        var URL = $"material?searchKey={(searchInput != null ? searchInput.Replace(" ", "+") : "")}&tags={string.Join(",",tagsChosen.Select(t => $"{t}"))}&startyear={yearValues.First()}&endyear={yearValues.Last()}&sortedby={string.Join("_",sortByChosen.Select(t => $"{t}"))}";
+        Navigation.NavigateTo(URL);
+    }
+
+    void enterSearch(KeyboardEventArgs e){
+        if(e.Key == "Enter"){
+            search();
+        }
+    }
+
+    void updateSortBy(string sortByValue){
+        sortByValues = sortByValues.Select( sb => sb.Item1 == sortByValue ? (sb.Item1, true) : (sb.Item1, false));
+    }
+
+    protected override void OnInitialized()
+    {
+        tags = tags.Select(t => chosenTags.Contains(t.Item1) ? (t.Item1, true) : t);
+        sortByValues = sortByValues.Select( sb => sb.Item1 == chosenSortBy ? (sb.Item1, true) : (sb.Item1, false));
+        filteredTags = tags;
+    }
+
+}

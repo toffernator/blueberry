@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-using blueberry.Core;
-
 namespace blueberry.Server.Controllers;
 
 //[Authorize]
@@ -22,8 +17,13 @@ public class MaterialController : ControllerBase
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(IEnumerable<MaterialDto>), 200)]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MaterialDto>>> Get([FromQuery(Name = "searchString")] string? searchString, [FromQuery(Name = "tag")] ISet<string> tags,
-                                                                  [FromQuery(Name = "startyear")] int? startYear, [FromQuery(Name = "endyear")] int? endYear, string? type)
+    public async Task<ActionResult<IEnumerable<MaterialDto>>> Get([FromQuery(Name = "searchString")] string? searchString, 
+                                                                  [FromQuery(Name = "tag")] ISet<string> tags,
+                                                                  [FromQuery(Name = "startyear")] int? startYear, 
+                                                                  [FromQuery(Name = "endyear")] int? endYear, 
+                                                                  [FromQuery(Name = "type")] string? type,
+                                                                  [FromQuery(Name = "offset")] int offset, 
+                                                                  [FromQuery(Name = "limit")] int limit)
     {
         var options = new SearchOptions
         {
@@ -31,10 +31,10 @@ public class MaterialController : ControllerBase
             Tags = tags,
             StartDate = startYear is null ? null : new DateTime((int) startYear, 1, 1),
             EndDate = endYear is null ? null : new DateTime((int) endYear, 1, 1),
-            Type = type
+            Type = type 
         };
 
         var result = await _repository.Search(options);
-        return new ActionResult<IEnumerable<MaterialDto>>(result);
+        return new ActionResult<IEnumerable<MaterialDto>>(result.Skip(offset).Take(limit));
     }
 }

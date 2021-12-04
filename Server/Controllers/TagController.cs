@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-using blueberry.Core;
-
 namespace blueberry.Server.Controllers;
 
 //[Authorize]
@@ -25,6 +20,6 @@ public class TagController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<TagDto>> Get()
     {
-        throw new NotImplementedException();
+        return await _repository.Read();
     }
 }
