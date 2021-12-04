@@ -28,7 +28,7 @@ public class MaterialController : ControllerBase
         var options = new SearchOptions
         {
             SearchString = searchString is null ? "" : searchString,
-            Tags = tags == null ? null ?? new PrimitiveSet<string>(tags),
+            Tags = tags == null ? null : new PrimitiveSet<string>(tags),
             StartDate = startYear is null ? null : new DateTime((int) startYear, 1, 1),
             EndDate = endYear is null ? null : new DateTime((int) endYear, 1, 1),
             Type = type is null ? "" : type
