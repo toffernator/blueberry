@@ -14,6 +14,10 @@ COPY Server/blueberry.Server.csproj   ./Server/
 COPY Server.Tests/blueberry.Server.Tests.csproj ./Server.Tests/
 RUN dotnet restore
 
+# Generate dev certs for service
+RUN dotnet dev-certs https
+RUN cp $(ls ${HOME}/.dotnet/corefx/cryptography/x509stores/my/*.pfx) /cert.pfx && ls /cert.pfx
+
 # Copy everything else and build
 COPY . .
 RUN dotnet publish -c Release -o out
@@ -22,4 +26,5 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build-env /app/out .
+COPY --from=build-env /cert.pfx ./blueberry.Server.pfx
 ENTRYPOINT ["dotnet", "blueberry.Server.dll"]
