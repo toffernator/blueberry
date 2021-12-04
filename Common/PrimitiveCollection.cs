@@ -12,21 +12,21 @@ public class PrimitiveCollection<T> : ICollection<T>, IReadOnlyCollection<T>, IE
     public PrimitiveCollection(ICollection<T> backing) => _backing = backing;
     public PrimitiveCollection() => _backing = new List<T>();
 
-    public int Count { get => _backing.Count; }
+    public virtual int Count { get => _backing.Count; }
 
-    public bool IsReadOnly { get => _backing.IsReadOnly; }
+    public virtual bool IsReadOnly { get => _backing.IsReadOnly; }
 
-    public void Add(T item) => _backing.Add(item);
+    public virtual void Add(T item) => _backing.Add(item);
 
-    public void Clear() => _backing.Clear();
+    public virtual void Clear() => _backing.Clear();
 
-    public bool Contains(T item) => _backing.Contains(item);
+    public virtual bool Contains(T item) => _backing.Contains(item);
 
-    public void CopyTo(T[] array, int arrayIndex) => _backing.CopyTo(array, arrayIndex);
+    public virtual void CopyTo(T[] array, int arrayIndex) => _backing.CopyTo(array, arrayIndex);
 
-    public bool Remove(T item) => _backing.Remove(item);
+    public virtual bool Remove(T item) => _backing.Remove(item);
 
-    public IEnumerator<T> GetEnumerator() => _backing.GetEnumerator();
+    public virtual IEnumerator<T> GetEnumerator() => _backing.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() =>  _backing.GetEnumerator();
 

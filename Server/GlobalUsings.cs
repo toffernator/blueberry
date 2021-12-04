@@ -8,3 +8,4 @@ global using Microsoft.AspNetCore.ResponseCompression;
 global using Microsoft.Identity.Web;
 global using blueberry.Infrastructure;
 global using blueberry.Core;
+global using blueberry.Common;

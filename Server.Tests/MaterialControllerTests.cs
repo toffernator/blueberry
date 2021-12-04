@@ -3,7 +3,7 @@ namespace blueberry.Server.Tests.Controllers;
 public class MaterialControllerTests
 {
     [Fact]
-    public async Task GetGivenLectureTagDockerStartYear2021EndYear2022TypeVideoReturnsLecture16()
+    public async Task GetCreatesCorectSearchOptionsFromParameters()
     {
         var logger = new Mock<ILogger<MaterialController>>();
         var repository = new Mock<IMaterialRepository>();
@@ -11,16 +11,23 @@ public class MaterialControllerTests
         var mockOptions = new SearchOptions
         {
             SearchString = "Lecture",
-            Tags = new HashSet<string>() {"Docker"},
+            Tags = new PrimitiveSet<string>() {"Docker"},
             StartDate = new DateTime(2021, 1, 1),
             EndDate = new DateTime(2022, 1, 1),
             Type = "Video"
         };
-        var expected = new [] {new MaterialDto(1, "Lecture 16", new [] {"Docker", "C#"})};
-        repository.Setup(m => m.Search(mockOptions)).ReturnsAsync(expected);
+        var expected = new [] 
+        {
+            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
+        };
+        repository.Setup(m => m.Search(It.Is<SearchOptions>(o => o.Equals(mockOptions)))).ReturnsAsync(expected);
         
         var controller = new MaterialController(logger.Object, repository.Object);
-        var response = await controller.Get("Lecture", new HashSet<string> {"Docker"}, 2021, 2022, "Video");
+        var response = await controller.Get("Lecture", new HashSet<string> {"Docker"}, 2021, 2022, "Video", 0, 2);
+
+        Assert.Equal(expected, response.Value);
+    }
 
     [Theory]
     [InlineData(0, 2)]

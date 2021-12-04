@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Client\blueberry.Client.csproj" />
     <ProjectReference Include="..\Core\blueberry.Core.csproj" />
     <ProjectReference Include="..\Infrastructure\blueberry.Infrastructure.csproj" />
+    <ProjectReference Include="..\Common\blueberry.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
