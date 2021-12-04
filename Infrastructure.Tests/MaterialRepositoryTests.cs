@@ -101,7 +101,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenDockerTagReturnsLecture10AndLecture16()
     {
-        var options = new SearchOptions { Tags = new HashSet<string>() { "Docker" } };
+        var options = new SearchOptions { Tags = new PrimitiveSet<string>() { "Docker" } };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
@@ -116,7 +116,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenDockerAndMobileTagReturnsLecture10AndLecture16AndLecture20()
     {
-        var options = new SearchOptions { Tags = new HashSet<string>() { "Docker", "Mobile" } };
+        var options = new SearchOptions { Tags = new PrimitiveSet<string>() { "Docker", "Mobile" } };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
@@ -193,7 +193,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGiven10AndDockerTagReturnsLecture10()
     {
-        var options = new SearchOptions { SearchString = "10", Tags = new HashSet<string>() { "Docker" } };
+        var options = new SearchOptions { SearchString = "10", Tags = new PrimitiveSet<string>() { "Docker" } };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
@@ -232,7 +232,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenLectureAndDockerAndStartDate29102021ReturnsLecture16()
     {
-        var options = new SearchOptions { SearchString = "Lecture", Tags = new HashSet<string>() { "Docker" }, StartDate = new DateTime(2021, 10, 29) };
+        var options = new SearchOptions { SearchString = "Lecture", Tags = new PrimitiveSet<string>() { "Docker" }, StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
@@ -247,7 +247,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenDockerTagAndStartDate29102021ReturnsLecture16()
     {
-        var options = new SearchOptions { Tags = new HashSet<string> { "Docker" }, StartDate = new DateTime(2021, 10, 29) };
+        var options = new SearchOptions { Tags = new PrimitiveSet<string> { "Docker" }, StartDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
@@ -261,7 +261,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenDockerTagAndEndDate29102021ReturnsLecture10AndLecture16()
     {
-        var options = new SearchOptions { Tags = new HashSet<string> { "Docker" }, EndDate = new DateTime(2021, 10, 29) };
+        var options = new SearchOptions { Tags = new PrimitiveSet<string> { "Docker" }, EndDate = new DateTime(2021, 10, 29) };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
@@ -287,7 +287,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenTypeBookAndSoftwareEngineeringRetunsOOSE()
     {
-        var options = new SearchOptions { Tags = new HashSet<string> { "Software Engineering" }, Type = "Book" };
+        var options = new SearchOptions { Tags = new PrimitiveSet<string> { "Software Engineering" }, Type = "Book" };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
@@ -334,7 +334,7 @@ public class MaterialRepositoryTests
         var options = new SearchOptions
         {
             SearchString = "10",
-            Tags = new HashSet<string>() { "Docker" },
+            Tags = new PrimitiveSet<string>() { "Docker" },
             StartDate = new DateTime(2021, 10, 1)
         };
         var result = await _repository.Search(options);
@@ -353,7 +353,7 @@ public class MaterialRepositoryTests
         var options = new SearchOptions
         {
             SearchString = "16",
-            Tags = new HashSet<string>() { "Docker" },
+            Tags = new PrimitiveSet<string>() { "Docker" },
             EndDate = new DateTime(2021, 10, 29)
         };
         var result = await _repository.Search(options);
@@ -372,7 +372,7 @@ public class MaterialRepositoryTests
         var options = new SearchOptions
         {
             SearchString = "O",
-            Tags = new HashSet<string>() { "Software Engineering" },
+            Tags = new PrimitiveSet<string>() { "Software Engineering" },
             Type = "Book"
         };
         var result = await _repository.Search(options);
@@ -449,7 +449,7 @@ public class MaterialRepositoryTests
     {
         var options = new SearchOptions
         {
-            Tags = new HashSet<string> { "Docker" },
+            Tags = new PrimitiveSet<string> { "Docker" },
             StartDate = new DateTime(2021, 10, 29),
             EndDate = new DateTime(2021, 10, 29)
         };
@@ -468,7 +468,7 @@ public class MaterialRepositoryTests
     {
         var options = new SearchOptions
         {
-            Tags = new HashSet<string> { "Software Engineering" },
+            Tags = new PrimitiveSet<string> { "Software Engineering" },
             StartDate = new DateTime(2013, 4, 20),
             Type = "Video"
         };
@@ -487,7 +487,7 @@ public class MaterialRepositoryTests
     {
         var options = new SearchOptions
         {
-            Tags = new HashSet<string> { "Software Engineering" },
+            Tags = new PrimitiveSet<string> { "Software Engineering" },
             EndDate = new DateTime(2021, 9, 29),
             Type = "Video"
         };
@@ -526,7 +526,7 @@ public class MaterialRepositoryTests
         var options = new SearchOptions
         {
             SearchString = "Lecture",
-            Tags = new HashSet<string> { "Docker" },
+            Tags = new PrimitiveSet<string> { "Docker" },
             StartDate = new DateTime(2021, 10, 29),
             EndDate = new DateTime(2021, 11, 12)
         };
@@ -545,7 +545,7 @@ public class MaterialRepositoryTests
         var options = new SearchOptions
         {
             SearchString = "9",
-            Tags = new HashSet<string>() { "C#" },
+            Tags = new PrimitiveSet<string>() { "C#" },
             StartDate = new DateTime(2021, 2, 26),
             Type = "Book"
         };
@@ -564,7 +564,7 @@ public class MaterialRepositoryTests
         var options = new SearchOptions
         {
             SearchString = "c",
-            Tags = new HashSet<string>() { "Mobile" },
+            Tags = new PrimitiveSet<string>() { "Mobile" },
             EndDate = new DateTime(2021, 11, 12),
             Type = "Video"
         };
@@ -623,7 +623,7 @@ public class MaterialRepositoryTests
     {
         var options = new SearchOptions
         {
-            Tags = new HashSet<string>() { "C#" },
+            Tags = new PrimitiveSet<string>() { "C#" },
             StartDate = new DateTime(2021, 2, 26),
             EndDate = new DateTime(2021, 10, 29),
             Type = "Book"
@@ -644,7 +644,7 @@ public class MaterialRepositoryTests
         var options = new SearchOptions
         {
             SearchString = "C",
-            Tags = new HashSet<string>() { "C#" },
+            Tags = new PrimitiveSet<string>() { "C#" },
             StartDate = new DateTime(2021, 2, 26),
             EndDate = new DateTime(2021, 11, 12),
             Type = "Book"
