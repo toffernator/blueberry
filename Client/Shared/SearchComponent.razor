@@ -1,4 +1,5 @@
 @inject NavigationManager Navigation
+@inject HttpClient Http
 
 <div class="searchModule">
     <div class="searchComponent">
@@ -71,8 +72,8 @@
 
 @code{
     //Lists
-    IEnumerable<(string, bool)> tags = new (string,bool)[] {("React", false),("Bootstrap", false),("Blazor", false),("Flutter",false)};
-    IEnumerable<(string, bool)> filteredTags; 
+    IEnumerable<(string, bool)> tags = new (string,bool)[0];
+    IEnumerable<(string, bool)> filteredTags = new (string,bool)[0]; 
     IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevant", false),("A-Z", false),("Z-A",false),("Newest", false), ("Oldest", false)}; 
     string inputForTagSearch;
 
@@ -124,9 +125,10 @@
         sortByValues = sortByValues.Select( sb => sb.Item1 == sortByValue ? (sb.Item1, true) : (sb.Item1, false));
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        tags = tags.Select(t => chosenTags.Contains(t.Item1) ? (t.Item1, true) : t);
+        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
+        tags = tagDtos.Select(t => chosenTags.Contains(t.Name) ? (t.Name, true) : (t.Name, false));
         sortByValues = sortByValues.Select( sb => sb.Item1 == chosenSortBy ? (sb.Item1, true) : (sb.Item1, false));
         filteredTags = tags;
     }
