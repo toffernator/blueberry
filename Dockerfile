@@ -15,8 +15,7 @@ COPY Server.Tests/blueberry.Server.Tests.csproj ./Server.Tests/
 RUN dotnet restore
 
 # Generate dev certs for service
-RUN dotnet dev-certs https
-RUN cp $(ls ${HOME}/.dotnet/corefx/cryptography/x509stores/my/*.pfx) /cert.pfx && ls /cert.pfx
+RUN dotnet dev-certs https -ep /cert.pfx
 
 # Copy everything else and build
 COPY . .
