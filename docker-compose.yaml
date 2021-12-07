@@ -12,9 +12,12 @@ services:
     image: blueberry
     build: .
     ports:
-      - "8080:80"
+      - "7104:7104"
+      - "5020:5020"
     environment:
       - ConnectionString="Server=db;Database=blueberry;User Id=sa;Password=TESTTESTTEST123:)"
+    volumes:
+      - '.local/.aspnet/https:/https/:ro'
     networks:
       - blueberry
 networks:

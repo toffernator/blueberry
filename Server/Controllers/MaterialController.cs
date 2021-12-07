@@ -18,7 +18,7 @@ public class MaterialController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<MaterialDto>), 200)]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MaterialDto>>> Get([FromQuery(Name = "searchString")] string? searchString, 
-                                                                  [FromQuery(Name = "tag")] ISet<string> tags,
+                                                                  [FromQuery(Name = "tag")] HashSet<string> tags,
                                                                   [FromQuery(Name = "startyear")] int? startYear, 
                                                                   [FromQuery(Name = "endyear")] int? endYear, 
                                                                   [FromQuery(Name = "type")] string? type,
@@ -28,10 +28,10 @@ public class MaterialController : ControllerBase
         var options = new SearchOptions
         {
             SearchString = searchString is null ? "" : searchString,
-            Tags = new PrimitiveSet<string>(tags),
+            Tags = tags == null ? null : new PrimitiveSet<string>(tags),
             StartDate = startYear is null ? null : new DateTime((int) startYear, 1, 1),
             EndDate = endYear is null ? null : new DateTime((int) endYear, 1, 1),
-            Type = type 
+            Type = type is null ? "" : type
         };
 
         var result = await _repository.Search(options);
