@@ -3,6 +3,7 @@
 @attribute [Authorize]
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
+@inject HttpClient Http
 @implements IDisposable
 
 <!-- PICTURE SOURCE: https://www.pexels.com/photo/black-screen-with-code-4164418/ -->
@@ -65,7 +66,7 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
     private int _endyearURL;
     private string _chosenSortBy;
 
-    void updateURLChanges(){
+    async Task updateURLChanges(){
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
         var queryStrings = QueryHelpers.ParseQuery(uri.Query);
         if(queryStrings.TryGetValue("tags", out var tagsURL))
@@ -88,14 +89,17 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
         {
             _chosenSortBy = sortbyURL;
         }
+
+        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKeyURL}&tag={_tagsURL}&startyear={_startyearURL}&endyear={_endyearURL}");
     }
-    protected override void OnInitialized()
+
+    protected override async Task OnInitializedAsync()
     {
         // Subscribe
         Navigation.LocationChanged += LocationChanged;
-        base.OnInitialized();
+        base.OnInitializedAsync();
 
-        updateURLChanges();
+        await updateURLChanges();
     }
 
     void goToMain(){
