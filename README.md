@@ -5,7 +5,7 @@
 ### Locally
 
 To run the database and server locally, you should run the following commands in the order they are given. Since we are
-using make certs you must either install this dependency or run it using WSL:
+using Make for `make certs` you must either install this dependency or run it using WSL:
 
 ```shell
 make certs
