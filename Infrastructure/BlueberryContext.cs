@@ -1,5 +1,3 @@
-using System.Runtime.Serialization;
-
 namespace blueberry.Infrastructure;
 
 public class BlueberryContext : DbContext, IBlueberryContext

@@ -1,5 +1,3 @@
-using blueberry.Infrastructure;
-
 namespace Infrastructure.Tests;
 
 public class TagRepositoryTests : IDisposable

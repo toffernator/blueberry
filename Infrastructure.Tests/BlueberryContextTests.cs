@@ -16,7 +16,6 @@ public class BlueberryContextTests : IDisposable
         _context = context;
     }
 
-
     [Fact]
     public async Task RepoGivenNoDatabaseThrowsNoDbConnectionException()
     {
