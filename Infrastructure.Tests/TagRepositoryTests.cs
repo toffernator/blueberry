@@ -124,19 +124,6 @@ public class TagRepositoryTests : IDisposable
         Assert.NotNull(entity);
     }
 
-    [Fact]
-    public async Task TagRepoGivenNoDatabaseThrowsNoDbConnectionException()
-    {
-        var connection = new SqliteConnection("Filename=:memory:");
-        connection.Open();
-        var builder = new DbContextOptionsBuilder<BlueberryContext>();
-        builder.UseSqlite(connection);
-        var context = new BlueberryContext(builder.Options);
-
-        context.Tags.Add(new Tag{Name = "Test"});
-        await Assert.ThrowsAsync<NoDBConnectionException>(async () => await context.SaveChangesAsync());
-    }
-
     private bool disposed;
 
     protected virtual void Dispose(bool disposing)

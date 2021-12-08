@@ -20,38 +20,30 @@ public class BlueberryContext : DbContext, IBlueberryContext
                     .IsUnique();
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+     public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {   
-        Task<int> token;
         try
         {
-            token = base.SaveChangesAsync(cancellationToken);
+            return await base.SaveChangesAsync(cancellationToken);
         }
-        catch (DbUpdateException db)
+        catch (DbUpdateException e)
         {
-            throw new NoDBConnectionException();
+            throw new NoDBConnectionException(e);
         }
-        return token;
     }
 }
 
 [Serializable]
 public class NoDBConnectionException : Exception
 {
-    public NoDBConnectionException()
+    private static string DEFAULT_MSG = "There is no connection to the database. Make sure that it is running, and that the connection string is valid";
+    public NoDBConnectionException() : base(DEFAULT_MSG)
     {
-        Console.WriteLine("YOOOOOO!");
+            // Intentionally Empty
     }
 
-    public NoDBConnectionException(string? message) : base(message)
+    public NoDBConnectionException(Exception innerException) : base(DEFAULT_MSG, innerException)
     {
-    }
-
-    public NoDBConnectionException(string? message, Exception? innerException) : base(message, innerException)
-    {
-    }
-
-    protected NoDBConnectionException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
+            // Intentionally Empty
     }
 }
