@@ -1,3 +1,5 @@
+using blueberry.Infrastructure;
+
 namespace Infrastructure.Tests;
 
 public class TagRepositoryTests : IDisposable
@@ -109,6 +111,30 @@ public class TagRepositoryTests : IDisposable
 
         Assert.Equal(Conflict, response);
         Assert.NotNull(entity);
+    }
+
+    [Fact]
+    public async Task ErrorDiscovery()
+    {
+        var response = await _repository.Delete(1);
+
+        var entity = await _context.Tags.FindAsync(1);
+
+        Assert.Equal(Conflict, response);
+        Assert.NotNull(entity);
+    }
+
+    [Fact]
+    public async Task TagRepoGivenNoDatabaseThrowsNoDbConnectionException()
+    {
+        var connection = new SqliteConnection("Filename=:memory:");
+        connection.Open();
+        var builder = new DbContextOptionsBuilder<BlueberryContext>();
+        builder.UseSqlite(connection);
+        var context = new BlueberryContext(builder.Options);
+
+        context.Tags.Add(new Tag{Name = "Test"});
+        await Assert.ThrowsAsync<NoDBConnectionException>(async () => await context.SaveChangesAsync());
     }
 
     private bool disposed;
