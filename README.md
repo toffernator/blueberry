@@ -2,16 +2,28 @@
 
 ## How to run
 
+Assumes a POSIX terminal. Thus everything must be run in WSL if on Windows.
+
+### Requirements
+
+POSIX terminal
+make
+docker
+dotnet
+
 ### Locally
 
-To run the database and server locally, you should run the following commands in the order they are given. Since we are
-using Make for `make certs` you must either install this dependency or run it using WSL:
+To run the database and server locally, you should run the following commands in the order they are given.
 
 ```shell
-make certs
-docker run -e 'SA_PASSWORD=TESTTESTTEST123:)' -e 'ACCEPT_EULA=Y' -p "1433:1433" mcr.microsoft.com/mssql/server:2019-latest
-ConnectionString='Server=localhost;Database=blueberry;User Id=sa;Password=TESTTESTTEST123:)' dotnet run --project Server -- seed
-ConnectionString='Server=localhost;Database=blueberry;User Id=sa;Password=TESTTESTTEST123:)' dotnet run --project Server
+make
+dotnet run --project Server
+```
+
+To remove generated artifacts, run
+
+```shell
+make clean
 ```
 
 ### With Docker-compose
