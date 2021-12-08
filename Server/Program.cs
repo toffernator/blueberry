@@ -24,7 +24,7 @@ seedCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) 
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    string connectionString = ConnectionString.read(builder.Configuration.GetConnectionString("Blueberry"), 
+    string connectionString = ConnectionString.Read(builder.Configuration.GetConnectionString("Blueberry"), 
                                                     Environment.GetEnvironmentVariable("ConnectionString"),
                                                     connectionStringFromArgs);
     
@@ -43,7 +43,7 @@ rootCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) 
 {
     var builder = WebApplication.CreateBuilder(args);
     
-    string connectionString = ConnectionString.read(builder.Configuration.GetConnectionString("Blueberry"), 
+    string connectionString = ConnectionString.Read(builder.Configuration.GetConnectionString("Blueberry"), 
                                                     Environment.GetEnvironmentVariable("ConnectionString"),
                                                     connectionStringFromArgs);
     // Add services to the container.

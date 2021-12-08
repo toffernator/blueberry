@@ -2,7 +2,7 @@ namespace blueberry.Server.Common;
 
 public class ConnectionString
 {
-    public static string read(params string?[] maybeStrings)
+    public static string Read(params string?[] maybeStrings)
     {
         foreach (var maybe in maybeStrings)
         {
