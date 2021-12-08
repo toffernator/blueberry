@@ -14,14 +14,12 @@ public class BlueberryContextTests : IDisposable
         builder.UseSqlite(connection);
         var context = new BlueberryContext(builder.Options);
 
-        context.SaveChanges();
-
         _context = context;
         _repository = new TagRepository(_context);
     }
 
 
-[Fact]
+    [Fact]
     public async Task RepoGivenNoDatabaseThrowsNoDbConnectionException()
     {
         _context.Tags.Add(new Tag{Name = "Test"});
