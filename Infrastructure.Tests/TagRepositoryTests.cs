@@ -113,17 +113,6 @@ public class TagRepositoryTests : IDisposable
         Assert.NotNull(entity);
     }
 
-    [Fact]
-    public async Task ErrorDiscovery()
-    {
-        var response = await _repository.Delete(1);
-
-        var entity = await _context.Tags.FindAsync(1);
-
-        Assert.Equal(Conflict, response);
-        Assert.NotNull(entity);
-    }
-
     private bool disposed;
 
     protected virtual void Dispose(bool disposing)

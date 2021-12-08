@@ -4,7 +4,6 @@ public class BlueberryContextTests : IDisposable
 {
 
     private readonly IBlueberryContext _context;
-    private readonly TagRepository _repository;
 
     public BlueberryContextTests()
     {
@@ -15,7 +14,6 @@ public class BlueberryContextTests : IDisposable
         var context = new BlueberryContext(builder.Options);
 
         _context = context;
-        _repository = new TagRepository(_context);
     }
 
 
