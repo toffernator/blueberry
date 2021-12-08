@@ -19,11 +19,13 @@ ConnectionString='Server=localhost;Database=blueberry;User Id=sa;Password=TESTTE
 To run the database and server locally using docker compose run the following commands:
 
 On linux
+
 ```shell
 docker-compose build && docker-compose up
 ```
 
 On MacOS / Windows
-```
+
+```shell
 docker compose build && docker compose up
 ```

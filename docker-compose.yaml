@@ -9,6 +9,8 @@ services:
   backend:
     image: blueberry
     build: .
+    depends_on:
+      - db
     ports:
       - "7104:7104"
       - "5020:5020"

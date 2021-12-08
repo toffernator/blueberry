@@ -27,4 +27,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 COPY --from=build-env /cert.pfx ./blueberry.Server.pfx
-ENTRYPOINT ["dotnet", "blueberry.Server.dll"]
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
