@@ -44,7 +44,7 @@ public class UserRepository : IUserRepository
                     .ToListAsync())
                     .AsReadOnly();
 
-    public async Task<Status> Update(UserUpdateDto User)
+    public async Task<Status> Update(int id, UserUpdateDto User)
     {
         var entity = await _context.Users.Include(u => u.Tags).FirstOrDefaultAsync(u => u.Id == User.Id);
 
