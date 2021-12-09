@@ -4,6 +4,12 @@
 
 Assumes a POSIX terminal. Thus everything must be run in WSL if on Windows.
 
+**MacOS**: If you are using MacOS you need to install utils (the important being realpath) this can be done runnig:
+
+```bash
+$ brew install coreutils
+```
+
 ### Requirements
 
 POSIX terminal
