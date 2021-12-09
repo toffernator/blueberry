@@ -1,3 +1,4 @@
+using blueberry.Server.Common;
 using blueberry.Server.Model;
 using System.CommandLine;
 using System.CommandLine.Invocation;
@@ -21,10 +22,12 @@ var rootCommand = new RootCommand {
 
 seedCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) =>
 {
-    string connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? (connectionStringFromArgs ?? throw new ArgumentException("No connection string supplied"));
-
     var builder = WebApplication.CreateBuilder(args);
 
+    string connectionString = ConnectionString.Read(builder.Configuration.GetConnectionString("Blueberry"), 
+                                                    Environment.GetEnvironmentVariable("ConnectionString"),
+                                                    connectionStringFromArgs);
+    
     builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(connectionString));
     builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
     builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
@@ -38,10 +41,11 @@ seedCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) 
 
 rootCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) =>
 {
-    string connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? (connectionStringFromArgs ?? throw new ArgumentException("No connection string supplied"));
-
     var builder = WebApplication.CreateBuilder(args);
-
+    
+    string connectionString = ConnectionString.Read(builder.Configuration.GetConnectionString("Blueberry"), 
+                                                    Environment.GetEnvironmentVariable("ConnectionString"),
+                                                    connectionStringFromArgs);
     // Add services to the container.
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
