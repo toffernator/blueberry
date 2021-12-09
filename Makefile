@@ -17,7 +17,7 @@ Server/blueberry.Server.pfx:
 	cp $(shell ls ./certs/*.pfx) ./Server/blueberry.Server.pfx
 
 db-up:
-	docker start blueberry-db 2>/dev/null || docker run --name blueberry-db -d -e 'SA_PASSWORD=TESTTESTTEST123:)' -e 'ACCEPT_EULA=Y' -p "1433:1433" mcr.microsoft.com/mssql/server:2019-latest && sleep 10
+	docker start blueberry-db 2>/dev/null || docker run --name blueberry-db -d -e 'SA_PASSWORD=TESTTESTTEST123:)' -e 'ACCEPT_EULA=Y' -p "1433:1433" mcr.microsoft.com/azure-sql-edge:latest && sleep 10
 
 db-stop:
 	docker stop blueberry-db

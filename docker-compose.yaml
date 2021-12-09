@@ -1,6 +1,6 @@
 services:
   db:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/azure-sql-edge:latest
     environment:
       - SA_PASSWORD=TESTTESTTEST123:)
       - ACCEPT_EULA=Y
