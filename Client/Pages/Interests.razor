@@ -67,9 +67,11 @@ else {
 @code {
 
     IEnumerable<(string, bool)> tags = new (string,bool)[] {("React", false),("Bootstrap", false),("Blazor", false),("HTML",false),("Java",false),("JavaScript",false),("CSS",false),("VS-code",false),("UML",false),("RAD",false),("Software engeneering",false),("Lamport timestamps",false),("Testing",false),("Unit-Testing",false),("Flutter",false),("ACID",false),("API",false)};
-    PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>() {"React", "Bootstrap", "Blazor", "Flutter"}; 
+
     
     public Boolean isDone = false;
+    PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>(); 
+
     async Task Done()
     {
         isDone = true;
@@ -114,7 +116,17 @@ else {
             Navigation.NavigateTo("");
         }
     }
-    
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userid = await localStorage.GetItemAsync<int>("userid");
+        if (userid != 0)
+        {
+            var user =  await Http.GetFromJsonAsync<UserDto>($"user/{userid}");
+            if (user != null) chosenTags = user.Tags;
+        }
+    }
+
     void addToChosenTags(string tagName){
         chosenTags.Add(tagName);
     }
@@ -122,6 +134,7 @@ else {
     void removeFromChosenTags(string tagName){
         chosenTags.Remove(tagName);
     }
+
 
 
 }
