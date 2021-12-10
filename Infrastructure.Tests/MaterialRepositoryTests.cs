@@ -55,6 +55,25 @@ public class MaterialRepositoryTests
     }
 
     [Fact]
+    public async Task SearchGivenEmptyTagCollectionReturnsEverything()
+    {
+        var options = new SearchOptions { Tags = new PrimitiveSet<string>() };
+        var result = await _repository.Search(options);
+
+        IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
+        {
+            new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string> {"C#"}),
+            new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}),
+            new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
+            new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"})
+        };
+
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
     public async Task SearchGivenLecture10ReturnsLecture10()
     {
         var options = new SearchOptions { SearchString = "Lecture 10" };

@@ -11,45 +11,29 @@ public class MaterialRepository : IMaterialRepository
 
     public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
     {
-        Console.WriteLine($"MaterialRepository/Search | Found {_context.Materials.Count()} materials");
-
         // Start with title since it is the only non-nullable option.
         IQueryable<Material> result = QueryTitle(options.SearchString);
-        Console.WriteLine($"MaterialRepository/Search/SearchString | Found {result.Count()} materials");
 
         if (options.Tags != null && options.Tags.Count() != 0)
         {
-            Console.WriteLine($"MaterialRepository/Search/Tags | Has Tags: ");
-            foreach(string t in options.Tags)
-            {
-                Console.Write(t + ", ");
-            }
-            Console.WriteLine();
-
             result = QueryTags(result, options.Tags);
-            Console.WriteLine($"MaterialRepository/Search/Tags | Found {result.Count()} materials");
         }
 
         if (options.StartDate != null)
         {
             result = QueryStartDate(result, (DateTime)options.StartDate);
-            Console.WriteLine($"MaterialRepository/Search/StartDate | Found {result.Count()} materials");
-            // FIXME: Here the count becomes 0
+            // FIXME: Here the count becomes 0 when supplied options from material controller
         }
 
         if (options.EndDate != null)
         {
             result = QueryEndDate(result, (DateTime)options.EndDate);
-            Console.WriteLine($"MaterialRepository/Search/EndDate | Found {result.Count()} materials");
         }
 
         if (options.Type != null && options.Type != "")
         {
             result = QueryType(result, options.Type);
-            Console.WriteLine($"MaterialRepository/Search/Type | Found {result.Count()} materials");
         }
-
-        Console.WriteLine($"MaterialRepository/Search | Found {result.Count()} result");
 
         return await result
             .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name))))
@@ -65,13 +49,6 @@ public class MaterialRepository : IMaterialRepository
     private IQueryable<Material> QueryTags(IQueryable<Material> source, IEnumerable<string> tags)
     {
         var tagEntities = _context.Tags.Where(t => tags.Contains(t.Name));
-        Console.WriteLine($"MaterialRepository/Search/Tags | Has Tags: ");
-        foreach(Tag t in tagEntities)
-        {
-            Console.Write(t + ", ");
-        }
-        Console.WriteLine();
-
         return source.Where(m => m.Tags.Intersect(tagEntities).Count() >= 0);
     }
 
