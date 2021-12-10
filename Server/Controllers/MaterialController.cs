@@ -34,11 +34,7 @@ public class MaterialController : ControllerBase
             Type = type is null ? "" : type
         };
 
-        // TODO: Remove debug statements
-        Console.WriteLine($"MaterialController/Get | Search String: {options.SearchString} | Tags: {options.Tags} | StartDate: {options.StartDate} | EndDate: {options.EndDate} | Type: {options.Type} | Offset: {offset} | Limit: {limit}");
-
         var result = await _repository.Search(options);
-        Console.WriteLine($"MaterialController/Get | Recieved {result.Count()} results");
         return new ActionResult<IEnumerable<MaterialDto>>(result.Skip(offset).Take(limit));
     }
 }
