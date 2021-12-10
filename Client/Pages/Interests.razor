@@ -1,6 +1,9 @@
 @page "/interests"
 @attribute [Authorize]
 @inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient Http
 
 
 <PageTitle>Interests</PageTitle>
@@ -13,7 +16,7 @@
         <div class="tags">
             @foreach (var tag in chosenTags)
                      {
-                         <span class="badge rounded-pill bg-primary tag" @onclick="() => removeFromChosenTags(tag.Item1)" >@tag.Item1</span> 
+                         <span class="badge rounded-pill bg-primary tag" @onclick="() => removeFromChosenTags(tag)" >@tag</span> 
                      }
         </div>
     </div>
@@ -49,32 +52,64 @@
     </div>
 </div>
 <div class="d-grid gap-2 col-6 mx-auto">
-    <button class="btn btn-primary" type="button" @onclick="done">Done</button>
+    <button class="btn btn-primary" type="button" @onclick="Done">Done</button>
 </div>
 
 
 @code {
 
     IEnumerable<(string, bool)> tags = new (string,bool)[] {("React", false),("Bootstrap", false),("Blazor", false),("HTML",false),("Java",false),("JavaScript",false),("CSS",false),("VS-code",false),("UML",false),("RAD",false),("Software engeneering",false),("Lamport timestamps",false),("Testing",false),("Unit-Testing",false),("Flutter",false),("ACID",false),("API",false)};
-    IEnumerable<(string, bool)> chosenTags = new (string,bool)[] {("React", true),("Bootstrap", true),("Blazor", true),("Flutter",true)}; 
+    PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>() {"React", "Bootstrap", "Blazor", "Flutter"}; 
 
-    void done()
+    async Task Done()
     {
-        Navigation.NavigateTo("");
+        // Empty userid returns 0
+        var userid = await localStorage.GetItemAsync<int>("userid");
+        if (userid != 0)
+        {
+            var user = new UserUpdateDto(userid, chosenTags);
 
+            var response = await Http.PutAsJsonAsync($"user/{userid}", user);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Navigation.NavigateTo("");
+            } else
+            {
+                await CreateUser();
+            }
+
+        } else
+        {
+            await CreateUser();
+        }
     }
 
+
+    async Task CreateUser()
+    {
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = new UserCreateDto(authState.User.Identity.Name, chosenTags);
+
+        var response = await Http.PostAsJsonAsync($"user", user);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var created = await response.Content.ReadFromJsonAsync<UserDto>();
+            await localStorage.RemoveItemAsync("userid");
+            await localStorage.SetItemAsync("userid", created?.Id);
+
+            Navigation.NavigateTo("");
+        }
+    }
     
     void addToChosenTags(string tagName){
-        var temp = (tagName, true);
-        chosenTags = chosenTags.Append(temp);
-    
-
+        chosenTags.Add(tagName);
     }
+
     void removeFromChosenTags(string tagName){
-
-        chosenTags = chosenTags.Where(x => x.Item1 != tagName);
-
+        chosenTags.Remove(tagName);
     }
 
 
