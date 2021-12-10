@@ -49,6 +49,12 @@ public class MaterialRepository : IMaterialRepository
     private IQueryable<Material> QueryTags(IQueryable<Material> source, IEnumerable<string> tags)
     {
         var tagEntities = _context.Tags.Where(t => tags.Contains(t.Name));
+        // First check that the tags actually exist. Otherwise, the intersection with the empty set is always the empty
+        // set.
+        if (tagEntities.Count() == 0)
+        {
+            return source;
+        }
         return source.Where(m => m.Tags.Intersect(tagEntities).Count() > 0);
     }
 
