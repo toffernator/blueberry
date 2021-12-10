@@ -47,3 +47,11 @@ On MacOS / Windows
 ```shell
 docker compose build && docker compose up
 ```
+
+### Emergency user
+
+In case authentication with your own Microsoft account fails, we have created a Guest user which will allow you to log in
+nonetheless.
+
+Username: guest@blueberryproject.onmicrosoft.com
+Password: L2q0!8grGYD2JRELEj2A
