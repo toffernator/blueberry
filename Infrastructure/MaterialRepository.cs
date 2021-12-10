@@ -49,16 +49,16 @@ public class MaterialRepository : IMaterialRepository
     private IQueryable<Material> QueryTags(IQueryable<Material> source, IEnumerable<string> tags)
     {
         var tagEntities = _context.Tags.Where(t => tags.Contains(t.Name));
-        return source.Where(m => m.Tags.Intersect(tagEntities).Count() >= 0);
+        return source.Where(m => m.Tags.Intersect(tagEntities).Count() > 0);
     }
 
     private IQueryable<Material> QueryStartDate(DateTime start) => QueryStartDate(_context.Materials, start);
 
-    private IQueryable<Material> QueryStartDate(IQueryable<Material> source, DateTime start) => source.Where(m => m.Date.Date >= start.Date);
+    private IQueryable<Material> QueryStartDate(IQueryable<Material> source, DateTime start) => source.Where(m => m.Date >= start);
 
     private IQueryable<Material> QueryEndDate(DateTime end) => QueryEndDate(_context.Materials, end);
 
-    private IQueryable<Material> QueryEndDate(IQueryable<Material> source, DateTime end) => source.Where(m => m.Date.Date <= end.Date);
+    private IQueryable<Material> QueryEndDate(IQueryable<Material> source, DateTime end) => source.Where(m => m.Date <= end);
 
     private IQueryable<Material> QueryType(string type) => QueryType(_context.Materials, type);
     private IQueryable<Material> QueryType(IQueryable<Material> source, string type) => source.Where(m => m.Type == type);
