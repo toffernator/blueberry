@@ -32,11 +32,8 @@ public class UserController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(UserDto), 201)]
-    public async Task<IActionResult> Post(UserCreateDto character)
-    {
-        var created = await _repository.Create(character);
-        return CreatedAtRoute(nameof(Get), new { created.Id }, created);
-    }
+    public async Task<ActionResult<UserDto>> Post(UserCreateDto user)
+        => (await _repository.Create(user));
 
     [HttpDelete("{id}")]
     [ProducesResponseType(204)]
