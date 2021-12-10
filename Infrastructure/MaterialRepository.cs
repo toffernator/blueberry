@@ -17,30 +17,36 @@ public class MaterialRepository : IMaterialRepository
         IQueryable<Material> result = QueryTitle(options.SearchString);
         Console.WriteLine($"MaterialRepository/Search/SearchString | Found {result.Count()} materials");
 
-        if (options.Tags != null)
+        if (options.Tags != null && options.Tags.Count() != 0)
         {
-            // Console.WriteLine($"MaterialRepository/Search/Tags | Looking for tags: {options.Tags.First()}");
-            // result = QueryTags(result, options.Tags);
-            // Console.WriteLine($"MaterialRepository/Search/Tags | Found {result.Count()} materials");
+            Console.WriteLine($"MaterialRepository/Search/Tags | Has Tags: ");
+            foreach(string t in options.Tags)
+            {
+                Console.Write(t + ", ");
+            }
+            Console.WriteLine();
+
+            result = QueryTags(result, options.Tags);
+            Console.WriteLine($"MaterialRepository/Search/Tags | Found {result.Count()} materials");
         }
 
         if (options.StartDate != null)
         {
-            // result = QueryStartDate(result, (DateTime)options.StartDate);
-            // Console.WriteLine($"MaterialRepository/Search/StartDate | Found {result.Count()} materials");
+            result = QueryStartDate(result, (DateTime)options.StartDate);
+            Console.WriteLine($"MaterialRepository/Search/StartDate | Found {result.Count()} materials");
             // FIXME: Here the count becomes 0
         }
 
         if (options.EndDate != null)
         {
-            // result = QueryEndDate(result, (DateTime)options.EndDate);
-            // Console.WriteLine($"MaterialRepository/Search/EndDate | Found {result.Count()} materials");
+            result = QueryEndDate(result, (DateTime)options.EndDate);
+            Console.WriteLine($"MaterialRepository/Search/EndDate | Found {result.Count()} materials");
         }
 
         if (options.Type != null && options.Type != "")
         {
-            // result = QueryType(result, options.Type);
-            // Console.WriteLine($"MaterialRepository/Search/Type | Found {result.Count()} materials");
+            result = QueryType(result, options.Type);
+            Console.WriteLine($"MaterialRepository/Search/Type | Found {result.Count()} materials");
         }
 
         Console.WriteLine($"MaterialRepository/Search | Found {result.Count()} result");
@@ -59,7 +65,14 @@ public class MaterialRepository : IMaterialRepository
     private IQueryable<Material> QueryTags(IQueryable<Material> source, IEnumerable<string> tags)
     {
         var tagEntities = _context.Tags.Where(t => tags.Contains(t.Name));
-        return source.Where(m => m.Tags.Intersect(tagEntities).Count() > 0);
+        Console.WriteLine($"MaterialRepository/Search/Tags | Has Tags: ");
+        foreach(Tag t in tagEntities)
+        {
+            Console.Write(t + ", ");
+        }
+        Console.WriteLine();
+
+        return source.Where(m => m.Tags.Intersect(tagEntities).Count() >= 0);
     }
 
     private IQueryable<Material> QueryStartDate(DateTime start) => QueryStartDate(_context.Materials, start);
