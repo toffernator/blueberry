@@ -30,11 +30,15 @@ public class MaterialController : ControllerBase
             SearchString = searchString is null ? "" : searchString,
             Tags = tags == null ? null : new PrimitiveSet<string>(tags),
             StartDate = startYear is null ? null : new DateTime((int) startYear, 1, 1),
-            EndDate = endYear is null ? null : new DateTime((int) endYear, 1, 1),
+            EndDate = endYear is null ? null : new DateTime((int) endYear, 12, 31),
             Type = type is null ? "" : type
         };
 
+        // TODO: Remove debug statements
+        Console.WriteLine($"MaterialController/Get | Search String: {options.SearchString} | Tags: {options.Tags} | StartDate: {options.StartDate} | EndDate: {options.EndDate} | Type: {options.Type} | Offset: {offset} | Limit: {limit}");
+
         var result = await _repository.Search(options);
+        Console.WriteLine($"MaterialController/Get | Recieved {result.Count()} results");
         return new ActionResult<IEnumerable<MaterialDto>>(result.Skip(offset).Take(limit));
     }
 }

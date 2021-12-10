@@ -11,28 +11,39 @@ public class MaterialRepository : IMaterialRepository
 
     public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
     {
+        Console.WriteLine($"MaterialRepository/Search | Found {_context.Materials.Count()} materials");
+
         // Start with title since it is the only non-nullable option.
         IQueryable<Material> result = QueryTitle(options.SearchString);
+        Console.WriteLine($"MaterialRepository/Search/SearchString | Found {result.Count()} materials");
 
         if (options.Tags != null)
         {
-            result = QueryTags(result, options.Tags);
+            // Console.WriteLine($"MaterialRepository/Search/Tags | Looking for tags: {options.Tags.First()}");
+            // result = QueryTags(result, options.Tags);
+            // Console.WriteLine($"MaterialRepository/Search/Tags | Found {result.Count()} materials");
         }
 
         if (options.StartDate != null)
         {
-            result = QueryStartDate(result, (DateTime)options.StartDate);
+            // result = QueryStartDate(result, (DateTime)options.StartDate);
+            // Console.WriteLine($"MaterialRepository/Search/StartDate | Found {result.Count()} materials");
+            // FIXME: Here the count becomes 0
         }
 
         if (options.EndDate != null)
         {
-            result = QueryEndDate(result, (DateTime)options.EndDate);
+            // result = QueryEndDate(result, (DateTime)options.EndDate);
+            // Console.WriteLine($"MaterialRepository/Search/EndDate | Found {result.Count()} materials");
         }
 
-        if (options.Type != null)
+        if (options.Type != null && options.Type != "")
         {
-            result = QueryType(result, options.Type);
+            // result = QueryType(result, options.Type);
+            // Console.WriteLine($"MaterialRepository/Search/Type | Found {result.Count()} materials");
         }
+
+        Console.WriteLine($"MaterialRepository/Search | Found {result.Count()} result");
 
         return await result
             .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name))))
@@ -53,11 +64,11 @@ public class MaterialRepository : IMaterialRepository
 
     private IQueryable<Material> QueryStartDate(DateTime start) => QueryStartDate(_context.Materials, start);
 
-    private IQueryable<Material> QueryStartDate(IQueryable<Material> source, DateTime start) => source.Where(m => m.Date >= start);
+    private IQueryable<Material> QueryStartDate(IQueryable<Material> source, DateTime start) => source.Where(m => m.Date.Date >= start.Date);
 
     private IQueryable<Material> QueryEndDate(DateTime end) => QueryEndDate(_context.Materials, end);
 
-    private IQueryable<Material> QueryEndDate(IQueryable<Material> source, DateTime end) => source.Where(m => m.Date <= end);
+    private IQueryable<Material> QueryEndDate(IQueryable<Material> source, DateTime end) => source.Where(m => m.Date.Date <= end.Date);
 
     private IQueryable<Material> QueryType(string type) => QueryType(_context.Materials, type);
     private IQueryable<Material> QueryType(IQueryable<Material> source, string type) => source.Where(m => m.Type == type);
