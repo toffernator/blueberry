@@ -60,11 +60,13 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
     new MaterialDetailsDto( 4, "Using React with Bootstrap", new PrimitiveCollection<string> { "React", "Bootstrap", "Framework" }, "React and Bootstrap is a classic combination widely used in the industry", "/Assets/img/react.jpg", "Article", new DateTime(2019, 9, 4)),
     };
 
-    private string _searchKeyURL;
+    private string _searchKeyURL = "";
     private string _tagsURL;
     private int _startyearURL;
     private int _endyearURL;
     private string _chosenSortBy;
+    private int _offset = 0;
+    private int _limit = 2;
 
     async Task updateURLChanges(){
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
@@ -90,7 +92,7 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
             _chosenSortBy = sortbyURL;
         }
 
-        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKeyURL}&tag={_tagsURL}&startyear={_startyearURL}&endyear={_endyearURL}");
+        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKeyURL}&tag={_tagsURL}&startyear={_startyearURL}&endyear={_endyearURL}&offset={_offset}&limit={_limit}");
     }
 
     protected override async Task OnInitializedAsync()
