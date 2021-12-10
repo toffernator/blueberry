@@ -14,7 +14,7 @@ public class MaterialRepository : IMaterialRepository
         // Start with title since it is the only non-nullable option.
         IQueryable<Material> result = QueryTitle(options.SearchString);
 
-        if (options.Tags != null)
+        if (options.Tags != null && options.Tags.Count() != 0)
         {
             result = QueryTags(result, options.Tags);
         }
@@ -22,6 +22,7 @@ public class MaterialRepository : IMaterialRepository
         if (options.StartDate != null)
         {
             result = QueryStartDate(result, (DateTime)options.StartDate);
+            // FIXME: Here the count becomes 0 when supplied options from material controller
         }
 
         if (options.EndDate != null)
@@ -29,7 +30,7 @@ public class MaterialRepository : IMaterialRepository
             result = QueryEndDate(result, (DateTime)options.EndDate);
         }
 
-        if (options.Type != null)
+        if (options.Type != null && options.Type != "")
         {
             result = QueryType(result, options.Type);
         }
@@ -48,6 +49,12 @@ public class MaterialRepository : IMaterialRepository
     private IQueryable<Material> QueryTags(IQueryable<Material> source, IEnumerable<string> tags)
     {
         var tagEntities = _context.Tags.Where(t => tags.Contains(t.Name));
+        // First check that the tags actually exist. Otherwise, the intersection with the empty set is always the empty
+        // set.
+        if (tagEntities.Count() == 0)
+        {
+            return source;
+        }
         return source.Where(m => m.Tags.Intersect(tagEntities).Count() > 0);
     }
 

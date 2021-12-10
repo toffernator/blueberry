@@ -2,7 +2,7 @@ namespace blueberry.Server.Controllers;
 
 //[Authorize]
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public class TagController : ControllerBase
 {

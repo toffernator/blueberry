@@ -2,7 +2,7 @@ namespace blueberry.Server.Controllers;
 //Made with inspiration from Rasmus Repo : https://github.com/ondfisk/BDSA2021/blob/main/MyApp.Server/Controllers/CharactersController.cs
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
