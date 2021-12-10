@@ -13,7 +13,7 @@ public class MaterialControllerTests
             SearchString = "Lecture",
             Tags = new PrimitiveSet<string>() {"Docker"},
             StartDate = new DateTime(2021, 1, 1),
-            EndDate = new DateTime(2022, 1, 1),
+            EndDate = new DateTime(2022, 12, 31),
             Type = "Video"
         };
         var expected = new [] 
