@@ -51,7 +51,15 @@
     </div>
 </div>
 <div class="d-grid gap-2 col-6 mx-auto">
+@if(isDone == false){
     <button class="btn btn-primary" type="button" @onclick="Done">Done</button>
+}
+else {
+<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  Loading...
+</button>
+}
 </div>
 
 
@@ -59,9 +67,12 @@
 
    IEnumerable<(string, bool)> tags = new (string,bool)[0];
    PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>(); 
+   
+    public Boolean isDone = false;
 
     async Task Done()
     {
+        isDone = true;
         // Empty userid returns 0
         var userid = await localStorage.GetItemAsync<int>("userid");
         if (userid != 0)
@@ -82,6 +93,7 @@
         {
             await CreateUser();
         }
+
     }
 
 
