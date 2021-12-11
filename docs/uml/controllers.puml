@@ -19,12 +19,11 @@ class TagController {
   ..
   <<GET>> Get () : IEnumerable<TagDTO>
 }
-label "/material?{query}" as material
+label "api/material?{query}" as material
 
-label "/tag" as tag
+label "api/tag" as tag
 
-label "/user/{id}" as userid
-label "/user" as user
+label "api/user/{id}" as userid
 
 BlueBerryServer -. material
 material -.> MaterialController::Get 

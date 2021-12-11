@@ -5,7 +5,6 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
 
-
 <PageTitle>Interests</PageTitle>
 
 <div class="pageContent">
@@ -58,8 +57,8 @@
 
 @code {
 
-    IEnumerable<(string, bool)> tags = new (string,bool)[] {("React", false),("Bootstrap", false),("Blazor", false),("HTML",false),("Java",false),("JavaScript",false),("CSS",false),("VS-code",false),("UML",false),("RAD",false),("Software engeneering",false),("Lamport timestamps",false),("Testing",false),("Unit-Testing",false),("Flutter",false),("ACID",false),("API",false)};
-    PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>(); 
+   IEnumerable<(string, bool)> tags = new (string,bool)[0];
+   PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>(); 
 
     async Task Done()
     {
@@ -122,6 +121,11 @@
         chosenTags.Remove(tagName);
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
+        tags = tagDtos.Select(t => (t.Name, false));
+    }
 
 
 }
