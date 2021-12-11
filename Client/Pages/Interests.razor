@@ -105,6 +105,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
+        tags = tagDtos.Select(t => (t.Name, false));
+
         var userid = await localStorage.GetItemAsync<int>("userid");
         if (userid != 0)
         {
@@ -120,12 +123,5 @@
     void removeFromChosenTags(string tagName){
         chosenTags.Remove(tagName);
     }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
-        tags = tagDtos.Select(t => (t.Name, false));
-    }
-
 
 }
