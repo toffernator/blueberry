@@ -1,4 +1,5 @@
 USERID := $(shell id -u)
+DB_PASS := $(LC_CTYPE=C tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= < /dev/urandom | head -c 32 | xargs)
 
 prepare-local: seed-db certs connection-string
 
@@ -19,7 +20,7 @@ Server/blueberry.Server.pfx:
 	cp $(shell ls ./certs/*.pfx) ./Server/blueberry.Server.pfx
 
 db-up:
-	docker start blueberry-db 2>/dev/null || docker run --name blueberry-db -d -e 'SA_PASSWORD=TESTTESTTEST123:)' -e 'ACCEPT_EULA=Y' -p "1433:1433" mcr.microsoft.com/azure-sql-edge:latest && sleep 10
+	docker start blueberry-db 2>/dev/null || docker run --name blueberry-db -d -e "SA_PASSWORD=$(DB_PASS)" -e 'ACCEPT_EULA=Y' -p "1433:1433" mcr.microsoft.com/azure-sql-edge:latest && sleep 10
 
 db-stop:
 	docker stop blueberry-db
@@ -28,10 +29,13 @@ db-rm: db-stop
 	docker rm blueberry-db
 
 seed-db: db-up
-	ConnectionString='Server=localhost;Database=blueberry;User Id=sa;Password=TESTTESTTEST123:)' dotnet run --project Server -- seed
+	ConnectionString="Server=localhost;Database=blueberry;User Id=sa;Password=$(DB_PASS)" dotnet run --project Server -- seed
 
 connection-string:
-	dotnet user-secrets init --project Server && dotnet user-secrets set 'ConnectionStrings:Blueberry' 'Server=localhost;Database=blueberry;User Id=sa;Password=TESTTESTTEST123:)' --project Server
+	dotnet user-secrets init --project Server && dotnet user-secrets set 'ConnectionStrings:Blueberry' "Server=localhost;Database=blueberry;User Id=sa;Password=$(DB_PASS)" --project Server
+
+docker-secrets:
+	echo "$(DB_PASS)" | docker secret create db_pass -
 
 coveragereport:
 	docker build -t blueberry_report-generator -f TestCoverage/testing-report.Dockerfile TestCoverage
