@@ -47,20 +47,20 @@ public class SearchTests
     [Fact]
     public async void SearchShouldForwardOptionsToTheRepo()
     {
-        SearchOptions? providedOptions = null;
+        SearchOptions? receivedOptions = null;
+        SearchOptions givenOptions = new SearchOptions();
         var mockedRepo = new Mock<IMaterialRepository>();
 
         mockedRepo.Setup(mr => mr.Search(It.IsAny<SearchOptions>()))
             .Callback<SearchOptions>(so =>
             {
-                providedOptions = so;
+                receivedOptions = so;
             });
 
         var search = new SearchProxy(mockedRepo.Object);
-        await search.Search(It.IsAny<SearchOptions>());
+        await search.Search(givenOptions);
 
-
-        Assert.Equal(It.IsAny<SearchOptions>(), providedOptions);
+        Assert.Equal(givenOptions, receivedOptions);
     }
 
     [Fact]
@@ -77,6 +77,6 @@ public class SearchTests
         var actual = await search.Search("Typescript");
 
         Assert.Equal(filteredMockData, actual);
-        mockedRepo.Verify(mock => mock.Search(searchOptions), Times.Exactly(2));
+        mockedRepo.Verify(mock => mock.Search(searchOptions), Times.Exactly(1));
     }
 }
