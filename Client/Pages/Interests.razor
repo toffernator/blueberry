@@ -4,6 +4,7 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
+@inject NavigationManager uriHelper;
 
 <PageTitle>Interests</PageTitle>
 
@@ -15,7 +16,7 @@
         <div class="tags">
             @foreach (var tag in chosenTags)
                      {
-                         <span class="badge rounded-pill bg-primary tag" @onclick="() => removeFromChosenTags(tag)" >@tag</span> 
+                         <span class="badge rounded-pill bg-primary tag" @onclick="() => onTagToggle(tag)" >@tag</span> 
                      }
         </div>
     </div>
@@ -29,25 +30,13 @@
             </button>
         </div>
         <div class="tags">
-             @foreach (var tag in tags)
+             @foreach (var tag in displayedTags)
                      {
-                         <span class="badge rounded-pill bg-secondary tag" @onclick="() => addToChosenTags(tag.Item1)" >@tag.Item1</span> 
+                         <span class="badge rounded-pill bg-secondary tag" @onclick="() => onTagToggle(tag)" >@tag</span> 
+                         <!--<span class=@($"badge rounded-pill bg-secondary tag {(tag.Item2 ? "notvisibleInterest" : " ")} ") @onclick="() => onTagToggle(tag.Item1)" >@tag.Item1</span> --> 
                      }
+                     
         </div>
-        <nav aria-label="Page navigation example tagNav">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
-
     </div>
 </div>
 <div class="d-grid gap-2 col-6 mx-auto">
@@ -67,6 +56,8 @@ else {
 
    IEnumerable<(string, bool)> tags = new (string,bool)[0];
    PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>(); 
+
+   List<string> displayedTags = new List<string>();    
    
     public Boolean isDone = false;
 
@@ -79,7 +70,7 @@ else {
         {
             var user = new UserUpdateDto(userid, chosenTags);
 
-            var response = await Http.PutAsJsonAsync($"user/{userid}", user);
+            var response = await Http.PutAsJsonAsync($"api/user/{userid}", user);
 
             if (response.IsSuccessStatusCode)
             {
@@ -103,7 +94,7 @@ else {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = new UserCreateDto(authState.User.Identity.Name, chosenTags);
 
-        var response = await Http.PostAsJsonAsync($"user", user);
+        var response = await Http.PostAsJsonAsync($"api/user", user);
 
         if (response.IsSuccessStatusCode)
         {
@@ -123,17 +114,46 @@ else {
         var userid = await localStorage.GetItemAsync<int>("userid");
         if (userid != 0)
         {
-            var user =  await Http.GetFromJsonAsync<UserDto>($"user/{userid}");
+            var user =  await Http.GetFromJsonAsync<UserDto>($"api/user/{userid}");
             if (user != null) chosenTags = user.Tags;
         }
+
+        displayedTags = tags.Select(t => t.Item1).ToList() ;
     }
 
     void addToChosenTags(string tagName){
         chosenTags.Add(tagName);
+        displayedTags.Remove(tagName);
+
     }
 
     void removeFromChosenTags(string tagName){
         chosenTags.Remove(tagName);
+        displayedTags.Add(tagName);
     }
+
+    void onTagToggle(string tagName) {
+        if(displayedTags.Contains(tagName)){
+            addToChosenTags(tagName);
+        }
+        else{removeFromChosenTags(tagName);}
+        
+        /*if (tags.Where(t => t.Item1 == tagName).FirstOrDefault().Item2){
+            InvokeAsync(() =>
+                {
+
+                    removeFromChosenTags(tagName);
+                });
+            
+        }
+        else{
+             InvokeAsync(() =>
+                {
+
+                     addToChosenTags(tagName);
+                });
+            }*/
+            //tags = tags.Select(t => t.Item1 == tagName ? (t.Item1, !t.Item2) : t);
+        }
 
 }
