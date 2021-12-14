@@ -66,7 +66,8 @@ else {
 
 @code {
 
-    IEnumerable<(string, bool)> tags = new (string,bool)[] {("React", false),("Bootstrap", false),("Blazor", false),("HTML",false),("Java",false),("JavaScript",false),("CSS",false),("VS-code",false),("UML",false),("RAD",false),("Software engeneering",false),("Lamport timestamps",false),("Testing",false),("Unit-Testing",false),("Flutter",false),("ACID",false),("API",false)};
+    IEnumerable<(string, bool)> tags = new (string,bool)[0];
+    IEnumerable<(string, bool)> chosenTags = new (string,bool)[] {("React", true),("Bootstrap", true),("Blazor", true),("Flutter",true)};
 
     
     public Boolean isDone = false;
@@ -135,6 +136,11 @@ else {
         chosenTags.Remove(tagName);
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
+        tags = tagDtos.Select(t => (t.Name, false));
+    }
 
 
 }
