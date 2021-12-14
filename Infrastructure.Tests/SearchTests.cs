@@ -92,22 +92,21 @@ public class SearchTests
     }
 
     [Fact]
-    public async void SearchWithUserIdAndSearchOptionsTagsReturnFilteredMaterialsBasedOnUserInterests()
+    public async void SearchWithUserIdAndSearchOptionsReturnsFilteredMaterialsBasedOnSearch()
     {
         var mockedMaterialRepo = new Mock<IMaterialRepository>();
         var mockedUserRepo = new Mock<IUserRepository>();
 
-        var mockSearchOptions = new SearchOptions("", new PrimitiveSet<string>(){"React"}, null, null);
+        var mockSearchOptions = new SearchOptions("", new PrimitiveSet<string>(){"Typescript"}, null, null);
 
-        var searchOptions = new SearchOptions("",null,null,null);
+        var searchOptions = new SearchOptions("",new PrimitiveSet<string>(){"Typescript"},null,null);
         
-        var filteredMockData = _mockMaterials.Where(md => md.Title.Contains("react")).ToList();
+        var filteredMockData = _mockMaterials.Where(md => md.Tags.Contains("Typescript")).ToList();
         var readUser = _mockUsers.Where(u => u.Id == 1).FirstOrDefault();
         
         mockedMaterialRepo.Setup( mr => mr.Search(mockSearchOptions) ).ReturnsAsync(filteredMockData);
 
         mockedUserRepo.Setup( u => u.Read(1)).ReturnsAsync(readUser);
-
 
         var search = new SearchProxy(mockedMaterialRepo.Object, mockedUserRepo.Object);
 
@@ -122,8 +121,8 @@ public class SearchTests
         var mockedMaterialRepo = new Mock<IMaterialRepository>();
         var mockedUserRepo = new Mock<IUserRepository>();
 
-        var mockSearchOptions = new SearchOptions("Typescript", new PrimitiveSet<string>(){"Angular","Javascript"}, null, null);
-        var searchOptions = new SearchOptions("Typescript", new PrimitiveSet<string>(){"Javascript"},null,null);
+        var mockSearchOptions = new SearchOptions("", null, null, null);
+        var searchOptions = new SearchOptions("", null, null, null);
         
         var filteredMockData = _mockMaterials.Where(md => md.Id != 1).ToList();
         var readUser = _mockUsers.Where(u => u.Id == 2).FirstOrDefault();
