@@ -16,6 +16,7 @@ public class UserController : ControllerBase
 
     [HttpGet]
     public async Task<IReadOnlyCollection<UserDto>> Get()
+        //Deliberately doesn't return an ActionResult as an empty collection of users is still a valid case. No Users registered yet.
         => await _repository.Read();
 
     [ProducesResponseType(404)]
