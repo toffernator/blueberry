@@ -5,15 +5,29 @@ import sys
 import json
 
 tags = {
-    'React': {'Framework', 'Web Development'},
-    'Java': {'Object Oriented Programming'},
-    'Javascript': {'Web Development'},
-    'Flutter': {'Mobile Development'},
-    'TypeScript': {'Web Development'},
+    'React': {'Framework', 'Web Development', 'Javascript'},
+    'Java': {'Object Oriented Programming', 'Programming Language'},
+    'Javascript': {'Web Development', 'Programming Language'},
+    'Flutter': {'Mobile Development', 'Framework', 'Dart'},
+    'TypeScript': {'Web Development', 'Programming Language'},
+    'Dart': {'Mobile Development', 'Framework', 'Programming Language'},
     'HTML': {'Web Development'},
     'CSS': {'Web Development'},
     'Docker': {'DevOps'},
     'Kubernetes': {'DevOps'},
+    'C++': {'Object Oriented Programming', 'Programming Language'},
+    'C#': {'Object Oriented Programming', 'Programming Language'},
+    'Angular': {'Framework', 'Web Development', 'Javascript'},
+    'Vue': {'Framework', 'Web Development', 'Javascript'},
+    'F#': {'Functional Programming', 'Programming Language'},
+    'Haskell': {'Functional Programming', 'Programming Language'},
+    'Blazor': {'Framework', 'Web Development', 'C#'},
+    'Bootstrap': {'Framework', 'Web Development', 'CSS'},
+    'Go': {'Programming Language'},
+    'PostgreSQL': {'Database', 'SQL'},
+    'MySQL': {'Database', 'SQL'},
+    'MongoDB': {'Database', 'NoSQL'},
+    'Tailwind CSS': {'Framework', 'CSS'},
 }
 
 types = ['Article', 'Video', 'Podcast']
