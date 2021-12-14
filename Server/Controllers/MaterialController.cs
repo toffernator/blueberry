@@ -17,24 +17,26 @@ public class MaterialController : ControllerBase
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(IEnumerable<MaterialDto>), 200)]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MaterialDto>>> Get([FromQuery(Name = "searchString")] string? searchString, 
+    public async Task<ActionResult<IEnumerable<MaterialDto>>> Get([FromQuery(Name = "searchString")] string? searchString,
                                                                   [FromQuery(Name = "tag")] HashSet<string> tags,
-                                                                  [FromQuery(Name = "startyear")] int? startYear, 
-                                                                  [FromQuery(Name = "endyear")] int? endYear, 
+                                                                  [FromQuery(Name = "startyear")] int? startYear,
+                                                                  [FromQuery(Name = "endyear")] int? endYear,
                                                                   [FromQuery(Name = "type")] string? type,
-                                                                  [FromQuery(Name = "offset")] int offset, 
+                                                                  [FromQuery(Name = "offset")] int offset,
                                                                   [FromQuery(Name = "limit")] int limit)
     {
         var options = new SearchOptions
         {
             SearchString = searchString is null ? "" : searchString,
             Tags = tags == null ? null : new PrimitiveSet<string>(tags),
-            StartDate = startYear is null ? null : new DateTime((int) startYear, 1, 1),
-            EndDate = endYear is null ? null : new DateTime((int) endYear, 12, 31),
-            Type = type is null ? "" : type
+            StartDate = startYear is null ? null : new DateTime((int)startYear, 1, 1),
+            EndDate = endYear is null ? null : new DateTime((int)endYear, 1, 1),
+            Type = type is null ? "" : type,
+            Limit = limit,
+            Offset = offset
         };
 
         var result = await _repository.Search(options);
-        return new ActionResult<IEnumerable<MaterialDto>>(result.Skip(offset).Take(limit));
+        return new ActionResult<IEnumerable<MaterialDto>>(result);
     }
 }
