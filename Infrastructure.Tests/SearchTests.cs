@@ -116,7 +116,7 @@ public class SearchTests
     }
 
     [Fact]
-    public async void SearchWithUserIdAndN()
+    public async void SearchWithUserIdAndNoSearchOptionsReturnSearchBasedOnInterests()
     {
         var mockedMaterialRepo = new Mock<IMaterialRepository>();
         var mockedUserRepo = new Mock<IUserRepository>();
