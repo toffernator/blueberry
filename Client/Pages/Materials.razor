@@ -52,13 +52,7 @@
     </div>
 </div>
 @code {
-IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
-    new MaterialDetailsDto( 0, "Introduction to React", new PrimitiveCollection<string> { "React", "Framework" }, "React is a framework widely used in the industry.", "/Assets/img/react.jpg", "Article", new DateTime(2020, 4, 11) ),
-    new MaterialDetailsDto( 1, "Introduction to Blazor", new PrimitiveCollection<string> { "Blazor", "Framework" }, "Blazor is a new framework ready to take on react as the leading frontend framework.", "/Assets/img/react.jpg", "Article", new DateTime(2021, 2, 8) ),
-    new MaterialDetailsDto( 2, "Introduction to Bootstrap", new PrimitiveCollection<string> { "Bootstrap", "Framework" }, "Bootstrap is a CSS framework widely used in the industry.", "/Assets/img/react.jpg", "Video", new DateTime(2018, 11, 23) ),
-    new MaterialDetailsDto( 3, "Using Blazor with Bootstrap", new PrimitiveCollection<string> { "Bootstrap", "Framework", "Blazor" }, "Blazor and Bootstrap is a force to be reckoned with!", "/Assets/img/react.jpg", "Video", new DateTime(2021, 8, 29)),
-    new MaterialDetailsDto( 4, "Using React with Bootstrap", new PrimitiveCollection<string> { "React", "Bootstrap", "Framework" }, "React and Bootstrap is a classic combination widely used in the industry", "/Assets/img/react.jpg", "Article", new DateTime(2019, 9, 4)),
-    };
+IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
 
     private string _searchKeyURL = "";
     private string _tagsURL;
