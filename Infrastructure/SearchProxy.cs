@@ -23,25 +23,32 @@ public class SearchProxy : ISearch
 
     public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options, int id)
     {
-        var user = await _users.Read(id);
-        var interests = new PrimitiveSet<string>();
-
-        if(user.IsSome)
+        if(searchEmpty(options))
         {
-            interests = new PrimitiveSet<string>(user.Value.Tags);
+            var user = await _users.Read(id);
+            var interests = new PrimitiveSet<string>();
+
+            if(user.IsSome)
+            {
+                interests = new PrimitiveSet<string>(user.Value.Tags);
+            }
+
+            var newOptions = new SearchOptions { SearchString = options.SearchString , Tags = interests, Type = options.Type,
+                                                            StartDate = options.StartDate, EndDate = options.EndDate };
+            return await _search.Search(newOptions);
         }
 
-        if(options.Tags != null)
+        return await _search.Search(options);
+    }
+
+    private bool searchEmpty(SearchOptions options)
+    {
+        if(options.SearchString == "" && options.Type == "" && options.StartDate == null
+                                        && options.EndDate == null && options.Tags ==  null)
         {
-            options.Tags.UnionWith(interests);
-            return await _search.Search(options);
-
+            return true;
         }
-
-        var newOptions = new SearchOptions { SearchString = options.SearchString , Tags = interests, Type = options.Type,
-                                                StartDate = options.StartDate, EndDate = options.EndDate };
-
-        return await _search.Search(newOptions);
+        return false;
     }
 
 }
