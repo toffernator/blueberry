@@ -5,7 +5,6 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
 
-
 <PageTitle>Interests</PageTitle>
 
 <div class="pageContent">
@@ -66,12 +65,10 @@ else {
 
 @code {
 
-    IEnumerable<(string, bool)> tags = new (string,bool)[0];
-    IEnumerable<(string, bool)> chosenTags = new (string,bool)[] {("React", true),("Bootstrap", true),("Blazor", true),("Flutter",true)};
-
-    
+   IEnumerable<(string, bool)> tags = new (string,bool)[0];
+   PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>(); 
+   
     public Boolean isDone = false;
-    PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>(); 
 
     async Task Done()
     {
@@ -120,6 +117,9 @@ else {
 
     protected override async Task OnInitializedAsync()
     {
+        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
+        tags = tagDtos.Select(t => (t.Name, false));
+
         var userid = await localStorage.GetItemAsync<int>("userid");
         if (userid != 0)
         {
@@ -135,12 +135,5 @@ else {
     void removeFromChosenTags(string tagName){
         chosenTags.Remove(tagName);
     }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
-        tags = tagDtos.Select(t => (t.Name, false));
-    }
-
 
 }
