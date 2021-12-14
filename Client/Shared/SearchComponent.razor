@@ -36,13 +36,24 @@
                 <li>
                     <input class="searchbarForTags" type="text" @bind=@inputForTagSearch placeholder="Search for tags"  @oninput=@onTagSearch />
                 </li>
+                @if(isShowingAll){
                 <li class= "tags">
                      @foreach (var tag in filteredTags)
                      {
                          <span class=@($"badge {(tag.Item2 ? "bg-primary" : "bg-secondary")} rounded-pill tag") @onclick="() => onTagToggle(tag.Item1)">@tag.Item1</span>
                      }
                 </li>
-                <li class="clearAll"><label type="label" @onclick="clearAll">clear all</label></li>
+                }else{
+                    @foreach (var tag in tags.Where(t => t.Item2))
+                    {
+                        <span class= "badge bg-primary rounded-pill tag" @onclick="() => onTagToggle(tag.Item1)">@tag.Item1</span>
+                    }
+                }
+            
+                <li class="clearAll">
+                    <button type="button" class="btn btn-outline-primary" @onclick="showAll"> @showAllText</button>
+                    <label type="button" class="btn btn-outline-secondary" @onclick="clearAll">clear all</label>
+                    </li>
             </ul>
         </div>
 
@@ -107,6 +118,9 @@
     [Parameter]
     public string type {get; set;} = "All";
 
+    public String showAllText = "show all";
+    public Boolean isShowingAll = false;
+
 
     void onTagSearch(ChangeEventArgs args) {
         filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)args.Value) || t.Item2);
@@ -117,6 +131,16 @@
         if (inputForTagSearch==null) inputForTagSearch = "";
         filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputForTagSearch) || t.Item2);
     }
+     void showAll(){
+         if(isShowingAll == false){
+             isShowingAll = true;
+             showAllText = "show less";
+         }
+         else {
+             isShowingAll = false;
+             showAllText = "show all";
+         }
+     }
     void clearAll(){
         tags = tags.Select(t => (t.Item1, false));
         if (inputForTagSearch==null) inputForTagSearch = "";
