@@ -22,7 +22,7 @@
 
     <div class="materials">
         <div class="searchComponent">
-            <SearchComponent searchInput=@_searchKeyURL yearValues=@(new int[] {@_startyearURL, @_endyearURL}) chosenTags=@(_tagsURL.Split(',')) chosenSortBy=@_chosenSortBy />
+            <SearchComponent searchInput=@_searchKeyURL yearValues=@(new int[] {@_startyearURL, @_endyearURL}) chosenTags=@(_tagsURL.Split(',')) chosenSortBy=@_chosenSortBy type=@_typeURL />
        </div>
         @foreach (var material in materials)
         {
@@ -65,6 +65,8 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
     private int _startyearURL;
     private int _endyearURL;
     private string _chosenSortBy;
+
+    private string _typeURL;
     private int _offset = 0;
     private int _limit = 100;
 
@@ -91,7 +93,10 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[] {
         {
             _chosenSortBy = sortbyURL;
         }
-
+        if(queryStrings.TryGetValue("type", out var typeURL))
+        {
+            _typeURL = typeURL;
+        }
         materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKeyURL}&tag={_tagsURL}&startyear={_startyearURL}&endyear={_endyearURL}&offset={_offset}&limit={_limit}");
     }
 
