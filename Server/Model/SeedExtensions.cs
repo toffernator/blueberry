@@ -15,31 +15,80 @@ public static class SeedExtensions
 
     private static void SeedMaterialsAndTags(BlueberryContext context)
     {
-        context.Database.Migrate();
+        JSONItem? item = LoadJson();
 
-        var react = new Tag { Name = "React" };
-        var blazor = new Tag { Name = "Blazor" };
-        var bootstrap = new Tag { Name = "Bootstrap" };
-        var framework = new Tag { Name = "Framework" };
-
-        if (!context.Tags.Any())
+        if (item != null)
         {
-            context.Tags.AddRange(
-                react, blazor, bootstrap, framework
-            );
+            var tags = item.JSONToTags();
+
+            context.Database.Migrate();
+
+            if (!context.Tags.Any())
+            {
+                context.Tags.AddRange(tags);
+            }
+
+            if (!context.Materials.Any())
+            {
+                context.Materials.AddRange(item.JSONToMaterials(tags));
+            }
+
+            context.SaveChanges();
+
+        }
+    }
+
+    private static JSONItem? LoadJson()
+    {
+        using (StreamReader r = new StreamReader("Model/data.json"))
+        {
+            string json = r.ReadToEnd();
+            return JsonConvert.DeserializeObject<JSONItem>(json);
         }
 
-        if (!context.Materials.Any())
+    }
+
+    private class JSONItem
+    {
+        public IEnumerable<string> jsontags;
+        public IEnumerable<JSONMaterial> jsonmaterials;
+
+        public IEnumerable<Tag> JSONToTags()
         {
-            context.Materials.AddRange(
-            new Material { Title = "Introduction to React", Tags = new List<Tag>() { react, framework }, Date = new DateTime(2020, 4, 11), Type = "Video", ShortDescription = "" },
-            new Material { Title = "Introduction to Blazor", Tags = new List<Tag>() { blazor, framework }, Date = new DateTime(2021, 2, 8), Type = "Article", ShortDescription = "" },
-            new Material { Title = "Introduction to Bootstrap", Tags = new List<Tag>() { bootstrap, framework }, Date = new DateTime(2018, 11, 23), Type = "Article", ShortDescription = "" },
-            new Material { Title = "Using Blazor with Bootstrap", Tags = new List<Tag>() { blazor, bootstrap, framework }, Date = new DateTime(2021, 8, 29), Type = "Article", ShortDescription = "" },
-            new Material { Title = "Using React with Bootstrap", Tags = new List<Tag>() { react, bootstrap, framework }, Date = new DateTime(2019, 9, 4), Type = "Video", ShortDescription = "" }
-            );
+            List<Tag> output = new List<Tag>() { };
+            foreach (var t in jsontags)
+            {
+                output.Add(new Tag() { Name = t });
+            }
+            return output;
         }
 
-        context.SaveChanges();
+        public IEnumerable<Material> JSONToMaterials(IEnumerable<Tag> AllTags)
+        {
+            List<Material> output = new List<Material>() { };
+            foreach (var m in jsonmaterials)
+            {
+                output.Add(new Material()
+                {
+                    Title = m.title,
+                    Tags = AllTags.Where(t => m.tags.Contains(t.Name)).ToList<Tag>(),
+                    ShortDescription = m.description,
+                    Type = m.type,
+                    Date = DateTime.Parse(m.date),
+                    ImageUrl = "/Assets/img/react.jpg"
+                });
+            }
+            return output;
+        }
+    }
+
+
+    private class JSONMaterial
+    {
+        public string title;
+        public List<string> tags;
+        public string date;
+        public string description;
+        public string type;
     }
 }
