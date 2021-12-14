@@ -14,6 +14,7 @@ public class MaterialController : ControllerBase
         _logger = logger;
         _repository = repository;
     }
+
     [ProducesResponseType(404)]
     [ProducesResponseType(typeof(IEnumerable<MaterialDto>), 200)]
     [HttpGet]

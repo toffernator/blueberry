@@ -19,7 +19,7 @@ public class TagController : ControllerBase
 
     [HttpGet]
     public async Task<IEnumerable<TagDto>> Get()
-    {
-        return await _repository.Read();
-    }
+        //Deliberately doesn't return an ActionResult as an empty enumerable of Tags is still a valid case. No Tags registered yet.
+        => await _repository.Read();
+
 }
