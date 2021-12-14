@@ -119,6 +119,10 @@ else {
         }
 
         displayedTags = tags.Select(t => t.Item1).ToList() ;
+        foreach(var tag in chosenTags){
+            displayedTags.Remove(tag);
+
+        }
     }
 
     void addToChosenTags(string tagName){
