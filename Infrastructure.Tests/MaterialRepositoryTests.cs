@@ -76,7 +76,7 @@ public class MaterialRepositoryTests
     [Fact]
     public async Task SearchGivenNonexistentTagsDoesNothing()
     {
-        var options = new SearchOptions { Tags = new PrimitiveSet<string>() {"This tag never has, doesn't currently, and never will exist.!!!!ASDF"} };
+        var options = new SearchOptions { Tags = new PrimitiveSet<string>() { "This tag never has, doesn't currently, and never will exist.!!!!ASDF" } };
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
@@ -102,7 +102,7 @@ public class MaterialRepositoryTests
         {
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
         };
-      
+
         Assert.Equal(expected, result);
     }
 
@@ -189,7 +189,7 @@ public class MaterialRepositoryTests
         var result = await _repository.Search(options);
 
         IEnumerable<MaterialDto> expected = new PrimitiveCollection<MaterialDto>()
-        {   
+        {
             new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"}),
             new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string> {"C#"}),
             new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}),
@@ -458,7 +458,7 @@ public class MaterialRepositoryTests
         {
             new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"})
         };
-        
+
         Assert.Equal(expected, result);
     }
 
@@ -554,7 +554,7 @@ public class MaterialRepositoryTests
         {
             new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string> {"C#"})
         };
-        
+
         Assert.Equal(expected, result);
     }
 
@@ -612,7 +612,7 @@ public class MaterialRepositoryTests
         {
             new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string>() {"Mobile", "C#"})
         };
-        
+
         Assert.Equal(expected, result);
     }
 
@@ -632,7 +632,7 @@ public class MaterialRepositoryTests
         {
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}),
         };
-        
+
         Assert.Equal(expected, result);
     }
 
@@ -697,6 +697,60 @@ public class MaterialRepositoryTests
         Assert.Equal(expected, result);
     }
 
+    [Fact]
+    public async Task SearchGivenALimitShouldOnlyRetrunThatMany()
+    {
+        var options = new SearchOptions
+        {
+            SearchString = "",
+            Tags = new PrimitiveSet<string>() { },
+            Limit = 2
+        };
+
+        var result = await _repository.Search(options);
+
+        Assert.Equal(result.Count, 2);
+    }
+
+    [Fact]
+    public async Task SearchGivenAnOffsetShouldReturnDifferentResultsBasedOnOffset()
+    {
+        var optionsOffset0 = new SearchOptions
+        {
+            SearchString = "",
+            Tags = new PrimitiveSet<string>() { },
+            Limit = 2,
+            Offset = 0
+        };
+
+        var optionsOffset2 = new SearchOptions
+        {
+            SearchString = "",
+            Tags = new PrimitiveSet<string>() { },
+            Limit = 2,
+            Offset = 2
+        };
+
+        var resultOffset0 = await _repository.Search(optionsOffset0);
+        var resultOffset2 = await _repository.Search(optionsOffset2);
+
+        Assert.NotEqual(resultOffset0, resultOffset2);
+    }
+
+    [Fact]
+    public async Task LimitBiggerThanResultShouldReturnAllResults()
+    {
+        var options = new SearchOptions
+        {
+            SearchString = "",
+            Tags = new PrimitiveSet<string>() { },
+            Limit = 100
+        };
+
+        var result = await _repository.Search(options);
+
+        Assert.Equal(result.Count, 6);
+    }
 
     protected virtual void Dispose(bool disposing)
     {
