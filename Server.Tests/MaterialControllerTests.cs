@@ -20,8 +20,8 @@ public class MaterialControllerTests
         };
         var expected = new[]
         {
-            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
-            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
+            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today),
+            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today)
         };
         repository.Setup(m => m.Search(It.Is<SearchOptions>(o => o.Equals(mockOptions)))).ReturnsAsync(expected);
 
@@ -44,8 +44,8 @@ public class MaterialControllerTests
 
         var expected = new[]
          {
-            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}),
-            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"})
+            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today),
+            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today)
         };
         repository.Setup(m => m.Search(It.IsAny<SearchOptions>())).ReturnsAsync(expected.Skip(offset).Take(limit).ToList());
 

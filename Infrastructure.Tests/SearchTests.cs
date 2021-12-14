@@ -5,10 +5,10 @@ namespace blueberry.Infrastructure;
 public class SearchTests
 {
     private readonly IReadOnlyCollection<MaterialDto> _mockData = new[]{
-        new MaterialDto(1, "Why Haskell is better than F#", new PrimitiveCollection<string> {"FP", "Haskell", "F#", "The truth"}),
-        new MaterialDto(2, "Typescript and react", new PrimitiveCollection<string> {"React", "Typsescript", "Javascript"}),
-        new MaterialDto(3, "Why angular died", new PrimitiveCollection<string> {"Angular", "Typescript", "Javascript"}),
-        new MaterialDto(3, "Why typescript is the future of the web", new PrimitiveCollection<string> { "Typescript", "Javascript"}),
+        new MaterialDto(1, "Why Haskell is better than F#", new PrimitiveCollection<string> {"FP", "Haskell", "F#", "The truth"}, "", "Book", DateTime.Today),
+        new MaterialDto(2, "Typescript and react", new PrimitiveCollection<string> {"React", "Typsescript", "Javascript"}, "", "Book", DateTime.Today),
+        new MaterialDto(3, "Why angular died", new PrimitiveCollection<string> {"Angular", "Typescript", "Javascript"}, "", "Book", DateTime.Today),
+        new MaterialDto(3, "Why typescript is the future of the web", new PrimitiveCollection<string> { "Typescript", "Javascript"}, "", "Book", DateTime.Today),
     };
 
     [Fact]

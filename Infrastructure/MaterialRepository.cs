@@ -22,7 +22,6 @@ public class MaterialRepository : IMaterialRepository
         if (options.StartDate != null)
         {
             result = QueryStartDate(result, (DateTime)options.StartDate);
-            // FIXME: Here the count becomes 0 when supplied options from material controller
         }
 
         if (options.EndDate != null)
@@ -43,7 +42,7 @@ public class MaterialRepository : IMaterialRepository
         result = result.Take(options.Limit ?? 30);
 
         return await result
-            .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name))))
+            .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name)), m.ImageUrl, m.Type, m.Date))
             .ToListAsync();
     }
 
