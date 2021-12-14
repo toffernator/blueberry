@@ -22,7 +22,7 @@
     </div>
     <div class="searchForTags">
         <div class="searchComponent">
-            <input class="searchbar" type="text" placeholder="Search" />
+            <input class="searchbar" type="text" placeholder="Search" @oninput=@onTagSearch />
             <button class="searchbutton" type="button">
                 <span>
                     <i class="fa-solid fa-magnifying-glass searchIcon"></i>
@@ -121,7 +121,6 @@ else {
         displayedTags = tags.Select(t => t.Item1).ToList() ;
         foreach(var tag in chosenTags){
             displayedTags.Remove(tag);
-
         }
     }
 
@@ -143,4 +142,10 @@ else {
         else{removeFromChosenTags(tagName);}
         }
 
+    void onTagSearch(ChangeEventArgs args) {
+        displayedTags = tags.Where(t => t.Item1.ToLower().Contains((String)args.Value)).Select(t => t.Item1).ToList();
+        foreach(var tag in chosenTags){
+            displayedTags.Remove(tag);
+        }
+    }
 }
