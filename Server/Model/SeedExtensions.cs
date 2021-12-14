@@ -34,7 +34,6 @@ public static class SeedExtensions
             }
 
             context.SaveChanges();
-
         }
     }
 
@@ -50,13 +49,13 @@ public static class SeedExtensions
 
     private class JSONItem
     {
-        public IEnumerable<string> jsontags;
-        public IEnumerable<JSONMaterial> jsonmaterials;
+        public IEnumerable<string> tags;
+        public IEnumerable<JSONMaterial> materials;
 
         public IEnumerable<Tag> JSONToTags()
         {
             List<Tag> output = new List<Tag>() { };
-            foreach (var t in jsontags)
+            foreach (var t in tags)
             {
                 output.Add(new Tag() { Name = t });
             }
@@ -66,7 +65,7 @@ public static class SeedExtensions
         public IEnumerable<Material> JSONToMaterials(IEnumerable<Tag> AllTags)
         {
             List<Material> output = new List<Material>() { };
-            foreach (var m in jsonmaterials)
+            foreach (var m in materials)
             {
                 output.Add(new Material()
                 {
