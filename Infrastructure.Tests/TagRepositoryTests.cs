@@ -16,9 +16,10 @@ public class TagRepositoryTests : IDisposable
 
         context.Database.EnsureCreated();
 
-        context.Users.Add(new User { Id = 1, Name = "Jakob" });
+        var user = new User { Id = 1, Name = "Jakob" };
+        context.Users.Add(user);
         context.Tags.AddRange(
-            new Tag { Id = 1, Name = "Docker", Users = new HashSet<User>() { context.Users.Find(1) } },
+            new Tag { Id = 1, Name = "Docker", Users = new HashSet<User>() { user } },
             new Tag { Id = 2, Name = "Framework" }
         );
 

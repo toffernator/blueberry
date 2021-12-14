@@ -1,6 +1,6 @@
 namespace Infrastructure.Tests;
 
-public class MaterialRepositoryTests
+public class MaterialRepositoryTests : IDisposable
 {
     private readonly BlueberryContext _context;
     private readonly MaterialRepository _repository;
@@ -709,7 +709,7 @@ public class MaterialRepositoryTests
 
         var result = await _repository.Search(options);
 
-        Assert.Equal(result.Count, 2);
+        Assert.Equal(2, result.Count);
     }
 
     [Fact]
@@ -749,7 +749,7 @@ public class MaterialRepositoryTests
 
         var result = await _repository.Search(options);
 
-        Assert.Equal(result.Count, 6);
+        Assert.Equal(6, result.Count);
     }
 
     protected virtual void Dispose(bool disposing)
