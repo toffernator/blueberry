@@ -46,13 +46,8 @@
 }
 
 .clearAll {
-  color: #0d6efd;
   display: flex;
-  justify-content: flex-end;
-  margin-right: 5px;
-}
-.clearAll:hover {
-  text-decoration: underline;
+
 }
 
 .tags {
