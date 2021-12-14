@@ -143,7 +143,8 @@ else {
         }
 
     void onTagSearch(ChangeEventArgs args) {
-        displayedTags = tags.Where(t => t.Item1.ToLower().Contains((String)args.Value)).Select(t => t.Item1).ToList();
+        string input = (String)args.Value;
+        displayedTags = tags.Where(t => t.Item1.ToLower().Contains(input.ToLower())).Select(t => t.Item1).ToList();
         foreach(var tag in chosenTags){
             displayedTags.Remove(tag);
         }
