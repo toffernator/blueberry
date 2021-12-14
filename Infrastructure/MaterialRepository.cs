@@ -35,12 +35,12 @@ public class MaterialRepository : IMaterialRepository
             result = QueryType(result, options.Type);
         }
 
-        result = result.Take(options.Limit ?? 30);
-
         if (options.Offset != null)
         {
             result = QueryOffset(result, options.Offset.Value);
         }
+
+        result = result.Take(options.Limit ?? 30);
 
         return await result
             .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name))))

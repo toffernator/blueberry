@@ -30,7 +30,7 @@ public class MaterialController : ControllerBase
             SearchString = searchString is null ? "" : searchString,
             Tags = tags == null ? null : new PrimitiveSet<string>(tags),
             StartDate = startYear is null ? null : new DateTime((int)startYear, 1, 1),
-            EndDate = endYear is null ? null : new DateTime((int)endYear, 1, 1),
+            EndDate = endYear is null ? null : new DateTime((int)endYear, 12, 31),
             Type = type is null ? "" : type,
             Limit = limit,
             Offset = offset
