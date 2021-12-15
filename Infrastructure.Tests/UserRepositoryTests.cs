@@ -16,12 +16,12 @@ public class UserRepositoryTests : IDisposable
 
         context.Database.EnsureCreated();
 
-        var dockerTag = new Tag{ Id = 1, Name = "Docker"};
-        var frameworkTag = new Tag{ Id = 2 , Name = "Framework"};
+        var dockerTag = new Tag(name: "Docker") { Id = 1 };
+        var frameworkTag = new Tag(name: "Framework") { Id = 2 };
         context.Tags.AddRange(dockerTag, frameworkTag);
         context.Users.AddRange(
-                            new User{ Id = 1, Name = "Jalle" },
-                            new User{ Id = 2, Name = "Kobo" , Tags = new HashSet<Tag>(){dockerTag, frameworkTag}}
+                            new User(name: "Jalle") { Id = 1 },
+                            new User(name: "Kobo") { Id = 2 , Tags = new HashSet<Tag>(){dockerTag, frameworkTag}}
                         );
 
         context.SaveChanges();

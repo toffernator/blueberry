@@ -49,15 +49,15 @@ public static class SeedExtensions
 
     private class JSONItem
     {
-        public IEnumerable<string> tags;
-        public IEnumerable<JSONMaterial> materials;
+        public IEnumerable<string> tags = new PrimitiveCollection<string>();
+        public IEnumerable<JSONMaterial> materials = new PrimitiveCollection<JSONMaterial>();
 
         public IEnumerable<Tag> JSONToTags()
         {
             List<Tag> output = new List<Tag>() { };
             foreach (var t in tags)
             {
-                output.Add(new Tag() { Name = t });
+                output.Add(new Tag(name: t));
             }
             return output;
         }
@@ -67,13 +67,9 @@ public static class SeedExtensions
             List<Material> output = new List<Material>() { };
             foreach (var m in materials)
             {
-                output.Add(new Material()
+                output.Add(new Material(title: m.Title, shortDescription: m.Description, type: m.Type, date: DateTime.Parse(m.Date))
                 {
-                    Title = m.title,
-                    Tags = AllTags.Where(t => m.tags.Contains(t.Name)).ToList<Tag>(),
-                    ShortDescription = m.description,
-                    Type = m.type,
-                    Date = DateTime.Parse(m.date),
+                    Tags = AllTags.Where(t => m.Tags.Contains(t.Name)).ToList<Tag>(),
                     ImageUrl = "/Assets/img/react.jpg"
                 });
             }
@@ -84,10 +80,18 @@ public static class SeedExtensions
 
     private class JSONMaterial
     {
-        public string title;
-        public List<string> tags;
-        public string date;
-        public string description;
-        public string type;
+        public string Title { get; init; }
+        public List<string> Tags { get; init; } = new List<string>();
+        public string Date { get; init; }
+        public string Description { get; init; }
+        public string Type { get; init; }
+
+        public JSONMaterial(string title, string date, string description, string type)
+        {
+            Title = title;
+            Date = date;
+            Description = description;
+            Type = type;
+        }
     }
 }

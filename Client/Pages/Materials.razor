@@ -21,7 +21,7 @@
 
     <div class="materials">
         <div class="searchComponent">
-            <SearchComponent searchInput=@_searchKey yearValues=@(new int[] {@_startyear, @_endyear}) chosenTags=@(_tags.Split(',')) chosenSortBy=@_sortBy type=@_type SearchMethod=@UpdateResults />
+            <SearchComponent searchInput=@_searchKey yearValues=@(new int[] {@_startyear, @_endyear}) chosenTags=@(_tags?.Split(',') ?? new string[0]) chosenSortBy=@_sortBy type=@_type SearchMethod=@UpdateResults />
        </div>
         @foreach (var material in materials)
         {
@@ -54,11 +54,12 @@
 IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
 
     private string _searchKey = "";
-    private string _tags;
+    private string? _tags;
     private int _startyear;
     private int _endyear;
-    private string _sortBy;
-    private string _type;
+    private string _sortBy = "A-Z";
+    private string _type = "All";
+
     private int _offset = 0;
     private int _limit = 100;
 
@@ -92,40 +93,39 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
     }
 
     async Task UpdateResults(SearchOptions options)
-        {
-            var searchKey = options.SearchString; 
-            var tags = string.Join(",",options.Tags);
-            var startyear = options.StartDate.Value.Year;
-            var endyear = options.EndDate.Value.Year;
-
-            //TODO: CHANGE THIS WHEN SORTBY IS ADDED TO SEARCHOPTIONS!
-            var sortBy = "A-Z";
-            var type = options.Type;
-
-            //Update SearchComponent 
-            _searchKey = searchKey;
-            _tags = tags;
-            _startyear = startyear;
-            _endyear = endyear;
-            _sortBy = sortBy;
-            _type = type;
-
-
-            var URL = $"material?searchKey={searchKey}&tags={tags}&startyear={startyear}&endyear={endyear}&sortedby={sortBy}&type={type}";
-            Navigation.NavigateTo(URL);
-            materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={searchKey}&tag={tags}&startyear={startyear}&endyear={endyear}&offset={_offset}&limit={_limit}");
-            //Force Re-render
-            InvokeAsync(() => {StateHasChanged();});
+    {
+        var searchKey = options.SearchString; 
+        var tags = string.Join(",",options.Tags);
+        var startyear = options.StartDate.Value.Year;
+        var endyear = options.EndDate.Value.Year;
+        
+        //TODO: CHANGE THIS WHEN SORTBY IS ADDED TO SEARCHOPTIONS!
+        var sortBy = "A-Z";
+        var type = options.Type;
+        
+        //Update SearchComponent 
+        _searchKey = searchKey;
+        _tags = tags;
+        _startyear = startyear;
+        _endyear = endyear;
+        _sortBy = sortBy;
+        _type = type;
+        
+        
+        var URL = $"material?searchKey={searchKey}&tags={tags}&startyear={startyear}&endyear={endyear}&sortedby={sortBy}&type={type}";
+        Navigation.NavigateTo(URL);
+        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={searchKey}&tag={tags}&startyear={startyear}&endyear={endyear}&offset={_offset}&limit={_limit}") ?? new MaterialsDetailsDto[0];
+        //Force Re-render
+        InvokeAsync(() => {StateHasChanged();});
     }
 
     protected override async Task OnInitializedAsync()
     {
         GetURLChanges();
-        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKey}&tag={_tags}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}");
+        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKey}&tag={_tags}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}") ?? new MaterialsDetailsDto[0];
     }
 
     void GoToMain(){
          Navigation.NavigateTo("");
     }
-
 }
