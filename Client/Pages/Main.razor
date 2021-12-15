@@ -10,8 +10,22 @@
     <div class="logo">
         <img src="/Assets/img/logo.svg" class="logoImage" alt="">
     </div>
-    <SearchComponent />
+    <SearchComponent SearchMethod=@NavigateToMaterial />
 </div>
 
 @code {
+
+      void NavigateToMaterial(SearchOptions options)
+      {
+          string searchKey = options.SearchString; 
+          string tags = string.Join(",",options.Tags ?? new PrimitiveSet<string>(){});
+          int startyear = options.StartDate.Value.Year;
+          int endyear = options.EndDate.Value.Year;
+          
+          //TODO: CHANGE THIS WHEN SORTBY IS ADDED TO SEARCHOPTIONS!
+          string sortBy = "A-Z";
+          string type = options.Type ?? "";
+          var URL = $"material?searchKey={searchKey}&tags={tags}&startyear={startyear}&endyear={endyear}&sortedby={sortBy}&type={type}";
+          Navigation.NavigateTo(URL);
+      }
 }
