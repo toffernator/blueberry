@@ -22,10 +22,9 @@
           int startyear = options.StartDate.Value.Year;
           int endyear = options.EndDate.Value.Year;
           
-          //TODO: CHANGE THIS WHEN SORTBY IS ADDED TO SEARCHOPTIONS!
-          string sortBy = "A-Z";
+          Sortings sortBy = options.SortBy ?? Sortings.NEWEST;
           string type = options.Type ?? "";
-          var URL = $"material?searchKey={searchKey}&tags={tags}&startyear={startyear}&endyear={endyear}&sortedby={sortBy}&type={type}";
+          var URL = $"material?searchKey={searchKey}&tags={tags}&startyear={startyear}&endyear={endyear}&sortby={sortBy}&type={type}";
           Navigation.NavigateTo(URL);
       }
 }

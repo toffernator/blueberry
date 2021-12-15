@@ -18,9 +18,9 @@
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    @foreach (var sortBy in sortByValues)
+                    @foreach (Sortings sortBy in Enum.GetValues(typeof(Sortings)))
                      {
-                         <span class=@($"dropdown-item {(sortBy.Item2 ? "active" : " ")} ") @onclick="() => updateSortBy(sortBy.Item1)">@sortBy.Item1</span>
+                         <span class=@($"dropdown-item {(sortBy == chosenSortBy ? "active" : " ")} ") @onclick="() => updateSortBy(sortBy)">@getSortByLabel(sortBy)</span>
                      }
                 </li>
             </ul>
@@ -107,7 +107,6 @@
     //Lists
     IEnumerable<(string, bool)> tags = new (string,bool)[0];
     IEnumerable<(string, bool)> filteredTags = new (string,bool)[0]; 
-    IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevant", false),("A-Z", false),("Z-A",false),("Newest", false), ("Oldest", false)};
     IEnumerable<(string, bool)> materialTypes = new (string, bool)[] {("All", false),("Article", false),("Podcast", false),("Video",false)};  
     string inputForTagSearch = "";
 
@@ -122,7 +121,7 @@
     [Parameter]    
     public IEnumerable<int> yearValues {get; set;} = new int[]{2000, 2021};
     [Parameter]    
-    public string chosenSortBy {get; set;} = "Most relevant";
+    public Sortings chosenSortBy {get; set;} = Sortings.NEWEST;
 
     [Parameter]
     public string type {get; set;} = "All";
@@ -130,6 +129,22 @@
     public String showAllText = "show all";
     public Boolean isShowingAll = false;
 
+
+    static string getSortByLabel(Sortings sort) 
+    {
+        switch (sort) 
+        {
+            case Sortings.AZ:
+                return "A-Z";
+            case Sortings.ZA:
+                return "Z-A";
+            case Sortings.OLDEST:
+                return "Oldest";
+            case Sortings.NEWEST:
+            default:
+                return "Newest";
+        }
+    }
 
     void onTagSearch(ChangeEventArgs args) {
         if (args.Value != null)
@@ -168,15 +183,14 @@
         }
     }
 
-    void search(){
+    void search()
+    {
         var searchKey = (searchInput != null ? searchInput.Replace(" ", "+") : "");
         var tagsChosen = new PrimitiveSet<string>(tags.Where(t => t.Item2).Select(t => $"{t.Item1}"));
         var startDate = new DateTime(yearValues.First(),1,1);
         var endDate = new DateTime(yearValues.Last(),12,31);
-        //TODO: CHANGE THIS WHEN SORTBY IS ADDED TO SEARCHOPTIONS!
-        //var sortByChosen = string.Join("_", sortByValues.Where(sb => sb.Item2).Select(sb =>  $"{sb.Item1}"));
         var type = materialTypes.Where(t => t.Item2).Select(t => t.Item1).FirstOrDefault(); 
-        SearchMethod.InvokeAsync(new SearchOptions(){SearchString = searchKey, Tags= tagsChosen, StartDate = startDate, EndDate = endDate, Type=type});
+        SearchMethod.InvokeAsync(new SearchOptions(){SearchString = searchKey, Tags= tagsChosen, StartDate = startDate, EndDate = endDate, Type=type, SortBy = chosenSortBy});
     }
 
     void enterSearch(KeyboardEventArgs e){
@@ -185,8 +199,8 @@
         }
     }
 
-    void updateSortBy(string sortByValue){
-        sortByValues = sortByValues.Select( sb => sb.Item1 == sortByValue ? (sb.Item1, true) : (sb.Item1, false));
+    void updateSortBy(Sortings sortBy){
+        chosenSortBy = sortBy;
     }
 
     void updateType(string type){
@@ -197,9 +211,7 @@
     {
         var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag") ?? new TagDto[0];
         tags = tagDtos.Select(t => chosenTags.Contains(t.Name) ? (t.Name, true) : (t.Name, false));
-        sortByValues = sortByValues.Select( sb => sb.Item1 == chosenSortBy ? (sb.Item1, true) : (sb.Item1, false));
         materialTypes = materialTypes.Select( t => t.Item1 == type ? (t.Item1, true) : (t.Item1, false));
         filteredTags = tags;
-        
     }
 }
