@@ -12,11 +12,7 @@ public class UserRepository : IUserRepository
 
     public async Task<UserDto> Create(UserCreateDto User)
     {
-        var entity = new User
-        {
-            Name = User.Name,
-            Tags = await GetTags(User.Tags).ToListAsync()
-        };
+        var entity = new User(name: User.Name) { Tags = await GetTags(User.Tags).ToListAsync() };
 
         _context.Users.Add(entity);
 
@@ -81,7 +77,7 @@ public class UserRepository : IUserRepository
 
         foreach (var tag in tags)
         {
-            yield return existing.TryGetValue(tag, out var t) ? t : new Tag { Name = tag };
+            yield return existing.TryGetValue(tag, out var t) ? t : new Tag(name: tag);
         }
     }
 }

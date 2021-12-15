@@ -108,7 +108,7 @@
     IEnumerable<(string, bool)> filteredTags = new (string,bool)[0]; 
     IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevant", false),("A-Z", false),("Z-A",false),("Newest", false), ("Oldest", false)};
     IEnumerable<(string, bool)> materialTypes = new (string, bool)[] {("All", false),("Article", false),("Podcast", false),("Video",false)};  
-    string inputForTagSearch;
+    string inputForTagSearch = "";
 
     //Parameters
     [Parameter]    
@@ -128,8 +128,11 @@
 
 
     void onTagSearch(ChangeEventArgs args) {
-        string input = (String)args.Value;
-        filteredTags = tags.Where(t => t.Item1.ToLower().Contains(input.ToLower()) || t.Item2);
+        if (args.Value != null)
+        {
+            string input = (string)args.Value;
+            filteredTags = tags.Where(t => t.Item1.ToLower().Contains(input.ToLower()) || t.Item2);
+        }
     }
 
     void onTagToggle(string tagName) {
@@ -155,7 +158,10 @@
 
     private void OnInputEvent(ChangeEventArgs changeEvent)
     {
-        searchInput = (string)changeEvent.Value;
+        if (changeEvent.Value != null)
+        {
+            searchInput = (string)changeEvent.Value;
+        }
     }
 
     void search(){
@@ -182,7 +188,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
+        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag") ?? new TagDto[0];
         tags = tagDtos.Select(t => chosenTags.Contains(t.Name) ? (t.Name, true) : (t.Name, false));
         sortByValues = sortByValues.Select( sb => sb.Item1 == chosenSortBy ? (sb.Item1, true) : (sb.Item1, false));
         materialTypes = materialTypes.Select( t => t.Item1 == type ? (t.Item1, true) : (t.Item1, false));

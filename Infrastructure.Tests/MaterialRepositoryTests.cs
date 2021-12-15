@@ -16,18 +16,18 @@ public class MaterialRepositoryTests : IDisposable
         var context = new BlueberryContext(builder.Options);
         context.Database.EnsureCreated();
 
-        var Docker = new Tag { Name = "Docker" };
-        var Mobile = new Tag { Name = "Mobile" };
-        var SE = new Tag { Name = "Software Engineering" };
-        var CS = new Tag { Name = "C#" };
+        var Docker = new Tag(name: "Docker");
+        var Mobile = new Tag(name: "Mobile");
+        var SE = new Tag(name: "Software Engineering");
+        var CS = new Tag(name: "C#");
 
         context.Materials.AddRange(
-            new Material { Id = 1, Title = "OOSE", ShortDescription = "", Tags = new[] { SE }, ImageUrl = "", Type = "Book", Date = new DateTime(2013, 4, 20) },
-            new Material { Id = 2, Title = "C# 9.0 in a Nutshell", ShortDescription = "", Tags = new[] { CS }, ImageUrl = "", Type = "Book", Date = new DateTime(2021, 2, 26) },
-            new Material { Id = 9, Title = "Lecture 9", ShortDescription = "", Tags = new[] { SE }, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 9, 29) },
-            new Material { Id = 10, Title = "Lecture 10", ShortDescription = "", Tags = new[] { Docker, CS }, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 10, 1) },
-            new Material { Id = 16, Title = "Lecture 16", ShortDescription = "", Tags = new[] { Docker, CS }, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 10, 29) },
-            new Material { Id = 20, Title = "Lecture 20", ShortDescription = "", Tags = new[] { Mobile, CS }, ImageUrl = "", Type = "Video", Date = new DateTime(2021, 11, 12) }
+            new Material(title: "OOSE", shortDescription: "", type: "Book", date: new DateTime(2013, 4, 20)) { Id = 1, Tags = new[] { SE }, ImageUrl = "" },
+            new Material(title: "C# 9.0 in a Nutshell", shortDescription: "", type: "Book", date: new DateTime(2021, 2, 26)) { Id = 2, Tags = new[] { CS }, ImageUrl = "" },
+            new Material(title: "Lecture 9", shortDescription: "", type: "Video", date: new DateTime(2021, 9, 29)) { Id = 9, Tags = new[] { SE }, ImageUrl = "" },
+            new Material(title: "Lecture 10", shortDescription: "", type: "Video", date: new DateTime(2021, 10, 1)) { Id = 10, Tags = new[] { Docker, CS }, ImageUrl = "" },
+            new Material(title: "Lecture 16", shortDescription: "", type: "Video", date: new DateTime(2021, 10, 29)) { Id = 16, Tags = new[] { Docker, CS }, ImageUrl = "" },
+            new Material(title: "Lecture 20", shortDescription: "", type: "Video", date: new DateTime(2021, 11, 12)) { Id = 20 , Tags = new[] { Mobile, CS }, ImageUrl = "" }
         );
         context.SaveChanges();
 

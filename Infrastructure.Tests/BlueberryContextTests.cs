@@ -19,7 +19,7 @@ public class BlueberryContextTests : IDisposable
     [Fact]
     public async Task RepoGivenNoDatabaseThrowsNoDbConnectionException()
     {
-        _context.Tags.Add(new Tag{Name = "Test"});
+        _context.Tags.Add(new Tag(name: "Test"));
         await Assert.ThrowsAsync<NoDBConnectionException>(async () => await _context.SaveChangesAsync());
     }
 

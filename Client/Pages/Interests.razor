@@ -90,27 +90,26 @@
     {
 
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        if (authState.User.Identity == null)
+        if (authState.User.Identity?.Name != null)
         {
-            Navigation.NavigateTo("");
+            var user = new UserCreateDto(authState.User.Identity.Name, chosenTags);
+
+            var response = await Http.PostAsJsonAsync($"api/user", user);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var created = await response.Content.ReadFromJsonAsync<UserDto>();
+                await localStorage.RemoveItemAsync("userid");
+                await localStorage.SetItemAsync("userid", created?.Id);
+            }
         }
-        var user = new UserCreateDto(authState.User.Identity.Name, chosenTags);
-
-        var response = await Http.PostAsJsonAsync($"api/user", user);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var created = await response.Content.ReadFromJsonAsync<UserDto>();
-            await localStorage.RemoveItemAsync("userid");
-            await localStorage.SetItemAsync("userid", created?.Id);
-
-            Navigation.NavigateTo("");
-        }
+        Navigation.NavigateTo("");
+        
     }
 
     protected override async Task OnInitializedAsync()
     {   
-        var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
+        TagDto[] tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag") ?? new TagDto[0];
         tags = tagDtos.Select(t => (t.Name, false));
 
         var userid = await localStorage.GetItemAsync<int>("userid");
@@ -124,7 +123,7 @@
             }
         }
 
-        displayedTags = tags.Select(t => t.Item1).ToList() ;
+        displayedTags = tags?.Select(t => t.Item1)?.ToList() ?? new List<string>() ;
         foreach(var tag in chosenTags){
             displayedTags.Remove(tag);
         }
@@ -148,12 +147,4 @@
         }
         else{removeFromChosenTags(tagName);}
         }
-
-    void onTagSearch(ChangeEventArgs args) {
-        string input = (String)args.Value;
-        displayedTags = tags.Where(t => t.Item1.ToLower().Contains(input.ToLower())).Select(t => t.Item1).ToList();
-        foreach(var tag in chosenTags){
-            displayedTags.Remove(tag);
-        }
-    }
 }
