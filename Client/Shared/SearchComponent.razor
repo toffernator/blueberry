@@ -103,6 +103,7 @@
 
 
 @code{
+
     //Lists
     IEnumerable<(string, bool)> tags = new (string,bool)[0];
     IEnumerable<(string, bool)> filteredTags = new (string,bool)[0]; 
@@ -111,6 +112,9 @@
     string inputForTagSearch;
 
     //Parameters
+    [Parameter]
+    public EventCallback<SearchOptions> SearchMethod {get; set;}
+
     [Parameter]    
     public string searchInput {get; set; } = "";
     [Parameter]    
@@ -159,11 +163,14 @@
     }
 
     void search(){
-        var tagsChosen = tags.Where(t => t.Item2).Select(t => t.Item1);
-        var sortByChosen = sortByValues.Where(sb => sb.Item2).Select(sb => sb.Item1);
-        var type = materialTypes.Where(t => t.Item2).Select(t => t.Item1);
-        var URL = $"material?searchKey={(searchInput != null ? searchInput.Replace(" ", "+") : "")}&tags={string.Join(",",tagsChosen.Select(t => $"{t}"))}&startyear={yearValues.First()}&endyear={yearValues.Last()}&sortedby={string.Join("_",sortByChosen.Select(t => $"{t}"))}&type={materialTypes.Where(t => t.Item2 == true).FirstOrDefault().Item1}";
-        Navigation.NavigateTo(URL);
+        var searchKey = (searchInput != null ? searchInput.Replace(" ", "+") : "");
+        var tagsChosen = new PrimitiveSet<string>(tags.Where(t => t.Item2).Select(t => $"{t.Item1}"));
+        var startDate = new DateTime(yearValues.First(),1,1);
+        var endDate = new DateTime(yearValues.Last(),12,31);
+        //TODO: CHANGE THIS WHEN SORTBY IS ADDED TO SEARCHOPTIONS!
+        //var sortByChosen = string.Join("_", sortByValues.Where(sb => sb.Item2).Select(sb =>  $"{sb.Item1}"));
+        var type = materialTypes.Where(t => t.Item2).Select(t => t.Item1).FirstOrDefault(); 
+        SearchMethod.InvokeAsync(new SearchOptions(){SearchString = searchKey, Tags= tagsChosen, StartDate = startDate, EndDate = endDate, Type=type});
     }
 
     void enterSearch(KeyboardEventArgs e){
