@@ -3,14 +3,12 @@ namespace blueberry.Infrastructure;
 public class SearchProxy : ISearch
 {
     private readonly ISearch _search;
-    private readonly IUserRepository _users;
     private readonly CacheMap<SearchOptions, IReadOnlyCollection<MaterialDto>> _optionsCache;
     private readonly CacheMap<string, IReadOnlyCollection<MaterialDto>> _stringCache;
 
-    public SearchProxy(IMaterialRepository searchProvider, IUserRepository userRepo)
+    public SearchProxy(IMaterialRepository materialRepo, IUserRepository userRepo)
     {
-        _search = new SearchProvider(searchProvider);
-        _users = userRepo;
+        _search = new SearchProvider(materialRepo, userRepo);
         _optionsCache = new CacheMap<SearchOptions, IReadOnlyCollection<MaterialDto>>(10);
         _stringCache = new CacheMap<string, IReadOnlyCollection<MaterialDto>>(10);
     }
@@ -37,32 +35,6 @@ public class SearchProxy : ISearch
 
     public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options, int id)
     {
-        if(searchEmpty(options))
-        {
-            var user = await _users.Read(id);
-            var interests = new PrimitiveSet<string>();
-
-            if(user.IsSome)
-            {
-                interests = new PrimitiveSet<string>(user.Value.Tags);
-            }
-
-            var newOptions = new SearchOptions { SearchString = options.SearchString , Tags = interests, Type = options.Type,
-                                                            StartDate = options.StartDate, EndDate = options.EndDate };
-            return await _search.Search(newOptions);
-        }
-
         return await _search.Search(options);
     }
-
-    private bool searchEmpty(SearchOptions options)
-    {
-        if(options.SearchString == "" && options.Type == "" && options.StartDate == null
-                                        && options.EndDate == null && options.Tags ==  null)
-        {
-            return true;
-        }
-        return false;
-    }
-
 }
