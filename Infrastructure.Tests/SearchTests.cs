@@ -12,9 +12,9 @@ public class SearchTests
     
     private readonly IReadOnlyCollection<MaterialDto> _mockMaterials = new[]{
         new MaterialDto(1, "Why Haskell is better than F#", new PrimitiveCollection<string> {"FP", "Haskell", "F#", "The truth"}, "", "Book", DateTime.Today),
-        new MaterialDto(2, "Typescript and react", new PrimitiveCollection<string> {"React", "Typsescript", "Javascript"}, "", "Book", DateTime.Today),
+        new MaterialDto(2, "Typescript and react", new PrimitiveCollection<string> {"React", "Typescript", "Javascript"}, "", "Book", DateTime.Today),
         new MaterialDto(3, "Why angular died", new PrimitiveCollection<string> {"Angular", "Typescript", "Javascript"}, "", "Book", DateTime.Today),
-        new MaterialDto(3, "Why typescript is the future of the web", new PrimitiveCollection<string> { "Typescript", "Javascript"}, "", "Book", DateTime.Today),
+        new MaterialDto(4, "Why typescript is the future of the web", new PrimitiveCollection<string> { "Typescript", "Javascript"}, "", "Book", DateTime.Today),
     };
 
     [Fact]
@@ -123,7 +123,7 @@ public class SearchTests
         var mockSearchOptions = new SearchOptions("", null, null, null);
         var searchOptions = new SearchOptions("", null, null, null);
         
-        var filteredMockData = _mockMaterials.Where(md => md.Id != 1).ToList();
+        var filteredMockData = _mockMaterials.Where(md => md.Id == 3).ToList();
         var readUser = _mockUsers.Where(u => u.Id == 2).FirstOrDefault();
         
         mockedMaterialRepo.Setup( mr => mr.Search(mockSearchOptions) ).ReturnsAsync(filteredMockData);
