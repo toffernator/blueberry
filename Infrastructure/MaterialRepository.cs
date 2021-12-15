@@ -34,6 +34,8 @@ public class MaterialRepository : IMaterialRepository
             result = QueryType(result, options.Type);
         }
 
+        result = QueryOrdering(result, options.SortBy != null ? options.SortBy.Value : Sortings.NEWEST);
+
         if (options.Offset != null)
         {
             result = QueryOffset(result, options.Offset.Value);
@@ -74,6 +76,20 @@ public class MaterialRepository : IMaterialRepository
 
     private IQueryable<Material> QueryType(string type) => QueryType(_context.Materials, type);
     private IQueryable<Material> QueryType(IQueryable<Material> source, string type) => source.Where(m => m.Type == type);
-
     private IQueryable<Material> QueryOffset(IQueryable<Material> source, int offset) => source.Skip(offset);
+    private IQueryable<Material> QueryOrdering(IQueryable<Material> source, Sortings sortBy)
+    {
+        switch (sortBy)
+        {
+            case Sortings.AZ:
+                return source.OrderBy(m => m.Title);
+            case Sortings.ZA:
+                return source.OrderByDescending(m => m.Title);
+            case Sortings.OLDEST:
+                return source.OrderBy(m => m.Date);
+            case Sortings.NEWEST:
+            default:
+                return source.OrderByDescending(m => m.Date);
+        }
+    }
 }
