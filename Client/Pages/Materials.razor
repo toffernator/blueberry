@@ -22,7 +22,7 @@
 
     <div class="materials">
         <div class="searchComponent">
-            <SearchComponent searchInput=@_searchKeyURL yearValues=@(new int[] {@_startyearURL, @_endyearURL}) chosenTags=@(_tagsURL.Split(',')) chosenSortBy=@_chosenSortBy type=@_typeURL />
+            <SearchComponent searchInput=@_searchKeyURL yearValues=@(new int[] {@_startyearURL, @_endyearURL}) chosenTags=@(_tagsURL?.Split(',') ?? new string[0]) chosenSortBy=@_chosenSortBy type=@_typeURL />
        </div>
         @foreach (var material in materials)
         {
@@ -55,12 +55,12 @@
 IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
 
     private string _searchKeyURL = "";
-    private string _tagsURL;
+    private string? _tagsURL;
     private int _startyearURL;
     private int _endyearURL;
-    private string _chosenSortBy;
+    private string _chosenSortBy = "MostRelevant";
 
-    private string _typeURL;
+    private string _typeURL = "All";
     private int _offset = 0;
     private int _limit = 100;
 
@@ -91,14 +91,14 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
         {
             _typeURL = typeURL;
         }
-        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKeyURL}&tag={_tagsURL}&startyear={_startyearURL}&endyear={_endyearURL}&offset={_offset}&limit={_limit}");
+        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKeyURL}&tag={_tagsURL}&startyear={_startyearURL}&endyear={_endyearURL}&offset={_offset}&limit={_limit}") ?? new MaterialDetailsDto[]{} ;
     }
 
     protected override async Task OnInitializedAsync()
     {
         // Subscribe
         Navigation.LocationChanged += LocationChanged;
-        base.OnInitializedAsync();
+        await base.OnInitializedAsync();
 
         await updateURLChanges();
     }
@@ -107,9 +107,9 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
          Navigation.NavigateTo("");
     }
 
-    void LocationChanged(object sender, LocationChangedEventArgs e)
+    void LocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        updateURLChanges();
+        Task.Run(updateURLChanges).Wait();
         
     }
     void IDisposable.Dispose()
