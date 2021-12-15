@@ -90,6 +90,10 @@
     {
 
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity == null)
+        {
+            Navigation.NavigateTo("");
+        }
         var user = new UserCreateDto(authState.User.Identity.Name, chosenTags);
 
         var response = await Http.PostAsJsonAsync($"api/user", user);
