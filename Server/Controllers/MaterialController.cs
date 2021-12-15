@@ -7,12 +7,12 @@ namespace blueberry.Server.Controllers;
 public class MaterialController : ControllerBase
 {
     private readonly ILogger<MaterialController> _logger;
-    private readonly IMaterialRepository _repository;
+    private readonly ISearch _search;
 
-    public MaterialController(ILogger<MaterialController> logger, IMaterialRepository repository)
+    public MaterialController(ILogger<MaterialController> logger, ISearch search)
     {
         _logger = logger;
-        _repository = repository;
+        _search = search;
     }
 
     [ProducesResponseType(404)]
@@ -25,7 +25,8 @@ public class MaterialController : ControllerBase
                                                                   [FromQuery(Name = "type")] string? type,
                                                                   [FromQuery(Name = "offset")] int offset,
                                                                   [FromQuery(Name = "limit")] int limit,
-                                                                  [FromQuery(Name = "sortby")] string? sortByQueryParam)
+                                                                  [FromQuery(Name = "sortby")] string? sortByQueryParam,
+                                                                  [FromQuery(Name = "userid")] int userid)
     {
         Enum.TryParse(sortByQueryParam, out Sortings sortBy);
 
@@ -41,7 +42,7 @@ public class MaterialController : ControllerBase
             SortBy = sortBy
         };
 
-        var result = await _repository.Search(options);
+        var result = await _search.Search(options, userid);
         return new ActionResult<IEnumerable<MaterialDto>>(result);
     }
 }

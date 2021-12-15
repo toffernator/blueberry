@@ -33,6 +33,7 @@ seedCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) 
     builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<ITagRepository, TagRepository>();
+    builder.Services.AddScoped<ISearch, SearchProxy>();
 
     var app = builder.Build();
 
@@ -58,6 +59,7 @@ rootCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) 
     builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<ITagRepository, TagRepository>();
+    builder.Services.AddScoped<ISearch, SearchProxy>();
 
     var app = builder.Build();
 
