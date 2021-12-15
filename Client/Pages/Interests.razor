@@ -116,8 +116,12 @@
         var userid = await localStorage.GetItemAsync<int>("userid");
         if (userid != 0)
         {
-            var user =  await Http.GetFromJsonAsync<UserDto>($"api/user/{userid}");
-            if (user != null) chosenTags = user.Tags;
+            var response =  await Http.GetAsync($"api/user/{userid}");
+            if (response.IsSuccessStatusCode)
+            {
+                var user = await response.Content.ReadFromJsonAsync<UserDto>();
+                chosenTags = user.Tags;
+            }
         }
 
         displayedTags = tags.Select(t => t.Item1).ToList() ;
