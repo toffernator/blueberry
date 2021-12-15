@@ -46,15 +46,19 @@
 }
 
 .clearAll {
+  padding-top: 10px;
   display: flex;
 
 }
 
+
 .tags {
+  padding: 10px;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
+  width: 280px;
 }
 
 .tag {
@@ -66,7 +70,7 @@
 
 .searchbarForTags {
   border: 1px solid gray;
-  margin: 5px;
+  width: 100%;
 }
 
 .slider {
@@ -87,4 +91,13 @@
 
 .tagdropdown{
     padding: 5px;
+}
+
+.tagsShowingAll{
+  padding: 10px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  width: 450px;
 }
