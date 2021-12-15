@@ -128,7 +128,8 @@
 
 
     void onTagSearch(ChangeEventArgs args) {
-        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)args.Value) || t.Item2);
+        string input = (String)args.Value;
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains(input.ToLower()) || t.Item2);
     }
 
     void onTagToggle(string tagName) {
