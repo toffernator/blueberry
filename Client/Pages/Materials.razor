@@ -94,14 +94,14 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
 
     async Task UpdateResults(SearchOptions options)
     {
-        var searchKey = options.SearchString; 
-        var tags = string.Join(",",options.Tags);
-        var startyear = options.StartDate.Value.Year;
-        var endyear = options.EndDate.Value.Year;
+        string searchKey = options.SearchString; 
+        string tags = string.Join(",",options.Tags ?? new PrimitiveSet<string>(){});
+        int startyear = options.StartDate.Value.Year;
+        int endyear = options.EndDate.Value.Year;
         
         //TODO: CHANGE THIS WHEN SORTBY IS ADDED TO SEARCHOPTIONS!
-        var sortBy = "A-Z";
-        var type = options.Type;
+        string sortBy = "A-Z";
+        string? type = options.Type;
         
         //Update SearchComponent 
         _searchKey = searchKey;
@@ -109,20 +109,20 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
         _startyear = startyear;
         _endyear = endyear;
         _sortBy = sortBy;
-        _type = type;
+        _type = type ?? _type;
         
         
         var URL = $"material?searchKey={searchKey}&tags={tags}&startyear={startyear}&endyear={endyear}&sortedby={sortBy}&type={type}";
         Navigation.NavigateTo(URL);
-        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={searchKey}&tag={tags}&startyear={startyear}&endyear={endyear}&offset={_offset}&limit={_limit}") ?? new MaterialsDetailsDto[0];
+        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={searchKey}&tag={tags}&startyear={startyear}&endyear={endyear}&offset={_offset}&limit={_limit}") ?? new MaterialDetailsDto[0];
         //Force Re-render
-        InvokeAsync(() => {StateHasChanged();});
+        await InvokeAsync(() => {StateHasChanged();});
     }
 
     protected override async Task OnInitializedAsync()
     {
         GetURLChanges();
-        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKey}&tag={_tags}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}") ?? new MaterialsDetailsDto[0];
+        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKey}&tag={_tags}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}") ?? new MaterialDetailsDto[0];
     }
 
     void GoToMain(){
