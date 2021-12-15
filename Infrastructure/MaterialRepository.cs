@@ -22,7 +22,6 @@ public class MaterialRepository : IMaterialRepository
         if (options.StartDate != null)
         {
             result = QueryStartDate(result, (DateTime)options.StartDate);
-            // FIXME: Here the count becomes 0 when supplied options from material controller
         }
 
         if (options.EndDate != null)
@@ -35,13 +34,20 @@ public class MaterialRepository : IMaterialRepository
             result = QueryType(result, options.Type);
         }
 
+        if (options.Offset != null)
+        {
+            result = QueryOffset(result, options.Offset.Value);
+        }
+
+        result = result.Take(options.Limit ?? 30);
+
         return await result
-            .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name))))
+            .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name)), m.ImageUrl, m.Type, m.Date))
             .ToListAsync();
     }
 
     private IQueryable<Material> QueryTitle(IQueryable<Material> source, string title) => source.Where(m => m.Title.ToUpper().Contains(title.ToUpper()));
-    
+
     private IQueryable<Material> QueryTitle(string title) => QueryTitle(_context.Materials, title);
 
     private IQueryable<Material> QueryTags(IEnumerable<string> tags) => QueryTags(_context.Materials, tags);
@@ -68,4 +74,6 @@ public class MaterialRepository : IMaterialRepository
 
     private IQueryable<Material> QueryType(string type) => QueryType(_context.Materials, type);
     private IQueryable<Material> QueryType(IQueryable<Material> source, string type) => source.Where(m => m.Type == type);
+
+    private IQueryable<Material> QueryOffset(IQueryable<Material> source, int offset) => source.Skip(offset);
 }
