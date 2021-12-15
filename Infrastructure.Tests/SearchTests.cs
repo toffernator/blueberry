@@ -7,8 +7,8 @@ public class SearchTests
     private readonly IReadOnlyCollection<UserDto> _mockUsers = new[]
     {
         new UserDto (1, "Jalle", new PrimitiveCollection<string> {"React"}),
-        new UserDto (2, "Kobo", new PrimitiveCollection<string> {"Angular"})
-    }
+        new UserDto (2, "Kobo", new PrimitiveCollection<string> {"Angular"}),
+    };
     
     private readonly IReadOnlyCollection<MaterialDto> _mockMaterials = new[]{
         new MaterialDto(1, "Why Haskell is better than F#", new PrimitiveCollection<string> {"FP", "Haskell", "F#", "The truth"}, "", "Book", DateTime.Today),
