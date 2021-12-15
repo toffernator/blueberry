@@ -119,7 +119,7 @@
             if (user != null) chosenTags = user.Tags;
         }
 
-        displayedTags = tags.Select(t => t.Item1).ToList() ;
+        displayedTags = tags?.Select(t => t.Item1)?.ToList() ?? new List<string>() ;
         foreach(var tag in chosenTags){
             displayedTags.Remove(tag);
         }
@@ -143,15 +143,4 @@
         }
         else{removeFromChosenTags(tagName);}
         }
-
-    void onTagSearch(ChangeEventArgs args) {
-        if (args.Value != null)
-        {
-            string input = (String)args.Value;
-            displayedTags = tags.Where(t => t.Item1.ToLower().Contains(input.ToLower())).Select(t => t.Item1).ToList();
-            foreach(var tag in chosenTags){
-                displayedTags.Remove(tag);
-            }
-        }
-    }
 }
