@@ -4,4 +4,5 @@ public interface ISearch
 {
     public Task<IReadOnlyCollection<MaterialDto>> Search(string searchString);
     public Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options);
+    public Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options, int id);
 }
