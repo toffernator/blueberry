@@ -46,20 +46,19 @@
 }
 
 .clearAll {
-  color: #0d6efd;
+  padding-top: 10px;
   display: flex;
-  justify-content: flex-end;
-  margin-right: 5px;
-}
-.clearAll:hover {
-  text-decoration: underline;
+
 }
 
+
 .tags {
+  padding: 10px;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
+  width: 280px;
 }
 
 .tag {
@@ -71,7 +70,7 @@
 
 .searchbarForTags {
   border: 1px solid gray;
-  margin: 5px;
+  width: 100%;
 }
 
 .slider {
@@ -92,4 +91,13 @@
 
 .tagdropdown{
     padding: 5px;
+}
+
+.tagsShowingAll{
+  padding: 10px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  width: 450px;
 }

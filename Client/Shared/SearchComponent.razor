@@ -36,13 +36,29 @@
                 <li>
                     <input class="searchbarForTags" type="text" @bind=@inputForTagSearch placeholder="Search for tags"  @oninput=@onTagSearch />
                 </li>
-                <li class= "tags">
+                @if(isShowingAll){
+                <li class= "tagsShowingAll">
                      @foreach (var tag in filteredTags)
                      {
                          <span class=@($"badge {(tag.Item2 ? "bg-primary" : "bg-secondary")} rounded-pill tag") @onclick="() => onTagToggle(tag.Item1)">@tag.Item1</span>
                      }
                 </li>
-                <li class="clearAll"><label type="label" @onclick="clearAll">clear all</label></li>
+                }else{
+                <li class= "tags">
+                    @if(!tags.Where(t => t.Item2).Any()){
+                        <p> you have no chosen tags</p>
+                    }
+                    @foreach (var tag in tags.Where(t => t.Item2))
+                    {
+                        <span class= "badge bg-primary rounded-pill tag" @onclick="() => onTagToggle(tag.Item1)">@tag.Item1</span>
+                    }
+                 </li>
+                }
+            
+                <li class="clearAll">
+                    <button type="button" class="btn btn-outline-primary" @onclick="showAll"> @showAllText</button>
+                    <label type="button" class="btn btn-outline-secondary" @onclick="clearAll">clear all</label>
+                    </li>
             </ul>
         </div>
 
@@ -61,12 +77,28 @@
                 </li>
                 <li>
                     <div class="slider">
-                        <RadzenSlider style="background-color: black;" Min="1970" Max="2021" Range="true" @bind-Value=@yearValues TValue="IEnumerable<int>" />
+                        <RadzenSlider style="background-color: black;" Min="2000" Max="2021" Range="true" @bind-Value=@yearValues TValue="IEnumerable<int>" />
                     </div>
                 </li>
             </ul>
         </div>
+        <div class="filters">
+        <div class="btn-group">
+            <button class="btn btn-secondary btn-sm dropdown-toggle filterButton" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Type
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    @foreach (var type in materialTypes)
+                     {
+                         <span class=@($"dropdown-item {(type.Item2 ? "active" : " ")} ") @onclick="() => updateType(type.Item1)">@type.Item1</span>
+                     }
+                </li>
+            </ul>
+        </div>
     </div>
+</div>
 </div>
 
 
@@ -74,7 +106,8 @@
     //Lists
     IEnumerable<(string, bool)> tags = new (string,bool)[0];
     IEnumerable<(string, bool)> filteredTags = new (string,bool)[0]; 
-    IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevant", false),("A-Z", false),("Z-A",false),("Newest", false), ("Oldest", false)}; 
+    IEnumerable<(string, bool)> sortByValues = new (string, bool)[] {("Most relevant", false),("A-Z", false),("Z-A",false),("Newest", false), ("Oldest", false)};
+    IEnumerable<(string, bool)> materialTypes = new (string, bool)[] {("All", false),("Article", false),("Podcast", false),("Video",false)};  
     string inputForTagSearch;
 
     //Parameters
@@ -83,13 +116,20 @@
     [Parameter]    
     public IEnumerable<string> chosenTags {get; set; } = new string[0];
     [Parameter]    
-    public IEnumerable<int> yearValues {get; set;} = new int[]{1970, 2021};
+    public IEnumerable<int> yearValues {get; set;} = new int[]{2000, 2021};
     [Parameter]    
     public string chosenSortBy {get; set;} = "Most relevant";
 
+    [Parameter]
+    public string type {get; set;} = "All";
+
+    public String showAllText = "show all";
+    public Boolean isShowingAll = false;
+
 
     void onTagSearch(ChangeEventArgs args) {
-        filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)args.Value) || t.Item2);
+        string input = (String)args.Value;
+        filteredTags = tags.Where(t => t.Item1.ToLower().Contains(input.ToLower()) || t.Item2);
     }
 
     void onTagToggle(string tagName) {
@@ -97,6 +137,16 @@
         if (inputForTagSearch==null) inputForTagSearch = "";
         filteredTags = tags.Where(t => t.Item1.ToLower().Contains((String)inputForTagSearch) || t.Item2);
     }
+     void showAll(){
+         if(isShowingAll == false){
+             isShowingAll = true;
+             showAllText = "show chosen";
+         }
+         else {
+             isShowingAll = false;
+             showAllText = "show all";
+         }
+     }
     void clearAll(){
         tags = tags.Select(t => (t.Item1, false));
         if (inputForTagSearch==null) inputForTagSearch = "";
@@ -111,7 +161,8 @@
     void search(){
         var tagsChosen = tags.Where(t => t.Item2).Select(t => t.Item1);
         var sortByChosen = sortByValues.Where(sb => sb.Item2).Select(sb => sb.Item1);
-        var URL = $"material?searchKey={(searchInput != null ? searchInput.Replace(" ", "+") : "")}&tags={string.Join(",",tagsChosen.Select(t => $"{t}"))}&startyear={yearValues.First()}&endyear={yearValues.Last()}&sortedby={string.Join("_",sortByChosen.Select(t => $"{t}"))}";
+        var type = materialTypes.Where(t => t.Item2).Select(t => t.Item1);
+        var URL = $"material?searchKey={(searchInput != null ? searchInput.Replace(" ", "+") : "")}&tags={string.Join(",",tagsChosen.Select(t => $"{t}"))}&startyear={yearValues.First()}&endyear={yearValues.Last()}&sortedby={string.Join("_",sortByChosen.Select(t => $"{t}"))}&type={materialTypes.Where(t => t.Item2 == true).FirstOrDefault().Item1}";
         Navigation.NavigateTo(URL);
     }
 
@@ -125,11 +176,17 @@
         sortByValues = sortByValues.Select( sb => sb.Item1 == sortByValue ? (sb.Item1, true) : (sb.Item1, false));
     }
 
+    void updateType(string type){
+        materialTypes = materialTypes.Select( t => t.Item1 == type ? (t.Item1, true) : (t.Item1, false));
+    }
+
     protected override async Task OnInitializedAsync()
     {
         var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
         tags = tagDtos.Select(t => chosenTags.Contains(t.Name) ? (t.Name, true) : (t.Name, false));
         sortByValues = sortByValues.Select( sb => sb.Item1 == chosenSortBy ? (sb.Item1, true) : (sb.Item1, false));
+        materialTypes = materialTypes.Select( t => t.Item1 == type ? (t.Item1, true) : (t.Item1, false));
         filteredTags = tags;
+        
     }
 }

@@ -1,10 +1,12 @@
 @page "/interests"
 @attribute [Authorize]
 @inject NavigationManager Navigation
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
+@inject NavigationManager uriHelper;
 
 <PageTitle>Interests</PageTitle>
-
 <div class="pageContent">
     <div class="chosentags">
         <div class="tagTitle">
@@ -13,74 +15,141 @@
         <div class="tags">
             @foreach (var tag in chosenTags)
                      {
-                         <span class="badge rounded-pill bg-primary tag" @onclick="() => removeFromChosenTags(tag.Item1)" >@tag.Item1</span> 
+                         <span class="badge rounded-pill bg-primary tag" @onclick="() => onTagToggle(tag)" >@tag</span> 
                      }
         </div>
     </div>
     <div class="searchForTags">
-        <div class="searchComponent">
-            <input class="searchbar" type="text" placeholder="Search" />
-            <button class="searchbutton" type="button">
-                <span>
-                    <i class="fa-solid fa-magnifying-glass searchIcon"></i>
-                </span>
-            </button>
-        </div>
+        @if(isShown == false){
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                     <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            }
         <div class="tags">
-             @foreach (var tag in tags)
+             @foreach (var tag in displayedTags)
                      {
-                         <span class="badge rounded-pill bg-secondary tag" @onclick="() => addToChosenTags(tag.Item1)" >@tag.Item1</span> 
-                     }
+                         <span class="badge rounded-pill bg-secondary tag" @onclick="() => onTagToggle(tag)" >@tag</span> 
+                     }    
         </div>
-        <nav aria-label="Page navigation example tagNav">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
-
+        <div class="d-grid gap-2 col-6 mx-auto">
+    @if(isDone == false){
+        <button class="btn btn-primary done" type="button" @onclick="Done">Done</button>
+    }
+    else {
+        <button class="btn btn-primary done" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
+        }
     </div>
 </div>
-<div class="d-grid gap-2 col-6 mx-auto">
-    <button class="btn btn-primary" type="button" @onclick="done">Done</button>
 </div>
+
 
 
 @code {
 
-    IEnumerable<(string, bool)> tags = new (string,bool)[0];
-    IEnumerable<(string, bool)> chosenTags = new (string,bool)[] {("React", true),("Bootstrap", true),("Blazor", true),("Flutter",true)};
+   IEnumerable<(string, bool)> tags = new (string,bool)[0];
+   PrimitiveCollection<string> chosenTags = new PrimitiveCollection<string>(); 
 
-    void done()
+   List<string> displayedTags = new List<string>();    
+   
+    public Boolean isDone = false;
+    public Boolean isShown = false;
+
+    async Task Done()
     {
-        Navigation.NavigateTo("");
+        isDone = true;
+        // Empty userid returns 0
+        var userid = await localStorage.GetItemAsync<int>("userid");
+        if (userid != 0)
+        {
+            var user = new UserUpdateDto(userid, chosenTags);
+
+            var response = await Http.PutAsJsonAsync($"api/user/{userid}", user);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Navigation.NavigateTo("");
+            } else
+            {
+                await CreateUser();
+            }
+
+        } else
+        {
+            await CreateUser();
+        }
 
     }
 
-    
-    void addToChosenTags(string tagName){
-        var temp = (tagName, true);
-        chosenTags = chosenTags.Append(temp);
-    
 
-    }
-    void removeFromChosenTags(string tagName){
+    async Task CreateUser()
+    {
 
-        chosenTags = chosenTags.Where(x => x.Item1 != tagName);
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity == null)
+        {
+            Navigation.NavigateTo("");
+        }
+        var user = new UserCreateDto(authState.User.Identity.Name, chosenTags);
 
+        var response = await Http.PostAsJsonAsync($"api/user", user);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var created = await response.Content.ReadFromJsonAsync<UserDto>();
+            await localStorage.RemoveItemAsync("userid");
+            await localStorage.SetItemAsync("userid", created?.Id);
+
+            Navigation.NavigateTo("");
+        }
     }
 
     protected override async Task OnInitializedAsync()
-    {
+    {   
         var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
         tags = tagDtos.Select(t => (t.Name, false));
+
+        var userid = await localStorage.GetItemAsync<int>("userid");
+        if (userid != 0)
+        {
+            var user =  await Http.GetFromJsonAsync<UserDto>($"api/user/{userid}");
+            if (user != null) chosenTags = user.Tags;
+        }
+
+        displayedTags = tags.Select(t => t.Item1).ToList() ;
+        foreach(var tag in chosenTags){
+            displayedTags.Remove(tag);
+        }
+        isShown = true;
     }
 
+    void addToChosenTags(string tagName){
+        chosenTags.Add(tagName);
+        displayedTags.Remove(tagName);
+
+    }
+
+    void removeFromChosenTags(string tagName){
+        chosenTags.Remove(tagName);
+        displayedTags.Add(tagName);
+    }
+
+    void onTagToggle(string tagName) {
+        if(displayedTags.Contains(tagName)){
+            addToChosenTags(tagName);
+        }
+        else{removeFromChosenTags(tagName);}
+        }
+
+    void onTagSearch(ChangeEventArgs args) {
+        string input = (String)args.Value;
+        displayedTags = tags.Where(t => t.Item1.ToLower().Contains(input.ToLower())).Select(t => t.Item1).ToList();
+        foreach(var tag in chosenTags){
+            displayedTags.Remove(tag);
+        }
+    }
 }

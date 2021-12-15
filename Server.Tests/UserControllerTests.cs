@@ -16,7 +16,7 @@ public class UserControllerTests
 
         // Act
         var controller = new UserController(logger.Object, repository.Object);
-        var created = (CreatedAtRouteResult) (await controller.Post(userToPost));
+        var created = await controller.Post(userToPost);
 
         // Assert
         Assert.Equal(new UserDto(1, "Jalle", tags), created.Value);
