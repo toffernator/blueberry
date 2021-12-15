@@ -7,7 +7,6 @@
 @inject NavigationManager uriHelper;
 
 <PageTitle>Interests</PageTitle>
-
 <div class="pageContent">
     <div class="chosentags">
         <div class="tagTitle">
@@ -21,35 +20,33 @@
         </div>
     </div>
     <div class="searchForTags">
-        <div class="searchComponent">
-            <input class="searchbar" type="text" placeholder="Search" />
-            <button class="searchbutton" type="button">
-                <span>
-                    <i class="fa-solid fa-magnifying-glass searchIcon"></i>
-                </span>
-            </button>
-        </div>
+        @if(isShown == false){
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                     <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            }
         <div class="tags">
              @foreach (var tag in displayedTags)
                      {
                          <span class="badge rounded-pill bg-secondary tag" @onclick="() => onTagToggle(tag)" >@tag</span> 
-                         <!--<span class=@($"badge rounded-pill bg-secondary tag {(tag.Item2 ? "notvisibleInterest" : " ")} ") @onclick="() => onTagToggle(tag.Item1)" >@tag.Item1</span> --> 
-                     }
-                     
+                     }    
         </div>
+        <div class="d-grid gap-2 col-6 mx-auto">
+    @if(isDone == false){
+        <button class="btn btn-primary done" type="button" @onclick="Done">Done</button>
+    }
+    else {
+        <button class="btn btn-primary done" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
+        }
     </div>
 </div>
-<div class="d-grid gap-2 col-6 mx-auto">
-@if(isDone == false){
-    <button class="btn btn-primary" type="button" @onclick="Done">Done</button>
-}
-else {
-<button class="btn btn-primary" type="button" disabled>
-  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-  Loading...
-</button>
-}
 </div>
+
 
 
 @code {
@@ -60,6 +57,7 @@ else {
    List<string> displayedTags = new List<string>();    
    
     public Boolean isDone = false;
+    public Boolean isShown = false;
 
     async Task Done()
     {
@@ -107,7 +105,7 @@ else {
     }
 
     protected override async Task OnInitializedAsync()
-    {
+    {   
         var tagDtos = await Http.GetFromJsonAsync<TagDto[]>($"api/tag");
         tags = tagDtos.Select(t => (t.Name, false));
 
@@ -123,6 +121,7 @@ else {
             displayedTags.Remove(tag);
 
         }
+        isShown = true;
     }
 
     void addToChosenTags(string tagName){
