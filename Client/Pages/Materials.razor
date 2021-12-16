@@ -128,7 +128,7 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
 
     private async Task<MaterialDetailsDto[]> fetchMaterials() 
     {
-        return await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={Uri.EscapeDataString(_searchKey)}&tag={Uri.EscapeDataString(_tags ?? "")}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}&sortby={_sortBy}") ?? new MaterialDetailsDto[0];
+        return await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={Uri.EscapeDataString(_searchKey)}&tag={Uri.EscapeDataString(_tags ?? "")}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}&sortby={_sortBy}&type={(_type == "All" ? "" : _type)}") ?? new MaterialDetailsDto[0];
     }
 
     void GoToMain(){

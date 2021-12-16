@@ -27,9 +27,8 @@ public class MaterialController : ControllerBase
                                                                   [FromQuery(Name = "limit")] int limit,
                                                                   [FromQuery(Name = "sortby")] string? sortByQueryParam)
     {
-        Enum.TryParse(sortByQueryParam, out Sortings sortBy);
-
         var decodedTags = tags == null ? null : new PrimitiveSet<string>(Uri.UnescapeDataString(tags).Split(","));
+        var enumParseSuccess = Enum.TryParse(sortByQueryParam, out Sortings sortBy);
 
         var options = new SearchOptions
         {
@@ -40,7 +39,7 @@ public class MaterialController : ControllerBase
             Type = type is null ? "" : type,
             Limit = limit,
             Offset = offset,
-            SortBy = sortBy
+            SortBy = enumParseSuccess ? sortBy : null
         };
 
         var result = await _repository.Search(options);
