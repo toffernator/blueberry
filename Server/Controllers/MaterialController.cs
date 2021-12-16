@@ -1,9 +1,9 @@
 namespace blueberry.Server.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
-//[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public class MaterialController : ControllerBase
 {
     private readonly ILogger<MaterialController> _logger;

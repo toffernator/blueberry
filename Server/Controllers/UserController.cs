@@ -1,8 +1,10 @@
 namespace blueberry.Server.Controllers;
 //Made with inspiration from Rasmus Repo : https://github.com/ondfisk/BDSA2021/blob/main/MyApp.Server/Controllers/CharactersController.cs
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
+[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
