@@ -41,11 +41,11 @@ testcoverage/CoverageReport/index.html:
 	docker run --rm -v "$(shell realpath .):/src" blueberry_report-generator testcoverage/CoverageReport $(USERID)
 
 clean-coverage:
-	rm -r testcoverage/CoverageReport
-	rm -r *.Tests/TestResults
+	rm -fr testcoverage/CoverageReport
+	rm -fr *.Tests/TestResults
 
 testcoverage/CoverageReport/CoverageReport.pdf: testcoverage/CoverageReport/index.html
 	docker build -t blueberry_pdf-compiler -f testcoverage/compile-pdf.Dockerfile testcoverage
-	docker run --rm -v "$(shell realpath ./testcoverage/CoverageReport):/report" blueberry_pdf-compiler /report/index.html /report/CoverageReport.pdf
+	docker run --rm -u $(USERID):$(USERID) -v "$(shell realpath ./testcoverage/CoverageReport):/report" blueberry_pdf-compiler /report/index.html /report/CoverageReport.pdf
 
 .PHONY: clean-certs certs db-up db-stop db-rm seed-db connection-string prepare-local coveragereport clean-coverage
