@@ -34,10 +34,12 @@ connection-string:
 	dotnet user-secrets init --project Server && dotnet user-secrets set 'ConnectionStrings:Blueberry' 'Server=localhost;Database=blueberry;User Id=sa;Password=TESTTESTTEST123:)' --project Server
 
 coveragereport:
-	docker build -t blueberry_report-generator -f testcoverage/testing-report.Dockerfile testcoverage
+	docker build -t blueberry_report-generator testcoverage
+	dotnet test --collect:"XPlat Code Coverage"
 	docker run --rm -v "$(shell realpath .):/src" blueberry_report-generator testcoverage/CoverageReport $(USERID)
 
-clean-coverage: CoverageReport/index.html
-	rm -r CoverageReport
+clean-coverage: testcoverage/CoverageReport/index.html
+	rm -r testcoverage/CoverageReport
+	rm -r *.Tests/TestResults
 
 .PHONY: clean-certs certs db-up db-stop db-rm seed-db connection-string prepare-local coveragereport clean-coverage
