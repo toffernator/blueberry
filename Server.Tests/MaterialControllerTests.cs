@@ -3,7 +3,7 @@ namespace blueberry.Server.Tests.Controllers;
 public class MaterialControllerTests
 {
     [Fact]
-    public async Task GetCreatesCorectSearchOptionsFromParameters()
+    public async Task GetCreatesCorrectSearchOptionsFromParameters()
     {
         var logger = new Mock<ILogger<MaterialController>>();
         var repository = new Mock<IMaterialRepository>();
@@ -16,7 +16,8 @@ public class MaterialControllerTests
             EndDate = new DateTime(2022, 12, 31),
             Type = "Video",
             Limit = 2,
-            Offset = 0
+            Offset = 0,
+            SortBy = Sortings.NEWEST
         };
         var expected = new[]
         {
@@ -28,7 +29,7 @@ public class MaterialControllerTests
         Console.WriteLine(mockOptions);
 
         var controller = new MaterialController(logger.Object, repository.Object);
-        var response = await controller.Get("Lecture", new HashSet<string> { "Docker" }, 2021, 2022, "Video", 0, 2);
+        var response = await controller.Get("Lecture", new HashSet<string> { "Docker" }, 2021, 2022, "Video", 0, 2, Sortings.NEWEST.ToString());
 
         Assert.Equal(expected, response.Value);
     }
@@ -50,7 +51,7 @@ public class MaterialControllerTests
         repository.Setup(m => m.Search(It.IsAny<SearchOptions>())).ReturnsAsync(expected.Skip(offset).Take(limit).ToList());
 
         var controller = new MaterialController(logger.Object, repository.Object);
-        var response = await controller.Get("Lecture", new HashSet<string> { "Docker" }, 2021, 2022, "Video", offset, limit);
+        var response = await controller.Get("Lecture", new HashSet<string> { "Docker" }, 2021, 2022, "Video", offset, limit, Sortings.NEWEST.ToString());
 
 
         Assert.Equal(expected.Skip(offset).Take(limit), response.Value);

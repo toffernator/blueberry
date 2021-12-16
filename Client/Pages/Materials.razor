@@ -57,7 +57,7 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
     private string? _tags;
     private int _startyear;
     private int _endyear;
-    private string _sortBy = "A-Z";
+    private Sortings _sortBy = Sortings.NEWEST;
     private string _type = "All";
 
     private int _offset = 0;
@@ -82,9 +82,10 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
         {
             _searchKey = searchKeyURL;
         }
-        if(queryStrings.TryGetValue("sortedby", out var sortbyURL))
+        if(queryStrings.TryGetValue("sortby", out var sortbyURL))
         {
-            _sortBy = sortbyURL;
+            Enum.TryParse(sortbyURL, out Sortings sortBy);
+            _sortBy = sortBy;
         }
         if(queryStrings.TryGetValue("type", out var typeURL))
         {
@@ -100,7 +101,7 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
         int endyear = options.EndDate.Value.Year;
         
         //TODO: CHANGE THIS WHEN SORTBY IS ADDED TO SEARCHOPTIONS!
-        string sortBy = "A-Z";
+        Sortings? sortBy = options.SortBy;
         string? type = options.Type;
         
         //Update SearchComponent 
@@ -108,13 +109,13 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
         _tags = tags;
         _startyear = startyear;
         _endyear = endyear;
-        _sortBy = sortBy;
+        _sortBy = sortBy ?? _sortBy;
         _type = type ?? _type;
         
         
-        var URL = $"material?searchKey={searchKey}&tags={tags}&startyear={startyear}&endyear={endyear}&sortedby={sortBy}&type={type}";
+        var URL = $"material?searchKey={_searchKey}&tags={_tags}&startyear={_startyear}&endyear={_endyear}&sortby={_sortBy}&type={_type}";
         Navigation.NavigateTo(URL);
-        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={searchKey}&tag={tags}&startyear={startyear}&endyear={endyear}&offset={_offset}&limit={_limit}") ?? new MaterialDetailsDto[0];
+        materials = await fetchMaterials();
         //Force Re-render
         await InvokeAsync(() => {StateHasChanged();});
     }
@@ -122,7 +123,12 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
     protected override async Task OnInitializedAsync()
     {
         GetURLChanges();
-        materials = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKey}&tag={_tags}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}") ?? new MaterialDetailsDto[0];
+        materials = await fetchMaterials();
+    }
+
+    private async Task<MaterialDetailsDto[]> fetchMaterials() 
+    {
+        return await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={_searchKey}&tag={_tags}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}&sortby={_sortBy}") ?? new MaterialDetailsDto[0];
     }
 
     void GoToMain(){

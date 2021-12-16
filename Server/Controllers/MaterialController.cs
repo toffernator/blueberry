@@ -24,8 +24,11 @@ public class MaterialController : ControllerBase
                                                                   [FromQuery(Name = "endyear")] int? endYear,
                                                                   [FromQuery(Name = "type")] string? type,
                                                                   [FromQuery(Name = "offset")] int offset,
-                                                                  [FromQuery(Name = "limit")] int limit)
+                                                                  [FromQuery(Name = "limit")] int limit,
+                                                                  [FromQuery(Name = "sortby")] string? sortByQueryParam)
     {
+        var enumParseSuccess = Enum.TryParse(sortByQueryParam, out Sortings sortBy);
+
         var options = new SearchOptions
         {
             SearchString = searchString is null ? "" : searchString,
@@ -34,7 +37,8 @@ public class MaterialController : ControllerBase
             EndDate = endYear is null ? null : new DateTime((int)endYear, 12, 31),
             Type = type is null ? "" : type,
             Limit = limit,
-            Offset = offset
+            Offset = offset,
+            SortBy = enumParseSuccess ? sortBy : null
         };
 
         var result = await _repository.Search(options);

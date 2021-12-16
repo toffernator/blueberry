@@ -27,7 +27,7 @@ public class MaterialRepositoryTests : IDisposable
             new Material(title: "Lecture 9", shortDescription: "", type: "Video", date: new DateTime(2021, 9, 29)) { Id = 9, Tags = new[] { SE }, ImageUrl = "" },
             new Material(title: "Lecture 10", shortDescription: "", type: "Video", date: new DateTime(2021, 10, 1)) { Id = 10, Tags = new[] { Docker, CS }, ImageUrl = "" },
             new Material(title: "Lecture 16", shortDescription: "", type: "Video", date: new DateTime(2021, 10, 29)) { Id = 16, Tags = new[] { Docker, CS }, ImageUrl = "" },
-            new Material(title: "Lecture 20", shortDescription: "", type: "Video", date: new DateTime(2021, 11, 12)) { Id = 20 , Tags = new[] { Mobile, CS }, ImageUrl = "" }
+            new Material(title: "Lecture 20", shortDescription: "", type: "Video", date: new DateTime(2021, 11, 12)) { Id = 20, Tags = new[] { Mobile, CS }, ImageUrl = "" }
         );
         context.SaveChanges();
 
@@ -49,7 +49,7 @@ public class MaterialRepositoryTests : IDisposable
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29)),
             new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"}, "", "Video", new DateTime(2021, 11, 12))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -68,7 +68,7 @@ public class MaterialRepositoryTests : IDisposable
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29)),
             new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"}, "", "Video", new DateTime(2021, 11, 12))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -87,7 +87,7 @@ public class MaterialRepositoryTests : IDisposable
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29)),
             new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"}, "", "Video", new DateTime(2021, 11, 12))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -118,7 +118,7 @@ public class MaterialRepositoryTests : IDisposable
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29)),
             new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"}, "", "Video", new DateTime(2021, 11, 12))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -146,7 +146,7 @@ public class MaterialRepositoryTests : IDisposable
         {
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -162,7 +162,7 @@ public class MaterialRepositoryTests : IDisposable
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29)),
             new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"}, "", "Video", new DateTime(2021, 11, 12))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -177,7 +177,7 @@ public class MaterialRepositoryTests : IDisposable
         {
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29)),
             new MaterialDto(20, "Lecture 20", new PrimitiveCollection<string> {"Mobile", "C#"}, "", "Video", new DateTime(2021, 11, 12))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -195,7 +195,7 @@ public class MaterialRepositoryTests : IDisposable
             new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}, "", "Video", new DateTime(2021, 9, 29)),
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -209,7 +209,7 @@ public class MaterialRepositoryTests : IDisposable
         {
             new MaterialDto(1, "OOSE", new PrimitiveCollection<string> {"Software Engineering"},  "",  "Book",  new DateTime(2013, 4, 20)),
             new MaterialDto(2, "C# 9.0 in a Nutshell", new PrimitiveCollection<string> {"C#"}, "", "Book", new DateTime(2021, 2, 26)),
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -306,7 +306,7 @@ public class MaterialRepositoryTests : IDisposable
         {
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -361,7 +361,7 @@ public class MaterialRepositoryTests : IDisposable
             new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}, "", "Video", new DateTime(2021, 9, 29)),
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -438,7 +438,7 @@ public class MaterialRepositoryTests : IDisposable
         {
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1)),
             new MaterialDto(16, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 29)),
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -477,7 +477,7 @@ public class MaterialRepositoryTests : IDisposable
         {
             new MaterialDto(9, "Lecture 9", new PrimitiveCollection<string> {"Software Engineering"}, "", "Video", new DateTime(2021, 9, 29)),
             new MaterialDto(10, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, "", "Video", new DateTime(2021, 10, 1))
-        };
+        }.OrderByDescending(m => m.Date);
 
         Assert.Equal(expected, result);
     }
@@ -750,6 +750,50 @@ public class MaterialRepositoryTests : IDisposable
         var result = await _repository.Search(options);
 
         Assert.Equal(6, result.Count);
+    }
+
+    [Theory]
+    [InlineData(Sortings.AZ)]
+    [InlineData(Sortings.ZA)]
+    [InlineData(Sortings.NEWEST)]
+    [InlineData(Sortings.OLDEST)]
+    public async Task OrderingBySamePropertyReturnsSameResult(Sortings sort)
+    {
+        var options = new SearchOptions
+        {
+            SearchString = "",
+            Limit = 2,
+            SortBy = sort
+        };
+
+        var result1 = await _repository.Search(options);
+        var result2 = await _repository.Search(options);
+
+        Assert.Equal(result1, result2);
+    }
+
+    [Theory]
+    [InlineData(Sortings.NEWEST, Sortings.OLDEST)]
+    [InlineData(Sortings.AZ, Sortings.ZA)]
+    public async Task OrderingByDifferentPropertyReturnsDifferentResult(Sortings sort1, Sortings sort2)
+    {
+        var options1 = new SearchOptions
+        {
+            SearchString = "",
+            Limit = 2,
+            SortBy = sort1
+        };
+        var options2 = new SearchOptions
+        {
+            SearchString = "",
+            Limit = 2,
+            SortBy = sort2
+        };
+
+        var result1 = await _repository.Search(options1);
+        var result2 = await _repository.Search(options2);
+
+        Assert.NotEqual(result1, result2);
     }
 
     protected virtual void Dispose(bool disposing)
