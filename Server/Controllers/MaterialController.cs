@@ -29,6 +29,7 @@ public class MaterialController : ControllerBase
     {
         var enumParseSuccess = Enum.TryParse(sortByQueryParam, out Sortings sortBy);
 
+
         var options = new SearchOptions
         {
             SearchString = searchString is null ? "" : searchString,
