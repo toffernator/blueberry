@@ -26,7 +26,7 @@ public class MaterialController : ControllerBase
                                                                   [FromQuery(Name = "offset")] int offset,
                                                                   [FromQuery(Name = "limit")] int limit,
                                                                   [FromQuery(Name = "sortby")] string? sortByQueryParam,
-                                                                  [FromQuery(Name = "userid")] int userid)
+                                                                  [FromQuery(Name = "userid")] int? userid)
     {
         var decodedTags = tags == null ? null : new PrimitiveSet<string>(Uri.UnescapeDataString(tags).Split(","));
         var enumParseSuccess = Enum.TryParse(sortByQueryParam, out Sortings sortBy);
@@ -43,7 +43,16 @@ public class MaterialController : ControllerBase
             SortBy = enumParseSuccess ? sortBy : null
         };
 
-        var result = await _search.Search(options, userid);
+        IReadOnlyCollection<MaterialDto> result;
+        if (userid != null)
+        {
+            result = await _search.Search(options, (int) userid);
+        }
+        else
+        {
+            result = await _search.Search(options);
+        }
+
         return new ActionResult<IEnumerable<MaterialDto>>(result);
     }
 }
