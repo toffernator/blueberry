@@ -24,29 +24,31 @@ public class SearchProvider : ISearch
 
     public async Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options, int id)
     {
-        if(searchEmpty(options))
+        if (options.Tags == null)
         {
             var user = await _users.Read(id);
-            var interests = new PrimitiveSet<string>();
 
-            if(user.IsSome)
+            var interests = new PrimitiveSet<string>();
+            if (user.IsSome)
             {
                 interests = new PrimitiveSet<string>(user.Value.Tags);
             }
+            
+            var optionsWithUserInteresets = new SearchOptions
+            { 
+                SearchString = options.SearchString,
+                Tags = interests,
+                Type = options.Type,
+                StartDate = options.StartDate,
+                EndDate = options.EndDate,
+                Limit = options.Limit,
+                Offset = options.Offset,
+                SortBy = options.SortBy
+            };
 
-            var newOptions = new SearchOptions { SearchString = options.SearchString , Tags = interests, Type = options.Type,
-                                                            StartDate = options.StartDate, EndDate = options.EndDate };
-            return await _repo.Search(newOptions);
+            return await _repo.Search(optionsWithUserInteresets);
         }
-        return await _repo.Search(options);
-    }
 
-    private bool searchEmpty(SearchOptions options)
-    {
-        return options.SearchString == ""
-               && options.Type == ""
-               && options.StartDate == null
-               && options.EndDate == null
-               && options.Tags ==  null;
+        return await _repo.Search(options);
     }
 }

@@ -120,15 +120,15 @@ public class SearchTests
         var mockedMaterialRepo = new Mock<IMaterialRepository>();
         var mockedUserRepo = new Mock<IUserRepository>();
 
-        var mockSearchOptions = new SearchOptions("", null, null, null);
+        var mockSearchOptions = new SearchOptions("", new PrimitiveSet<string>() { "Angular" }, null, null);
         var searchOptions = new SearchOptions("", null, null, null);
         
         var filteredMockData = _mockMaterials.Where(md => md.Id == 3).ToList();
         var readUser = _mockUsers.Where(u => u.Id == 2).FirstOrDefault();
         
-        mockedMaterialRepo.Setup( mr => mr.Search(mockSearchOptions) ).ReturnsAsync(filteredMockData);
+        mockedMaterialRepo.Setup(mr => mr.Search(mockSearchOptions) ).ReturnsAsync(filteredMockData);
 
-        mockedUserRepo.Setup( u => u.Read(2)).ReturnsAsync(readUser);
+        mockedUserRepo.Setup(u => u.Read(2)).ReturnsAsync(readUser);
 
 
         var search = new SearchProxy(mockedMaterialRepo.Object, mockedUserRepo.Object);
