@@ -17,8 +17,8 @@
 
       void NavigateToMaterial(SearchOptions options)
       {
-          string searchKey = options.SearchString; 
-          string tags = string.Join(",",options.Tags ?? new PrimitiveSet<string>(){});
+          string searchKey = Uri.EscapeDataString(options.SearchString); 
+          string tags = Uri.EscapeDataString(string.Join(",",options.Tags ?? new PrimitiveSet<string>(){}));
           int startyear = options.StartDate.Value.Year;
           int endyear = options.EndDate.Value.Year;
           

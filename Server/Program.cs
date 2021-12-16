@@ -35,6 +35,7 @@ WebApplicationBuilder AddBlueberryServices(WebApplicationBuilder builder, string
     return builder;
 }
 
+
 seedCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) =>
 {
     var builder = WebApplication.CreateBuilder(args);
