@@ -476,4 +476,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/linux,windows,macos,visualstudiocode,dotnetcore,csharp
 
 out/*
-TestCoverage/CoverageReport
+testcoverage/CoverageReport
