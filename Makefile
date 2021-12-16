@@ -35,7 +35,7 @@ connection-string:
 
 coveragereport:
 	docker build -t blueberry_report-generator -f testcoverage/testing-report.Dockerfile testcoverage
-	docker run --rm -v "$(shell realpath .):/src" blueberry_report-generator TestCoverage/CoverageReport $(USERID)
+	docker run --rm -v "$(shell realpath .):/src" blueberry_report-generator testcoverage/CoverageReport $(USERID)
 
 clean-coverage: CoverageReport/index.html
 	rm -r CoverageReport
