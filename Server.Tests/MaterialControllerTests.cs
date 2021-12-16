@@ -29,7 +29,7 @@ public class MaterialControllerTests
         Console.WriteLine(mockOptions);
 
         var controller = new MaterialController(logger.Object, repository.Object);
-        var response = await controller.Get("Lecture", new HashSet<string> { "Docker" }, 2021, 2022, "Video", 0, 2, Sortings.NEWEST.ToString());
+        var response = await controller.Get("Lecture", "Docker", 2021, 2022, "Video", 0, 2, Sortings.NEWEST.ToString());
 
         Assert.Equal(expected, response.Value);
     }
@@ -51,7 +51,7 @@ public class MaterialControllerTests
         repository.Setup(m => m.Search(It.IsAny<SearchOptions>())).ReturnsAsync(expected.Skip(offset).Take(limit).ToList());
 
         var controller = new MaterialController(logger.Object, repository.Object);
-        var response = await controller.Get("Lecture", new HashSet<string> { "Docker" }, 2021, 2022, "Video", offset, limit, Sortings.NEWEST.ToString());
+        var response = await controller.Get("Lecture", "Docker", 2021, 2022, "Video", offset, limit, Sortings.NEWEST.ToString());
 
 
         Assert.Equal(expected.Skip(offset).Take(limit), response.Value);

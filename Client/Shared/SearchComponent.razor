@@ -185,7 +185,7 @@
 
     void search()
     {
-        var searchKey = (searchInput != null ? searchInput.Replace(" ", "+") : "");
+        var searchKey = searchInput;
         var tagsChosen = new PrimitiveSet<string>(tags.Where(t => t.Item2).Select(t => $"{t.Item1}"));
         var startDate = new DateTime(yearValues.First(),1,1);
         var endDate = new DateTime(yearValues.Last(),12,31);
