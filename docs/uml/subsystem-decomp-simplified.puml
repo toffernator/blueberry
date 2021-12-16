@@ -1,0 +1,38 @@
+@startuml
+
+package Client
+
+package Server {
+  component Tags
+
+  component Search
+
+  component Materials
+
+  component Users
+
+  component "API Routing" as API
+}
+
+cloud Database
+cloud "Authentication Provider" as Auth
+
+Client .down.> API
+
+Tags ..> Database
+
+Users ..> Auth
+Users ..> Database
+
+Materials ..> Tags
+Materials ..> Database
+
+Search ..> Materials
+Search ..> Users
+
+API ..> Search
+API ..> Tags
+API ..> Users
+
+@enduml
+

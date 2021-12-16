@@ -3,15 +3,22 @@
 package Client
 
 package Server {
-  component Tag
-  component "Tag Repository" as TagRepo
+  component Tags {
+    component Tag
+    component "Tag Repository" as TagRepo
+  }
+
   component Search
 
-  component Material
-  component "Material Repository" as MatRepo
+  component Materials {
+    component Material
+    component "Material Repository" as MatRepo
+  }
 
-  component User
-  component "User Repository" as UserRepo
+  component Users {
+    component User
+    component "User Repository" as UserRepo
+  }
 
   component "API Routing" as API
 }
