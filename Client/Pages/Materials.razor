@@ -134,13 +134,13 @@ IEnumerable<MaterialDto> materials = new MaterialDto[0];
         materials = await fetchMaterials();
     }
 
-    private async Task<MaterialDetailsDto[]> fetchMaterials()  => await fetchMaterials(0);
+    private async Task<MaterialDto[]> fetchMaterials()  => await fetchMaterials(0);
 
-    private async Task<MaterialDetailsDto[]> fetchMaterials(int offset) 
+    private async Task<MaterialDto[]> fetchMaterials(int offset) 
     {
         _loading = true;
         var userid = await localStorage.GetItemAsync<int>("userid");
-        var result = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={Uri.EscapeDataString(_searchKey)}&tag={Uri.EscapeDataString(_tags ?? "")}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}&sortby={_sortBy}&type={(_type == "All" ? "" : _type)}&userid={userid}") ?? new MaterialDetailsDto[0];
+        var result = await Http.GetFromJsonAsync<MaterialDto[]>($"api/material?searchString={Uri.EscapeDataString(_searchKey)}&tag={Uri.EscapeDataString(_tags ?? "")}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}&sortby={_sortBy}&type={(_type == "All" ? "" : _type)}&userid={userid}") ?? new MaterialDto[0];
 
         if (result.Count() < _limit)
         {
