@@ -15,7 +15,7 @@
     private IJSObjectReference? _instance;
 
     [Parameter]
-    public Action? LoadMore { get; set; }
+    public EventCallback LoadMore { get; set; }
 
     [Parameter]
     public RenderFragment? Items { get; set; }
@@ -26,10 +26,7 @@
     [JSInvokable]
     public async Task LoadMoreItems()
     {
-        if (LoadMore != null) 
-        {
-            LoadMore();
-        }
+           await LoadMore.InvokeAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
