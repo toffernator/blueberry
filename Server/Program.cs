@@ -1,5 +1,4 @@
 using blueberry.Server.Common;
-using blueberry.Server.Model;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 
@@ -20,21 +19,28 @@ var rootCommand = new RootCommand {
     seedCommand
 };
 
-seedCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) =>
+WebApplicationBuilder AddBlueberryServices(WebApplicationBuilder builder, string connectionStringFromArgs)
 {
-    var builder = WebApplication.CreateBuilder(args);
-
-    string connectionString = ConnectionString.Read(builder.Configuration.GetConnectionString("Blueberry"), 
+    string connectionString = ConnectionString.Read(builder.Configuration.GetConnectionString("Blueberry"),
                                                     Environment.GetEnvironmentVariable("ConnectionString"),
                                                     connectionStringFromArgs);
-    
+
     builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(connectionString));
     builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
     builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<ITagRepository, TagRepository>();
+    builder.Services.AddScoped<ISearch, SearchProxy>();
 
-    var app = builder.Build();
+    return builder;
+}
+
+
+seedCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) =>
+{
+    var builder = WebApplication.CreateBuilder(args);
+
+    var app = AddBlueberryServices(builder, connectionStringFromArgs ?? "").Build();
 
     app.Seed();
 });
@@ -42,10 +48,7 @@ seedCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) 
 rootCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) =>
 {
     var builder = WebApplication.CreateBuilder(args);
-    
-    string connectionString = ConnectionString.Read(builder.Configuration.GetConnectionString("Blueberry"), 
-                                                    Environment.GetEnvironmentVariable("ConnectionString"),
-                                                    connectionStringFromArgs);
+
     // Add services to the container.
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
@@ -53,13 +56,7 @@ rootCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) 
     builder.Services.AddControllersWithViews();
     builder.Services.AddRazorPages();
 
-    builder.Services.AddDbContext<BlueberryContext>(options => options.UseSqlServer(connectionString));
-    builder.Services.AddScoped<IBlueberryContext, BlueberryContext>();
-    builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
-    builder.Services.AddScoped<IUserRepository, UserRepository>();
-    builder.Services.AddScoped<ITagRepository, TagRepository>();
-
-    var app = builder.Build();
+    var app = AddBlueberryServices(builder, connectionStringFromArgs ?? "").Build();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
@@ -90,5 +87,7 @@ rootCommand.Handler = CommandHandler.Create<string?>((connectionStringFromArgs) 
 
     app.Run();
 });
+
+
 
 return rootCommand.Invoke(args);

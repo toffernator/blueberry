@@ -4,6 +4,7 @@
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 @inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <!-- PICTURE SOURCE: https://www.pexels.com/photo/black-screen-with-code-4164418/ -->
 
@@ -138,7 +139,9 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
     private async Task<MaterialDetailsDto[]> fetchMaterials(int offset) 
     {
         _loading = true;
-        var result = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={Uri.EscapeDataString(_searchKey)}&tag={Uri.EscapeDataString(_tags ?? "")}&startyear={_startyear}&endyear={_endyear}&offset={offset}&limit={_limit}&sortby={_sortBy}&type={(_type == "All" ? "" : _type)}") ?? new MaterialDetailsDto[0];
+        var userid = await localStorage.GetItemAsync<int>("userid");
+        var result = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={Uri.EscapeDataString(_searchKey)}&tag={Uri.EscapeDataString(_tags ?? "")}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}&sortby={_sortBy}&type={(_type == "All" ? "" : _type)}&userid={userid}") ?? new MaterialDetailsDto[0];
+
         if (result.Count() < _limit)
         {
             _hasMore = false;

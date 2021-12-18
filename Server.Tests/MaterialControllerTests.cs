@@ -6,7 +6,7 @@ public class MaterialControllerTests
     public async Task GetCreatesCorrectSearchOptionsFromParameters()
     {
         var logger = new Mock<ILogger<MaterialController>>();
-        var repository = new Mock<IMaterialRepository>();
+        var search = new Mock<ISearch>();
 
         var mockOptions = new SearchOptions
         {
@@ -19,17 +19,19 @@ public class MaterialControllerTests
             Offset = 0,
             SortBy = Sortings.NEWEST
         };
+        var testUserId = 1;
+
         var expected = new[]
         {
             new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today),
             new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today)
         };
-        repository.Setup(m => m.Search(It.Is<SearchOptions>(o => o.Equals(mockOptions)))).ReturnsAsync(expected);
+        search.Setup(m => m.Search(It.Is<SearchOptions>(o => o.Equals(mockOptions)), It.Is<int>(id => id.Equals(testUserId)))).ReturnsAsync(expected);
 
         Console.WriteLine(mockOptions);
 
-        var controller = new MaterialController(logger.Object, repository.Object);
-        var response = await controller.Get("Lecture", "Docker", 2021, 2022, "Video", 0, 2, Sortings.NEWEST.ToString());
+        var controller = new MaterialController(logger.Object, search.Object);
+        var response = await controller.Get("Lecture", "Docker", 2021, 2022, "Video", 0, 2, Sortings.NEWEST.ToString(), 1);
 
         Assert.Equal(expected, response.Value);
     }
@@ -41,22 +43,19 @@ public class MaterialControllerTests
     public async Task GetGivenOptionsOffsetAndLimitReturnsRangeOfResults(int offset, int limit)
     {
         var logger = new Mock<ILogger<MaterialController>>();
-        var repository = new Mock<IMaterialRepository>();
+        var search = new Mock<ISearch>();
 
+        var testUserId = 1;
         var expected = new[]
          {
             new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today),
             new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today)
         };
-        repository.Setup(m => m.Search(It.IsAny<SearchOptions>())).ReturnsAsync(expected.Skip(offset).Take(limit).ToList());
+        search.Setup(m => m.Search(It.IsAny<SearchOptions>(), It.Is<int>(id => id.Equals(testUserId)))).ReturnsAsync(expected.Skip(offset).Take(limit).ToList());
 
-        var controller = new MaterialController(logger.Object, repository.Object);
-        var response = await controller.Get("Lecture", "Docker", 2021, 2022, "Video", offset, limit, Sortings.NEWEST.ToString());
-
+        var controller = new MaterialController(logger.Object, search.Object);
+        var response = await controller.Get("Lecture", "Docker", 2021, 2022, "Video", offset, limit, Sortings.NEWEST.ToString(),1);
 
         Assert.Equal(expected.Skip(offset).Take(limit), response.Value);
-
-        //var isEqual = MaterialsEquals(expected.Skip(offset).Take(limit), response.Value);
-        //Assert.True(isEqual);
     }
 }
