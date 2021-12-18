@@ -1,0 +1,54 @@
+@inject IJSRuntime JSRuntime
+@implements IAsyncDisposable
+
+@Items
+@if(Loading) 
+{
+    <div class="spinner"></div>
+}
+<div @ref="_lastItemIndicator"></div>
+
+@code {
+    private ElementReference _lastItemIndicator;
+    private DotNetObjectReference<InfiniteScroll>? _currentComponentReference;
+    private IJSObjectReference? _module;
+    private IJSObjectReference? _instance;
+
+    [Parameter]
+    public Action? LoadMore { get; set; }
+
+    [Parameter]
+    public RenderFragment? Items { get; set; }
+
+    [Parameter]
+    public bool Loading { get; set; }
+
+    [JSInvokable]
+    public async Task LoadMoreItems()
+    {
+        if (LoadMore != null) 
+        {
+            LoadMore();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/infinite-scroll-observer.js");
+            _currentComponentReference = DotNetObjectReference.Create(this);
+            _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", _lastItemIndicator, _currentComponentReference);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module != null)
+        {
+            await _module.DisposeAsync();
+        }
+
+        _currentComponentReference?.Dispose();
+    }
+}
