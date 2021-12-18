@@ -23,8 +23,8 @@ public class MaterialControllerTests
 
         var expected = new[]
         {
-            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today),
-            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today)
+            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today, ""),
+            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today, "")
         };
         search.Setup(m => m.Search(It.Is<SearchOptions>(o => o.Equals(mockOptions)), It.Is<int>(id => id.Equals(testUserId)))).ReturnsAsync(expected);
 
@@ -48,13 +48,13 @@ public class MaterialControllerTests
         var testUserId = 1;
         var expected = new[]
          {
-            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today),
-            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today)
+            new MaterialDto(1, "Lecture 10", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today, ""),
+            new MaterialDto(2, "Lecture 16", new PrimitiveCollection<string> {"Docker", "C#"}, null, "Video", DateTime.Today, "")
         };
         search.Setup(m => m.Search(It.IsAny<SearchOptions>(), It.Is<int>(id => id.Equals(testUserId)))).ReturnsAsync(expected.Skip(offset).Take(limit).ToList());
 
         var controller = new MaterialController(logger.Object, search.Object);
-        var response = await controller.Get("Lecture", "Docker", 2021, 2022, "Video", offset, limit, Sortings.NEWEST.ToString(),1);
+        var response = await controller.Get("Lecture", "Docker", 2021, 2022, "Video", offset, limit, Sortings.NEWEST.ToString(), 1);
 
         Assert.Equal(expected.Skip(offset).Take(limit), response.Value);
     }
