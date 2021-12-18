@@ -1,25 +1,27 @@
 @startuml
 
-class Material <<Entity>>
-class Repository <<Entity>>
-class UserInformation <<Entity>>
-class Subject <<Entity>>
-class Search <<Control>>
-class SearchWithFilter <<Control>>
-class Filter <<Control>>
+entity Material
+entity Repository
+entity User
+entity Tag
+control Search
+control Filter
+boundary "Search bar" as sbar
+boundary "Search filters" as sfil
+boundary "Search button" as sbut
 
-Repository "1" --* "*" Material
-Repository "1" --* "*" Subject
 
-Subject "1" --* "*" Material
+Filter -up-> sfil
 
-SearchWithFilter --|> Search
-SearchWithFilter ..> Filter
+Search -left-> Filter
+Search -up-> sbar
+Search -up-> sbut 
 
-Search ..> Repository
-Search ..> UserInformation
+Search --> Repository
+Search --> User
 
-Filter ..> Subject
-Filter ..> Material
+User --> Tag
 
+Repository --> Tag
+Repository --> Material
 @enduml
