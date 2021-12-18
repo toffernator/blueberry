@@ -24,6 +24,9 @@
         <div class="searchComponent">
             <SearchComponent searchInput=@_searchKey yearValues=@(new int[] {@_startyear, @_endyear}) chosenTags=@(_tags?.Split(',') ?? new string[0]) chosenSortBy=@_sortBy type=@_type SearchMethod=@UpdateResults />
        </div>
+       <InfiniteScroll LoadMore=@loadMore Loading=@_loading>
+           <Items>
+
         @foreach (var material in materials)
         {
         <div class="card mb-3 material" style="max-width: 540px;">
@@ -48,9 +51,11 @@
             </div>
         </div>
         }
-
+           </Items>
+       </InfiniteScroll>
     </div>
 </div>
+
 @code {
 IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
 
@@ -62,7 +67,9 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
     private string _type = "All";
 
     private int _offset = 0;
-    private int _limit = 100;
+    private int _limit = 20;
+    private bool _hasMore = true;
+    private bool _loading = false;
 
     void GetURLChanges(){
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
@@ -127,10 +134,34 @@ IEnumerable<MaterialDetailsDto> materials = new MaterialDetailsDto[0];
         materials = await fetchMaterials();
     }
 
-    private async Task<MaterialDetailsDto[]> fetchMaterials() 
+    private async Task<MaterialDetailsDto[]> fetchMaterials()  => await fetchMaterials(0);
+
+    private async Task<MaterialDetailsDto[]> fetchMaterials(int offset) 
     {
+        _loading = true;
         var userid = await localStorage.GetItemAsync<int>("userid");
-        return await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={Uri.EscapeDataString(_searchKey)}&tag={Uri.EscapeDataString(_tags ?? "")}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}&sortby={_sortBy}&type={(_type == "All" ? "" : _type)}&userid={userid}") ?? new MaterialDetailsDto[0];
+        var result = await Http.GetFromJsonAsync<MaterialDetailsDto[]>($"api/material?searchString={Uri.EscapeDataString(_searchKey)}&tag={Uri.EscapeDataString(_tags ?? "")}&startyear={_startyear}&endyear={_endyear}&offset={_offset}&limit={_limit}&sortby={_sortBy}&type={(_type == "All" ? "" : _type)}&userid={userid}") ?? new MaterialDetailsDto[0];
+
+        if (result.Count() < _limit)
+        {
+            _hasMore = false;
+        }
+
+        _offset = offset + _limit;
+
+        _loading = false;
+
+        return result;
+    }
+
+    private async Task loadMore() 
+    {
+        if (materials.Count() != 0 && _hasMore) 
+        {
+            var nextMaterials = await fetchMaterials(_offset);
+            materials = materials.Concat(nextMaterials);
+            StateHasChanged();
+        }
     }
 
     void GoToMain(){
