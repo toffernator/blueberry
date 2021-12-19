@@ -15,7 +15,7 @@ activate userInformation
 userInformation -> search : return user interests 
 deactivate userInformation
 
-search -> repository : request materials
+search -> repository : request materials based on user interests
 activate repository
 
 repository -> database : select materials
