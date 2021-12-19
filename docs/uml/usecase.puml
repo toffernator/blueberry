@@ -1,7 +1,6 @@
 @startuml
 left to right direction
 actor "User" as user
-actor "Guest" as guest
 rectangle Blueberry {
   usecase "ChooseInterests" as interests
   usecase "Login" as login
