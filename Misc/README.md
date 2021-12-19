@@ -6,7 +6,7 @@ We use [k6](https://k6.io/open-source/) to loadtest the program. This way we can
 
 ### How to run
 
-1. Makue sure k6 is installed. You can find the instructions [here](https://k6.io/docs/getting-started/installation/)
+1. Make sure k6 is installed. You can find the instructions [here](https://k6.io/docs/getting-started/installation/)
 1. Start the program `dotnet run --project Server`
 1. Run the loadtest in a different terminal session `k6 run --insecure-skip-tls-verify Misc/k6test.js`
 1. ???
@@ -18,5 +18,5 @@ In the two files, loadtest75 and loadtest80 is the results of two previous loadt
 
 - MacBook Pro (13-inch, M1, 2020)
 - 16 gb ram
-- Appæe M1
+- Apple M1
 - MacOS 11.5.2
