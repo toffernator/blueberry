@@ -1,0 +1,36 @@
+@startuml
+
+interface ITagRepository {
+  + Task<(Status, TagDto)> Create(TagCreateDto tag)
+  + Task<Option<TagDto>> Read(int id)
+  + Task<IReadOnlyCollection<TagDto>> Read()
+  + Task<Status> Delete(int id)
+}
+
+class TagDto {
+  - int Id
+  - string Name
+  + TagDto(int Id, string Name)
+}
+
+class TagCreateDto {
+  - string Name
+  + TagCreateDto(int Id, string Name)
+}
+
+class Option {
+  T? value
+
+  + bool IsNone()
+  + bool IsSome()
+}
+
+enum Status
+
+ITagRepository ..> TagCreateDto
+ITagRepository ..> TagDto
+ITagRepository ..> Status
+ITagRepository ..> Option
+
+@enduml
+

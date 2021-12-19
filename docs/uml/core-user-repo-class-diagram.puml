@@ -1,0 +1,42 @@
+@startuml
+
+interface IUserRepository {
+  + Task<UserDto> Create(UserCreateDto user)
+  + Task<Option<UserDto>> Read(int id)
+  + Task<IReadOnlyCollection<UserDto>> Read()
+  + Task<Status> Update(int id, UserUpdateDto user)
+  + Task<Status> Delete(int id)
+}
+
+class UserDto {
+  - int Id
+  - string Name
+  - PrimitiveCollection Tags
+}
+
+class UserCreateDto {
+  - string Name
+  - PrimitiveCollection<string> Tags
+}
+
+class UserUpdateDto {
+  - int Id
+  - PrimitiveCollection<string> Tags
+}
+
+class Option {
+  T? value
+
+  + bool IsNone()
+  + bool IsSome()
+}
+
+enum Status
+
+IUserRepository ..> UserCreateDto
+IUserRepository ..> UserDto
+IUserRepository ..> UserUpdateDto
+IUserRepository ..> Option
+IUserRepository ..> Status
+
+@enduml

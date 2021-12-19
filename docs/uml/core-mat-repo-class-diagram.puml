@@ -1,0 +1,46 @@
+@startuml
+
+interface IMaterialRepository {
+  + Task<ReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
+}
+
+interface ISearch {
+  + Task<IReadOnlyCollection<MaterialDto>> Search(string searchString)
+  + Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
+  + Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options, int id)
+}
+
+class MaterialDto {
+  - int Id
+  - string Title
+  - PrimitiveCollection<string> Tags
+  - string? ImageUrl
+  - string Type
+  - DateTime Date
+  + MaterialDto(int Id, string Title, PrimitiveCollection<string> Tags, string? ImageUrl, string Type, DateTime Date)
+}
+
+class SearchOptions {
+  - string SearchString
+  - PrimitiveSet<string>? Tags
+  - string? Type
+  - DateTime? StartDate
+  - DateTime? EndDate
+  - int? Limit
+  - int? Offset
+  - Sortings? SortBy
+  + SearchOptions(string SearchString, PrimitiveSet<string>? Tags, string? ImageUrl, string Type, DateTime StartDate?, DateTime? EndDate, int? Limit, int? Offset, Sortings? SortBy)
+}
+
+enum Sortings
+
+IMaterialRepository ..> SearchOptions
+IMaterialRepository ..> MaterialDto
+
+ISearch ..> SearchOptions
+ISearch ..> MaterialDto
+
+SearchOptions ..> Sortings
+
+@enduml
+
