@@ -1,0 +1,44 @@
+@startuml
+
+class MaterialController
+
+interface ISearch {
+  + Task<IReadOnlyCollection<MaterialDto>> Search(string searchString)
+  + Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
+  + Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options, int id)
+}
+
+class SearchProxy {
+  - ISearch _searchProvider
+  - CacheMap<SearchOptions, IReadOnlyCollection<MaterialDto>> _optionsCache
+  - CacheMap<string, IReadOnlyCollection<MaterialDto>> _stringCache
+  - CacheMap<(SearchOptions, int), IReadOnlyCollection<MaterialDto>> _optionsIdCache
+  + SearchProxy(IMaterialRepository materialRepo, IUserRepository userRepo)
+}
+
+class SearchProvider {
+  - IMaterialRepository _repo
+  - IUserRepository _users
+}
+
+interface IMaterialRepository {
+  + Task<IReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
+}
+
+interface IUserRepository {
+  + Task<UserDto> Create(UserCreateDto)
+  + Task<Option<UserDto>> Read(int id)
+  + Task<IReadOnlyCollection<UserDto>> Read()
+  + Task<Status> Update(int id, UserUpdateDto user)
+  + Task<Status> Delete(int id)
+}
+
+MaterialController .right.> ISearch
+SearchProxy .up.|> ISearch
+SearchProvider .up.|> ISearch
+SearchProvider ..> IMaterialRepository
+SearchProvider ..> IUserRepository
+SearchProxy o-right- SearchProvider
+
+@enduml
+
