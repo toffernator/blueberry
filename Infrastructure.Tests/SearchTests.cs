@@ -9,12 +9,12 @@ public class SearchTests
         new UserDto (1, "Jalle", new PrimitiveCollection<string> {"React"}),
         new UserDto (2, "Kobo", new PrimitiveCollection<string> {"Angular"}),
     };
-    
+
     private readonly IReadOnlyCollection<MaterialDto> _mockMaterials = new[]{
-        new MaterialDto(1, "Why Haskell is better than F#", new PrimitiveCollection<string> {"FP", "Haskell", "F#", "The truth"}, "", "Book", DateTime.Today),
-        new MaterialDto(2, "Typescript and react", new PrimitiveCollection<string> {"React", "Typescript", "Javascript"}, "", "Book", DateTime.Today),
-        new MaterialDto(3, "Why angular died", new PrimitiveCollection<string> {"Angular", "Typescript", "Javascript"}, "", "Book", DateTime.Today),
-        new MaterialDto(4, "Why typescript is the future of the web", new PrimitiveCollection<string> { "Typescript", "Javascript"}, "", "Book", DateTime.Today),
+        new MaterialDto(1, "Why Haskell is better than F#", new PrimitiveCollection<string> {"FP", "Haskell", "F#", "The truth"}, "", "Book", DateTime.Today, ""),
+        new MaterialDto(2, "Typescript and react", new PrimitiveCollection<string> {"React", "Typescript", "Javascript"}, "", "Book", DateTime.Today, ""),
+        new MaterialDto(3, "Why angular died", new PrimitiveCollection<string> {"Angular", "Typescript", "Javascript"}, "", "Book", DateTime.Today, ""),
+        new MaterialDto(4, "Why typescript is the future of the web", new PrimitiveCollection<string> { "Typescript", "Javascript"}, "", "Book", DateTime.Today, ""),
     };
 
     [Fact]
@@ -96,22 +96,22 @@ public class SearchTests
         var mockedMaterialRepo = new Mock<IMaterialRepository>();
         var mockedUserRepo = new Mock<IUserRepository>();
 
-        var mockSearchOptions = new SearchOptions("", new PrimitiveSet<string>(){"Typescript"}, null, null);
+        var mockSearchOptions = new SearchOptions("", new PrimitiveSet<string>() { "Typescript" }, null, null);
 
-        var searchOptions = new SearchOptions("",new PrimitiveSet<string>(){"Typescript"},null,null);
-        
+        var searchOptions = new SearchOptions("", new PrimitiveSet<string>() { "Typescript" }, null, null);
+
         var filteredMockData = _mockMaterials.Where(md => md.Tags.Contains("Typescript")).ToList();
         var readUser = _mockUsers.Where(u => u.Id == 1).FirstOrDefault();
-        
-        mockedMaterialRepo.Setup( mr => mr.Search(mockSearchOptions) ).ReturnsAsync(filteredMockData);
 
-        mockedUserRepo.Setup( u => u.Read(1)).ReturnsAsync(readUser);
+        mockedMaterialRepo.Setup(mr => mr.Search(mockSearchOptions)).ReturnsAsync(filteredMockData);
+
+        mockedUserRepo.Setup(u => u.Read(1)).ReturnsAsync(readUser);
 
         var search = new SearchProxy(mockedMaterialRepo.Object, mockedUserRepo.Object);
 
         var actual = await search.Search(searchOptions, 1);
 
-        Assert.Equal(filteredMockData, actual);  
+        Assert.Equal(filteredMockData, actual);
     }
 
     [Fact]
@@ -122,11 +122,11 @@ public class SearchTests
 
         var mockSearchOptions = new SearchOptions("", new PrimitiveSet<string>() { "Angular" }, null, null);
         var searchOptions = new SearchOptions("", null, null, null);
-        
+
         var filteredMockData = _mockMaterials.Where(md => md.Id == 3).ToList();
         var readUser = _mockUsers.Where(u => u.Id == 2).FirstOrDefault();
-        
-        mockedMaterialRepo.Setup(mr => mr.Search(mockSearchOptions) ).ReturnsAsync(filteredMockData);
+
+        mockedMaterialRepo.Setup(mr => mr.Search(mockSearchOptions)).ReturnsAsync(filteredMockData);
 
         mockedUserRepo.Setup(u => u.Read(2)).ReturnsAsync(readUser);
 
@@ -134,7 +134,7 @@ public class SearchTests
         var search = new SearchProxy(mockedMaterialRepo.Object, mockedUserRepo.Object);
 
         var actual = await search.Search(searchOptions, 2);
-        
-        Assert.Equal(filteredMockData, actual);  
+
+        Assert.Equal(filteredMockData, actual);
     }
 }

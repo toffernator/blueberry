@@ -44,7 +44,7 @@ public class MaterialRepository : IMaterialRepository
         result = result.Take(options.Limit ?? 30);
 
         return await result
-            .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name)), m.ImageUrl, m.Type, m.Date))
+            .Select(m => new MaterialDto(m.Id, m.Title, new PrimitiveCollection<string>(m.Tags.Select(t => t.Name)), m.ImageUrl, m.Type, m.Date, m.ShortDescription))
             .ToListAsync();
     }
 
