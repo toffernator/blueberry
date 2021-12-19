@@ -11,6 +11,8 @@ split again
     :Year;
 split again
     :Text Input;
+split again
+    :Type;
 end split
 repeat while (Initiated search) is (no)
 ->yes;
