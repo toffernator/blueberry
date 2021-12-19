@@ -3,24 +3,27 @@ left to right direction
 actor "User" as user
 actor "Guest" as guest
 rectangle Blueberry {
-  usecase "Create User" as create
+  usecase "ChooseInterests" as interests
   usecase "Login" as login
   usecase "Logout" as logout
   usecase "Search" as search
-  usecase "SearchWithWords" as filter
-  usecase "SearchWithFilters" as unfilter
+  usecase "SearchWithInterests" as searchinterests
+  usecase "SearchWithWords" as unfilter
+  usecase "SearchWithFilters" as filter
 }
 usecase "Authentication" as auth
 
 user --> login
 user --> logout
+user --> interests
 login -up.> auth : include
 
 user --> search
 search <|-- filter
 search <|-- unfilter
+search <|-- searchinterests
 
+searchinterests <.left.> unfilter : extends
 filter <.> unfilter : extends 
 
-guest --> create
 @enduml
