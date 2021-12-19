@@ -24,11 +24,15 @@ api -.> tags
 search -.> materials
 search -.> users
 
+
+materials -.> tags
+users -.> tags
 materials -.> db
 tags -.> db
 users -.> db
 
-users -.> auth
+client -left.> auth
+api -.> auth
 
 @enduml
 
