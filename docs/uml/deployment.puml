@@ -1,25 +1,34 @@
 @startuml
 node ":UserMachine" <<device>> {
-     component ":BlueBerryClient" as client
+     component ":BlueberryClient" as client
 }
+
 node ":Server" <<container>> {
-     component ":API" as api
-     component ":Core" as core
-     component ":Infrastructure" as infra
+     component ":API Routing" as api
+     component ":Materials" as materials
+     component ":Users" as users
+     component ":Tags" as tags
+     component ":Search" as search
 }
+
 database ":Database" <<container>> as db
-cloud ":Authentication" <<service?>> as auth
+cloud ":Authentication" <<service>> as auth
 
 
-         
+
 client -.> api
-api -.> infra 
-infra -.> db
-infra -.> core
-infra -right.> auth
+api -.> search
+api -.> users
+api -.> tags
 
+search -.> materials
+search -.> users
 
+materials -.> db
+tags -.> db
+users -.> db
 
-
+users -.> auth
 
 @enduml
+
