@@ -1,2 +1,1 @@
-
 global using blueberry.Common;
