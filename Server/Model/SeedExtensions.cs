@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace blueberry.Server.Model;
 
 public static class SeedExtensions
@@ -30,6 +32,7 @@ public static class SeedExtensions
 
             if (!context.Materials.Any())
             {
+                Console.WriteLine(tags.Count());
                 context.Materials.AddRange(item.JSONToMaterials(tags));
             }
 
@@ -45,8 +48,34 @@ public static class SeedExtensions
     {
         using (StreamReader r = new StreamReader("Model/data.json"))
         {
+            JSONItem res = new JSONItem();
             string json = r.ReadToEnd();
-            return JsonSerializer.Deserialize<JSONItem>(json);
+            JsonDocument parsedJson = JsonDocument.Parse(json);
+            var tags = parsedJson.RootElement.GetProperty("tags").EnumerateArray();
+            res.tags = tags.Select(t => t.ToString()).ToList();
+
+            var materials = parsedJson.RootElement
+                                      .GetProperty("materials")
+                                      .EnumerateArray()
+                                      .Select(mj =>
+                                      {
+                                          var mTags = mj.GetProperty("tags").EnumerateArray().Select(t => t.ToString()).ToList();
+                                          var res = new JSONMaterial(
+                                            title: mj.GetProperty("title").ToString(),
+                                            date: mj.GetProperty("date").ToString(),
+                                            description: mj.GetProperty("description").ToString(),
+                                            type: mj.GetProperty("type").ToString()
+                                          )
+                                          {
+                                              Tags = mTags
+                                          };
+
+                                          return res;
+                                      });
+
+            res.materials = materials;
+
+            return res;
         }
 
     }
