@@ -35,6 +35,10 @@ public static class SeedExtensions
 
             context.SaveChanges();
         }
+        else
+        {
+            throw new JsonException();
+        }
     }
 
     private static JSONItem? LoadJson()
@@ -42,7 +46,7 @@ public static class SeedExtensions
         using (StreamReader r = new StreamReader("Model/data.json"))
         {
             string json = r.ReadToEnd();
-            return JsonConvert.DeserializeObject<JSONItem>(json);
+            return JsonSerializer.Deserialize<JSONItem>(json);
         }
 
     }
