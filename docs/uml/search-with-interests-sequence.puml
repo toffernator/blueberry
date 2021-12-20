@@ -1,21 +1,21 @@
 @startuml
 
 actor User as user
-control Filter as filter
 control Search as search
+entity User as userInformation
 entity Repository as repository
 actor Database as database
 
-user -> filter : choose filters 
-activate user
-activate filter
 user -> search : activate search function
+activate user
 activate search
-filter -> search : apply filters 
-deactivate filter
 
+search -> userInformation : request user interests
+activate userInformation
+userInformation -> search : return user interests 
+deactivate userInformation
 
-search -> repository : request materials
+search -> repository : request materials based on user interests
 activate repository
 
 repository -> database : select materials
@@ -25,7 +25,6 @@ deactivate database
 
 repository -> search : return materials
 deactivate repository
-
 
 search -> user : display results 
 deactivate search

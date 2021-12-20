@@ -2,7 +2,6 @@
 
 actor User as user
 control Search as search
-entity User as userInformation
 entity  Repository as repository
 actor Database as database
 
@@ -10,11 +9,6 @@ user -> search : activate search function
 activate user
 
 activate search
-
-search -> userInformation : read user information
-activate userInformation
-userInformation -> search : return user user information
-deactivate userInformation
 
 
 search -> repository : request materials
