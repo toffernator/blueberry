@@ -55,3 +55,7 @@ nonetheless.
 
 Username: guest@blueberryproject.onmicrosoft.com
 Password: L2q0!8grGYD2JRELEj2A
+
+## Load testing
+
+For load testing see [misc](/Misc)
