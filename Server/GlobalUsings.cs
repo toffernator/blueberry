@@ -8,4 +8,3 @@ global using blueberry.Infrastructure;
 global using blueberry.Core;
 global using blueberry.Server.Model;
 global using blueberry.Common;
-global using System.Text.Json;
