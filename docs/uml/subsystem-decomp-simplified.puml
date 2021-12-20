@@ -1,0 +1,27 @@
+@startuml
+
+
+component Client
+
+package Server {
+    [API Routing] as API
+    [Search]
+
+    [Materials]
+    [Users]
+    [Tags]
+}
+
+
+Client ..> API
+API ..> Search
+API ..> Tags
+API ..> Users
+
+Search ..> Materials
+Search .right.> Users
+
+Materials ..> Tags
+Users ..> Tags
+
+@enduml

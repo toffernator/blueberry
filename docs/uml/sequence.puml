@@ -1,5 +1,6 @@
 @startuml
 participant Client
+Participant "API Routing" as API
 
 Client ->> API: request(searchParameters)
 activate API

@@ -1,0 +1,55 @@
+@startuml
+
+
+component Client
+
+package Server {
+    [API Routing] as API
+    [Search]
+
+    package Materials {
+        [Material Repository] as MatRepo
+        [Material]
+    }
+
+    package Users {
+        [User Repository] as UserRepo
+        [User]
+    }
+
+    package Tags {
+        [Tag Repository] as TagRepo
+        [Tag]
+    }
+}
+
+
+
+
+cloud Database
+cloud "Authentication Provider" as Auth
+
+Client ..> API
+API ..> Search
+API ..> Tags
+API ..> Users
+
+Client .left.> Auth
+API .up.> Auth
+
+Search ..> Materials
+Search ..> Users
+
+UserRepo .up.> User
+User ..> Tag
+
+MatRepo .up.> Material
+Material .right.> Tag
+
+TagRepo .up.> Tag
+
+MatRepo ..> Database
+TagRepo ..> Database
+UserRepo ..> Database
+
+@enduml
