@@ -77,7 +77,7 @@
                 </li>
                 <li>
                     <div class="slider">
-                        <RadzenSlider style="background-color: black;" Min="2000" Max="2021" Range="true" @bind-Value=@yearValues TValue="IEnumerable<int>" />
+                        <RadzenSlider style="background-color: black;" Min="2000" Max=@currentYear Range="true" @bind-Value=@yearValues TValue="IEnumerable<int>" />
                     </div>
                 </li>
             </ul>
@@ -118,8 +118,10 @@
     public string searchInput {get; set; } = "";
     [Parameter]    
     public IEnumerable<string> chosenTags {get; set; } = new string[0];
+
+    public static int currentYear = DateTime.Now.Year;
     [Parameter]    
-    public IEnumerable<int> yearValues {get; set;} = new int[]{2000, 2021};
+    public IEnumerable<int> yearValues {get; set;} = new int[]{2000, currentYear};
     [Parameter]    
     public Sortings chosenSortBy {get; set;} = Sortings.NEWEST;
 
