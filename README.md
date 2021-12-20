@@ -42,11 +42,19 @@ On linux
 docker-compose build && docker-compose up
 ```
 
+In some cases the seeding of the database does not work correctly with docker-compose.
+If there are fewer than 20,000 database entries, then you need to force a rebuild of
+the database container by starting the program with the command below instead:
+```shell
+docker-compose up --force-recreate --build
+```
+
 On MacOS / Windows
 
 ```shell
 docker compose build && docker compose up
 ```
+
 
 ### Emergency user
 
