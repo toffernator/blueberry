@@ -2,22 +2,24 @@
 left to right direction
 allowmixing
 
-cloud BlueBerryServer <<hostname>>
+cloud Server <<https://hostname>>
 
 class UserController {
   ..
-  <<GET>> Get (id : integer) : UserDTO
-  <<PUT>> UpdateTags (id : integer, tags : IEnumerable<string>) : IActionResult 
+  <<GET>> Get (id : integer) : UserDto
+  <<PUT>> Put (id : integer, user : UserUpdateDto) : IActionResult 
+  <<POST>> Post (id : integer, user : UserCreateDto) : ActionResult<UserDto>
 }
 
 class MaterialController {
   ..
-  <<GET>> Get (Tag : string, Keywords : string, StartYear : int, EndYear : int) : IEnumerable<MaterialDTO>
+  <<GET>> Get (searchString : string?, tags : string?, startYear : int?, endYear : int?,
+               type : string?, offset : int, limit : int, sortby : string?, userid : int?) : ActionResult<IEnumerable<MaterialDto>>
 }
 
 class TagController {
   ..
-  <<GET>> Get () : IEnumerable<TagDTO>
+  <<GET>> Get () : IEnumerable<TagDto>
 }
 label "api/material?{query}" as material
 
@@ -25,15 +27,16 @@ label "api/tag" as tag
 
 label "api/user/{id}" as userid
 
-BlueBerryServer -. material
+Server -. material
 material -.> MaterialController::Get 
 
-BlueBerryServer -. tag
+Server -. tag
 tag -.> TagController::Get
 
 
-BlueBerryServer -. userid
+Server -. userid
 userid -.> UserController::Get   
-userid -.> UserController::UpdateTags
+userid -.> UserController::Put
+userid -.> UserController::Post
 
 @enduml
