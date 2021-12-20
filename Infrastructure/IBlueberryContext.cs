@@ -1,5 +1,6 @@
 namespace blueberry.Infrastructure;
 
+/// <summary>Defines resources available in the database</summary>
 public interface IBlueberryContext : IDisposable
 {
     DbSet<User> Users { get; }
