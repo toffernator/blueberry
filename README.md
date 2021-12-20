@@ -55,7 +55,6 @@ On MacOS / Windows
 docker compose build && docker compose up
 ```
 
-
 ### Emergency user
 
 In case authentication with your own Microsoft account fails, we have created a Guest user which will allow you to log in
