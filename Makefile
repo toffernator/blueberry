@@ -22,10 +22,10 @@ db-up:
 	docker start blueberry-db 2>/dev/null || docker run --name blueberry-db -d -e 'SA_PASSWORD=TESTTESTTEST123:)' -e 'ACCEPT_EULA=Y' -p "1433:1433" mcr.microsoft.com/azure-sql-edge:latest && sleep 10
 
 db-stop:
-	docker stop blueberry-db
+	docker stop blueberry-db || true
 
 db-rm: db-stop
-	docker rm blueberry-db
+	docker rm blueberry-db || true
 
 seed-db: db-up
 	ConnectionString='Server=localhost;Database=blueberry;User Id=sa;Password=TESTTESTTEST123:)' dotnet run --project Server -- seed
