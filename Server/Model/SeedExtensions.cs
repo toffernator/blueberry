@@ -32,7 +32,6 @@ public static class SeedExtensions
 
             if (!context.Materials.Any())
             {
-                Console.WriteLine(tags.Count());
                 context.Materials.AddRange(item.JSONToMaterials(tags));
             }
 
