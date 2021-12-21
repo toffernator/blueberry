@@ -8,22 +8,44 @@ This is done to make the searching experience interesting and interactive by pro
 
 ## How to run
 
-Assumes a POSIX terminal. Thus everything must be run in WSL if on Windows.
+### Production (With Docker-compose)
+
+#### Requirements
+- POSIX terminal (WSL if on Windows)
+- docker (docker-compose)
+
+#### Instructions
+
+To run the database and server locally using docker compose run the following commands:
+
+On linux
+
+```shell
+docker-compose build && docker-compose up
+```
+
+On MacOS / Windows
+
+```shell
+docker compose build && docker compose up
+```
+
+### Development 
+ 
+#### Requirements
+- POSIX terminal (WSL if on Windows)
+- make
+- docker
+- dotnet
+
+#### Instructions
 
 **MacOS**: If you are using MacOS you need to install utils (the important being realpath) this can be done running:
 
 ```bash
-$ brew install coreutils
+brew install coreutils
 ```
 
-### Requirements
-
-POSIX terminal
-make
-docker
-dotnet
-
-### Development
 
 To run the database and server locally, you should run the following commands in the order they are given.
 
@@ -38,28 +60,6 @@ To remove generated artifacts, run
 make clean
 ```
 
-### Production (With Docker-compose)
-
-To run the database and server locally using docker compose run the following commands:
-
-On linux
-
-```shell
-docker-compose build && docker-compose up
-```
-
-In some cases the seeding of the database does not work correctly with docker-compose.
-If there are fewer than 20,000 database entries, then you need to force a rebuild of
-the database container by starting the program with the command below instead:
-```shell
-docker-compose up --force-recreate --build
-```
-
-On MacOS / Windows
-
-```shell
-docker compose build && docker compose up
-```
 
 ### Emergency user
 
