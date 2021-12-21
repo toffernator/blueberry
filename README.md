@@ -43,7 +43,7 @@ docker compose build && docker compose up
 **MacOS**: If you are using MacOS you need to install utils (the important being realpath) this can be done running:
 
 ```bash
-$ brew install coreutils
+brew install coreutils
 ```
 
 
