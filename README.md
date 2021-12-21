@@ -1,6 +1,6 @@
 # Blueberry
 
-## Acknowledgements
+## Known Bugs
 - There is a single known issue in the searchComponent. When searching on the /material page the tags in the ui are out of sync with the results. I.e. if one searches for the tag 'docker', the correct results are shown but the tag docker is disabled. For more info see #119.
 - Given the nature of the data-gen script there is nonsensical data in the database. I.e. 'Working with HTML in PostgreSQL'.
 This is done to make the searching experience interesting and interactive by providing multiple tags to materials. 
