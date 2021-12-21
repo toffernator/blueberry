@@ -1,4 +1,5 @@
 @startuml
+skinparam classAttributeIconSize 0
 
 interface IMaterialRepository {
   + Task<ReadOnlyCollection<MaterialDto>> Search(SearchOptions options)
