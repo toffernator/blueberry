@@ -1,10 +1,16 @@
-# Blueberry Baby
+# Blueberry
+
+## Known Bugs
+- There is a single known issue in the searchComponent. When searching on the /material page the tags in the ui are out of sync with the results. I.e. if one searches for the tag 'docker', the correct results are shown but the tag docker is disabled. For more info see #119.
+- Given the nature of the data-gen script there is nonsensical data in the database. I.e. 'Working with HTML in PostgreSQL'. 
+This is done to make the searching experience interesting and interactive by providing multiple tags to materials. 
+- The program is not threadsafe, however since mostly read-actions are performed we have not prioritized this issue. As seen in the load testing section of the README, Blueberry is able to handle multiple concurrent GET-requests, this has been our top priority.
 
 ## How to run
 
 Assumes a POSIX terminal. Thus everything must be run in WSL if on Windows.
 
-**MacOS**: If you are using MacOS you need to install utils (the important being realpath) this can be done runnig:
+**MacOS**: If you are using MacOS you need to install utils (the important being realpath) this can be done running:
 
 ```bash
 $ brew install coreutils
@@ -17,7 +23,7 @@ make
 docker
 dotnet
 
-### Locally
+### Development
 
 To run the database and server locally, you should run the following commands in the order they are given.
 
@@ -32,7 +38,7 @@ To remove generated artifacts, run
 make clean
 ```
 
-### With Docker-compose
+### Production (With Docker-compose)
 
 To run the database and server locally using docker compose run the following commands:
 
